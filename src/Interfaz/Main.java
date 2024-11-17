@@ -76,13 +76,19 @@ public class Main extends JFrame {
     
     public JButton btnPl17 = new JButton();
     public JButton btnPl18 = new JButton();
-
+    
+    
+    public JPanel pContenido = new JPanel();
+  
     public Main() {
         setSize(1650, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-
+        pContenido.setLayout(null); 
+        pContenido.setBackground(cN);
+        pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
         menuPrincipal();
+        botonesMenuPrincipal ();
     }
     public void rediIcon(String ruta, int n1 , int n2 ,JButton btn){
         ImageIcon iconoOriginal = new ImageIcon(ruta);
@@ -99,19 +105,19 @@ public class Main extends JFrame {
 
     public void menuPrincipal() {
 
-        JPanel pContenido = new JPanel();
-        pContenido.setLayout(null); 
-        pContenido.setBackground(cN);
-        pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
 
+        
+    }
+    
+    public void botonesMenuPrincipal (){
         btnPl1.setBounds(50, 120, 60, 60);
         rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/biblioteca.png",98,98, btnPl1);
         btnPl1.setBackground(cN);
         btnPl1.setBorderPainted(false);
         pContenido.add(btnPl1); 
 
-        btnPl2.setBounds(550, 25, 60, 60);
-        rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png",61,61, btnPl2);
+        btnPl2.setBounds(550, 25, 40, 40);
+        rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png",41,41, btnPl2);
         btnPl2.setBorderPainted(false);
         btnPl2.setBackground(cN);
         pContenido.add(btnPl2);
@@ -229,11 +235,11 @@ public class Main extends JFrame {
         
         btnPl18.setBounds(1450, 396, 135, 45); // ver mas
         pContenido.add(btnPl18);
-
+        
         add(pContenido);
 
-        // Hacer visible el JFrame
         setVisible(true);
+    
     }
 
     public static void main(String[] args) {

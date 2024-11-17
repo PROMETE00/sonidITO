@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Interfaz.playlist;
 import java.sql.*;
 
 public class PostgreSQLConnection {
@@ -12,8 +13,7 @@ public class PostgreSQLConnection {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
             String consulta = "SELECT * FROM cancion";
-            try (Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(consulta)) {
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
 
                 while (rs.next()) {
                     int id = rs.getInt("id_cancion");
@@ -44,8 +44,7 @@ public class PostgreSQLConnection {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
             String consulta = "SELECT * FROM favoritosusuario";
-            try (Statement stmt = conn.createStatement(); 
-                    ResultSet rs = stmt.executeQuery(consulta)) {
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
 
                 while (rs.next()) {
                     int id_favorito = rs.getInt("id_favorito");
@@ -67,8 +66,7 @@ public class PostgreSQLConnection {
 
         String consulta = "SELECT * FROM usuario WHERE nombre = ? AND contrasena = ?";
 
-        try (Connection conn = DriverManager.getConnection(url, nombre, contrasena); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, nombre, contrasena); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, nombre);
             pstmt.setString(2, contrasena);
@@ -93,8 +91,7 @@ public class PostgreSQLConnection {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
             String consulta = "SELECT * FROM playlist";
-            try (Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(consulta)) {
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
 
                 while (rs.next()) {
                     int id_Playlist = rs.getInt("id_playlist");
@@ -116,12 +113,57 @@ public class PostgreSQLConnection {
         }
     }
 
+    public int obtenerMisPlaylist(int usr) {
+        int id_playlist = 0;
+        String consulta = "SELECT * FROM \"misPlaylist\" mp WHERE id_usuario = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            pstmt.setInt(1, usr);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    id_playlist = rs.getInt("id_playlist");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        }
+        return id_playlist;
+    }
+    
+    public  playlist obtenerPlaylistPorID(int id_playlist) {
+       playlist ps = new playlist(0,"","",0,0);
+       String consulta = "SELECT * FROM playlist WHERE numero_playlist = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            pstmt.setInt(1, id_playlist);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String nombre = rs.getString("nombre");
+                    String ruta = rs.getString("rutaimagen");
+                    int id_cancion = rs.getInt("id_cancion");
+                    int n_playlist = rs.getInt("numero_playlist");
+                    ps.setId_playlist(id_playlist);
+                    ps.setNombre(nombre);
+                    ps.setRuta_imagen(ruta);
+                    ps.setId_cancion(id_cancion);
+                    ps.setNumero_playlist(n_playlist);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        }
+        return ps;
+    }
+
     public void ordenarAutorDisponible() {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
             String consulta = "SELECT id_cancion ,autor FROM cancion";
-            try (Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(consulta)) {
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
 
                 while (rs.next()) {
                     int id_cancion = rs.getInt("id_cancion");
@@ -134,12 +176,11 @@ public class PostgreSQLConnection {
             System.err.println("No se pudieron obtener las canciones\n" + e.getMessage());
         }
     }
-    
+
     public void filtrarAutor(String name_autor) {
         String consulta = "SELECT id_cancion,autor  FROM cancion WHERE autor ~ ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, name_autor);
 
@@ -160,8 +201,7 @@ public class PostgreSQLConnection {
     public void filtrarNombre(String name_song) {
         String consulta = "SELECT id_cancion,nombre  FROM cancion WHERE nombre ~ ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, name_song);
 
@@ -178,12 +218,11 @@ public class PostgreSQLConnection {
             System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
         }
     }
-    
+
     public void ordenarNombreDisponible() {
         String consulta = "SELECT id_cancion,nombre  FROM cancion";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -202,8 +241,7 @@ public class PostgreSQLConnection {
     public void filtrarAlbum(String name_album) {
         String consulta = "SELECT id_cancion,album  FROM cancion WHERE album ~ ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, name_album);
 
@@ -220,12 +258,11 @@ public class PostgreSQLConnection {
             System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
         }
     }
-    
+
     public void ordenarAlbumDisponible() {
         String consulta = "SELECT id_cancion,album  FROM cancion";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -242,10 +279,9 @@ public class PostgreSQLConnection {
     }
 
     public void filtrarGenero(String name_genero) {
-            String consulta = "SELECT id_cancion,genero  FROM cancion WHERE genero ~ ?";
+        String consulta = "SELECT id_cancion,genero  FROM cancion WHERE genero ~ ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, name_genero);
 
@@ -264,11 +300,9 @@ public class PostgreSQLConnection {
     }
 
     public void ordenarDuracion() {
-            String consulta = "SELECT id_cancion,duracion  FROM cancion";
+        String consulta = "SELECT id_cancion,duracion  FROM cancion";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
-
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -285,10 +319,9 @@ public class PostgreSQLConnection {
     }
 
     public void obtenerNombrePlaylist(String n_Playlist) {
-          String consulta = "SELECT *  FROM playlist WHERE nombre ~ ?";
+        String consulta = "SELECT *  FROM playlist WHERE nombre ~ ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user,password ); 
-                PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
             pstmt.setString(1, n_Playlist);
 
@@ -320,6 +353,7 @@ public class PostgreSQLConnection {
 
     public static void main(String[] args) {
         PostgreSQLConnection cndb = new PostgreSQLConnection();
-        cndb.obtenerNombrePlaylist("p");
+        int usr =cndb.obtenerMisPlaylist(1);
+        System.out.println(cndb.obtenerPlaylistPorID(usr));
     }
 }

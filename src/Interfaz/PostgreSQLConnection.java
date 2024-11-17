@@ -113,24 +113,26 @@ public class PostgreSQLConnection {
         }
     }
 
-    public int obtenerMisPlaylist(int usr) {
-        int id_playlist = 0;
-        String consulta = "SELECT * FROM \"misPlaylist\" mp WHERE id_usuario = ?";
+    public int obtenerMisPlaylistCantidad(int usr) {
+    int totalPlaylists = 0;
+    String consulta = "SELECT COUNT(*) AS total FROM \"misPlaylist\" WHERE id_usuario = ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+    try (Connection conn = DriverManager.getConnection(url, user, password);
+         PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
-            pstmt.setInt(1, usr);
+        pstmt.setInt(1, usr);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    id_playlist = rs.getInt("id_playlist");
-                }
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) { // Solo hay una fila con el resultado de COUNT
+                totalPlaylists = rs.getInt("total");
             }
-        } catch (SQLException e) {
-            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
         }
-        return id_playlist;
+    } catch (SQLException e) {
+        System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
     }
+    return totalPlaylists;
+}
+
     
     public  playlist obtenerPlaylistPorID(int id_playlist) {
        playlist ps = new playlist(0,"","",0,0);
@@ -353,7 +355,7 @@ public class PostgreSQLConnection {
 
     public static void main(String[] args) {
         PostgreSQLConnection cndb = new PostgreSQLConnection();
-        int usr =cndb.obtenerMisPlaylist(1);
-        System.out.println(cndb.obtenerPlaylistPorID(usr));
+        int usr =cndb.obtenerMisPlaylistCantidad(1);
+        System.out.println(usr);
     }
 }

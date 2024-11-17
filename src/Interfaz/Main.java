@@ -87,8 +87,9 @@ public class Main extends JFrame {
         pContenido.setLayout(null); 
         pContenido.setBackground(cN);
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
-        menuPrincipal();
-        botonesMenuPrincipal ();
+        //menuPrincipal();
+//        botonesMenuPrincipal ();
+        misPlaylist(1);
     }
     public void rediIcon(String ruta, int n1 , int n2 ,JButton btn){
         ImageIcon iconoOriginal = new ImageIcon(ruta);
@@ -103,10 +104,26 @@ public class Main extends JFrame {
         lb.setIcon(iconoRedimensionado);
     }
 
-    public void menuPrincipal() {
+    public void misMeGusta() {
 
 
         
+    }
+    
+    public void misPlaylist(int id_Usuario){
+        PostgreSQLConnection cndb = new PostgreSQLConnection();
+        int cantidad = cndb.obtenerMisPlaylistCantidad(id_Usuario); 
+        System.out.println(cantidad );
+        
+    
+    }
+    
+    public void botonPlaylist(int x , int y , int width, int height, String ruta, int n1, int n2 , JButton btn, Color cl){
+    btn.setBounds(x, y, width, height);
+    rediIcon(ruta ,n1, n2,btn);
+    btn.setBackground(cl);
+    btn.setBorderPainted(false);
+    pContenido.add(btn);
     }
     
     public void botonesMenuPrincipal (){

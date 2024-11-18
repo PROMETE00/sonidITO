@@ -79,17 +79,19 @@ public class Main extends JFrame {
     
     
     public JPanel pContenido = new JPanel();
+    PostgreSQLConnection cndb = new PostgreSQLConnection();
   
     public Main() {
-        setSize(1650, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         pContenido.setLayout(null); 
         pContenido.setBackground(cN);
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
+        botonesPrincipal();
+        misPlaylist(1,"/home/prome/NetBeansProjects/sonidITO/src/img/lke.png","","","","","","","","","","","");
         //menuPrincipal();
 //        botonesMenuPrincipal ();
-        misPlaylist(1);
+       
     }
     public void rediIcon(String ruta, int n1 , int n2 ,JButton btn){
         ImageIcon iconoOriginal = new ImageIcon(ruta);
@@ -105,132 +107,167 @@ public class Main extends JFrame {
     }
 
     public void misMeGusta() {
-
-
+       
         
     }
     
-    public void misPlaylist(int id_Usuario){
-        PostgreSQLConnection cndb = new PostgreSQLConnection();
+    public void iconoPlaylist(String rt,int n1 ,int n2, JLabel lbl ,int x ,int y , int width , int height){
+        img(rt,n1,n2, lbl);
+        lbl.setBounds(x, y, width, height);
+        pContenido.add(lbl);
+        add(pContenido);
+    }
+    
+    public void misPlaylist(int id_Usuario,String r1,String r2,String r3,String r4,String r5,String r6,String r7,String r8,String r9,String r10,String r11,String r12){
         int cantidad = cndb.obtenerMisPlaylistCantidad(id_Usuario); 
-        System.out.println(cantidad );
+        int cantida = 12;
         
-    
+        Color cg = new Color(255,255,255,70);
+        img("/home/prome/NetBeansProjects/sonidITO/src/img/lke.png",31,31, lblF2);
+        lblF2.setBounds(210, 157, 60, 60);
+        pContenido.add(lblF2);
+        lblF1.setBounds(190, 150, 69, 69);
+        lblF1.setOpaque(false);
+        pContenido.add(lblF1);
+        sombraPlaylist(btnPl4,190,150,300,70,false,false,false,lblF3,259,150,230,70,true,cg );
+        
+         switch (cantida) {
+            case 1:
+                 iconoPlaylist(r1,31,31,lblF5,590,150,60,60);//1
+                 sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                break;
+            case 2:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                break;
+            case 3:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                break;
+            case 4:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                break;
+            case 5:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                break;
+            case 6:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                break;
+            case 7:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,false,false,false,lblF16,1500,250,230,70,true,cg );
+                break;
+            case 8:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,false,false,false,lblF16,1500,250,230,70,true,cg );
+                sombraPlaylist(btnPl12,190,350,300,70,false,false,false,lblF18,259,350,230,70,true,cg );
+                break;
+            case 9:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,false,false,false,lblF16,1500,250,230,70,true,cg );
+                sombraPlaylist(btnPl12,190,350,300,70,false,false,false,lblF18,259,350,230,70,true,cg );
+                sombraPlaylist(btnPl13,590,350,300,70,false,false,false,lblF20,659,350,230,70,true,cg );
+                break;
+            case 10:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,false,false,false,lblF16,1500,250,230,70,true,cg );
+                sombraPlaylist(btnPl12,190,350,300,70,false,false,false,lblF18,259,350,230,70,true,cg );
+                sombraPlaylist(btnPl13,590,350,300,70,false,false,false,lblF20,659,350,230,70,true,cg );
+                break;
+            case 11:
+                sombraPlaylist(btnPl5,590,150,300,70,false,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,false,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,false,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,false,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,false,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,false,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,false,false,false,lblF16,1500,250,230,70,true,cg );
+                sombraPlaylist(btnPl12,190,350,300,70,false,false,false,lblF18,259,350,230,70,true,cg );
+                sombraPlaylist(btnPl13,590,350,300,70,false,false,false,lblF20,659,350,230,70,true,cg );
+                sombraPlaylist(btnPl14,1030,350,300,70,false,false,false,lblF22,1100,350,230,70,true,cg );
+                break;
+            case 12:
+                sombraPlaylist(btnPl5,590,150,300,70,true,false,false,lblF4,659,150,230,70,true,cg );
+                sombraPlaylist(btnPl6,1030,150,300,70,true,false,false,lblF6,1100,150,230,70,true,cg );
+                sombraPlaylist(btnPl7,1430,150,300,70,true,false,false,lblF8,1500,150,230,70,true,cg );
+                sombraPlaylist(btnPl8,190,250,300,70,true,false,false,lblF10,259,250,230,70,true,cg );
+                sombraPlaylist(btnPl9,590,250,300,70,true,false,false,lblF12,659,250,230,70,true,cg );
+                sombraPlaylist(btnPl10,1030,250,300,70,true,false,false,lblF14,1100,250,230,70,true,cg );
+                sombraPlaylist(btnPl11,1430,250,300,70,true,false,false,lblF16,1500,250,230,70,true,cg );
+                sombraPlaylist(btnPl12,190,350,300,70,true,false,false,lblF18,259,350,230,70,true,cg );
+                sombraPlaylist(btnPl13,590,350,300,70,true,false,false,lblF20,659,350,230,70,true,cg );
+                sombraPlaylist(btnPl14,1030,350,300,70,true,false,false,lblF22,1100,350,230,70,true,cg );
+                sombraPlaylist(btnPl15,1430,350,300,70,true,false,false,lblF24,1500,350,230,70,true,cg );
+                break;
+            default:
+                break;
+        }
+        add(pContenido);
+
     }
     
-    public void botonPlaylist(int x , int y , int width, int height, String ruta, int n1, int n2 , JButton btn, Color cl){
+    public void sombraPlaylist(JButton btn ,int x ,int y ,int width, int height, Boolean b1 , Boolean b2 , Boolean b3, JLabel lbl, int x2, int y2,int width2,int height2 , Boolean b4, Color cl){
+        btn.setBounds(x, y,width,height);
+        btn.setBorderPainted(b1);
+        btn.setFocusPainted(b2);
+        btn.setContentAreaFilled(b3);
+        pContenido.add(btn);
+        lbl.setBounds(x2, y2, width2, height2);
+        lbl.setOpaque(b4);
+        lbl.setBackground(cl);
+        pContenido.add(lbl);
+    }
+    
+    public void botonesPrincipal(){
+        botonPlaylist(190,70,60,60,"/home/prome/NetBeansProjects/sonidITO/src/img/biblioteca.png",98,98, btnPl1,cN,false);
+        botonPlaylist(550,25,40,40,"/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png",41,41, btnPl2,cN,false);
+        botonPlaylist(1835,25,60,60,"/home/prome/NetBeansProjects/sonidITO/src/img/person1.png",89,89, btnPl3,cN,false);
+        add(pContenido);
+    }
+    
+    public void botonPlaylist(int x , int y , int width, int height, String ruta, int n1, int n2 , JButton btn, Color cl, Boolean bl){
     btn.setBounds(x, y, width, height);
     rediIcon(ruta ,n1, n2,btn);
     btn.setBackground(cl);
-    btn.setBorderPainted(false);
+    btn.setBorderPainted(bl);
     pContenido.add(btn);
     }
     
     public void botonesMenuPrincipal (){
-        btnPl1.setBounds(50, 120, 60, 60);
-        rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/biblioteca.png",98,98, btnPl1);
-        btnPl1.setBackground(cN);
-        btnPl1.setBorderPainted(false);
-        pContenido.add(btnPl1); 
-
-        btnPl2.setBounds(550, 25, 40, 40);
-        rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png",41,41, btnPl2);
-        btnPl2.setBorderPainted(false);
-        btnPl2.setBackground(cN);
-        pContenido.add(btnPl2);
-        
-        btnPl3.setBounds(1535, 25, 60, 60);
-        rediIcon("/home/prome/NetBeansProjects/sonidITO/src/img/person1.png",89,89, btnPl3);
-        btnPl3.setBorderPainted(false);
-        btnPl3.setBackground(cN);
-        pContenido.add(btnPl3);
-        
-        btnPl4.setBounds(50, 200, 300, 70);//(1  2   3   4)
-        btnPl4.setBorderPainted(false);
-        btnPl4.setFocusPainted(false);
-        btnPl4.setContentAreaFilled(false);
-        pContenido.add(btnPl4);
-        lblF3.setBounds(119, 200, 230, 70);
-        lblF3.setOpaque(true);
-        lblF3.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF3);
-        img("/home/prome/NetBeansProjects/sonidITO/src/img/lke.png",31,31, lblF2);
-        lblF2.setBounds(70, 207, 60, 60);
-        pContenido.add(lblF2);
-        lblF1.setBounds(50, 200, 69, 69);
-        lblF1.setOpaque(false);
-        pContenido.add(lblF1);
-        
-        
-        btnPl5.setBounds(450, 200, 300, 70);
-        btnPl5.setBorderPainted(false);
-        btnPl5.setFocusPainted(false);
-        btnPl5.setContentAreaFilled(false);
-        pContenido.add(btnPl5);
-        lblF4.setBounds(519, 200, 230, 70);
-        lblF4.setOpaque(true);
-        lblF4.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF4);
-        
-        btnPl6.setBounds(890, 200, 300, 70);
-        btnPl6.setBorderPainted(false);
-        btnPl6.setFocusPainted(false);
-        btnPl6.setContentAreaFilled(false);
-        pContenido.add(btnPl6);
-        lblF6.setBounds(960, 200, 230, 70);
-        lblF6.setOpaque(true);
-        lblF6.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF6);
-        
-        btnPl7.setBounds(1290, 200, 300, 70);
-        btnPl7.setBorderPainted(false);
-        btnPl7.setFocusPainted(false);
-        btnPl7.setContentAreaFilled(false);
-        pContenido.add(btnPl7);
-        lblF8.setBounds(1360, 200, 230, 70);
-        lblF8.setOpaque(true);
-        lblF8.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF8);
-        
-        btnPl8.setBounds(50, 300, 300, 70);//(5  6   7   8)
-        btnPl8.setBorderPainted(false);
-        btnPl8.setFocusPainted(false);
-        btnPl8.setContentAreaFilled(false);
-        pContenido.add(btnPl8);
-        lblF10.setBounds(120, 300, 230, 70);
-        lblF10.setOpaque(true);
-        lblF10.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF10);
-        
-        btnPl9.setBounds(450, 300, 300, 70);
-        btnPl9.setBorderPainted(false);
-        btnPl9.setFocusPainted(false);
-        btnPl9.setContentAreaFilled(false);
-        pContenido.add(btnPl9);
-        lblF12.setBounds(520, 300, 230, 70);
-        lblF12.setOpaque(true);
-        lblF12.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF12);
-        
-        btnPl10.setBounds(890, 300, 300, 70);
-        btnPl10.setBorderPainted(false);
-        btnPl10.setFocusPainted(false);
-        btnPl10.setContentAreaFilled(false);
-        pContenido.add(btnPl10);
-        lblF14.setBounds(960, 300, 230, 70);
-        lblF14.setOpaque(true);
-        lblF14.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF14);
-        
-        btnPl11.setBounds(1290, 300, 300, 70);
-        btnPl11.setBorderPainted(false);
-        btnPl11.setFocusPainted(false);
-        btnPl11.setContentAreaFilled(false);
-        pContenido.add(btnPl11);
-        lblF16.setBounds(1360, 300, 230, 70);
-        lblF16.setOpaque(true);
-        lblF16.setBackground(new Color(255,255,255,70));
-        pContenido.add(lblF16);
+      
         
         btnPl12.setBounds(50, 450, 225, 220);//1   2   3   4   5   6
         pContenido.add(btnPl12);

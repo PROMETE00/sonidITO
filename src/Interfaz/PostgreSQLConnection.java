@@ -87,7 +87,7 @@ public class PostgreSQLConnection {
         }
     }
 
-    public void obtenerPlaylist() {
+    public void obtenerPlaylistExistentes() {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
             String consulta = "SELECT * FROM playlist";

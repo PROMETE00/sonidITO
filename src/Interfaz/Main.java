@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class Main extends JFrame {
@@ -12,7 +13,7 @@ public class Main extends JFrame {
     private JPanel pcontenido;
     Color cN = new Color(0, 0, 0);//negro
     Color cB = new Color(255, 255, 255);//Blanco
-    Color cg = new Color(255, 255, 255, 70);
+    Color cg = new Color(116, 116, 116);
 
     public JLabel lblF1 = new JLabel() {
         @Override
@@ -96,42 +97,68 @@ public class Main extends JFrame {
 
     public JButton btnPl17 = new JButton();
     public JButton btnPl18 = new JButton();
+    public JButton btnS = new JButton();
 
     public JPanel pContenido = new JPanel();
     PostgreSQLConnection cndb = new PostgreSQLConnection();
 
     public Main() {
+        //frame principal 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pContenido.setLayout(null);
         pContenido.setBackground(cN);
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
+        ImageIcon icon = new ImageIcon("/home/prome/NetBeansProjects/sonidITO/sonidITO.jpg");  // Especifica la ruta de tu ícono
+        setIconImage(icon.getImage());
 
-        // Añadir componentes
-        botonesPrincipal();
+        // Agregar componentes
+        botonesMenuPrincipal();
+        fondoPlaylist(); // Fondo primero
+        botonesPrincipal(); // Añadir los botones principales
         misPlaylist(1, "/home/prome/NetBeansProjects/sonidITO/src/img/lke.png", "", "", "", "", "", "", "", "", "", "", "");
+        ordenamiento();
 
-        // Añadir el fondo después
-        lblF15.setOpaque(false);
-        pContenido.add(lblF15);
+        add(pContenido);
+    }
 
-        // Mover el fondo al fondo
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
-        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
+    public void ordenamiento() {
+        // Asegúrate de que estos componentes ya están añadidos a pContenido antes de modificar su orden
+        if (!pContenido.isAncestorOf(lblF15)) {
+            pContenido.add(lblF15);
+        }
+        if (!pContenido.isAncestorOf(lblF1)) {
+            pContenido.add(lblF1);
+        }
+        if (!pContenido.isAncestorOf(lblF2)) {
+            pContenido.add(lblF2);
+        }
+        if (!pContenido.isAncestorOf(lblF3)) {
+            pContenido.add(lblF3);
+        }
+        if (!pContenido.isAncestorOf(lblF16)) {
+            pContenido.add(lblF16);
+        }
 
-        // Configurar redimensionamiento del fondo
+        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1); // Fondo al fondo
+        pContenido.setComponentZOrder(lblF1, pContenido.getComponentCount() - 2);
+        pContenido.setComponentZOrder(lblF2, pContenido.getComponentCount() - 3);
+        pContenido.setComponentZOrder(lblF3, pContenido.getComponentCount() - 4);
+        pContenido.setComponentZOrder(lblF16, pContenido.getComponentCount() - 5);
+    }
+
+    public void fondoPlaylist() {
+        if (!pContenido.isAncestorOf(lblF15)) {
+            lblF15.setOpaque(false); // Hacemos el fondo transparente si es necesario
+            lblF15.setBounds(0, 0, getWidth(), 500); // Tamaño inicial del fondo
+            pContenido.add(lblF15); // Añadir fondo al panel
+        }
         pContenido.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 lblF15.setBounds(0, 0, pContenido.getWidth(), 500);
             }
         });
-
-        add(pContenido);
     }
 
     public void rediIcon(String ruta, int n1, int n2, JButton btn) {
@@ -163,8 +190,7 @@ public class Main extends JFrame {
         int cantidad = cndb.obtenerMisPlaylistCantidad(id_Usuario);
         int cantida = 12;
 
-      
-        lblF1.setBounds(190, 150, 69, 69);
+        lblF1.setBounds(190, 150, 70, 70);
         lblF1.setOpaque(false);
         pContenido.add(lblF1);
         img("/home/prome/NetBeansProjects/sonidITO/src/img/lke.png", 31, 31, lblF2);
@@ -174,7 +200,8 @@ public class Main extends JFrame {
 
         switch (cantida) {
             case 1:
-                //iconoPlaylist(r1,31,31,lblF5,590,150,60,60);//1
+                //iconoPlaylist(r1, 31, 31, lblF16, 590, 50, 60, 60);//1
+                //pContenido.add(lblF16);
                 sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
                 break;
             case 2:
@@ -261,6 +288,7 @@ public class Main extends JFrame {
                 sombraPlaylist(btnPl14, 1030, 350, 300, 70, false, false, false, lblF13, 1100, 350, 230, 70, true, cg);
                 break;
             case 12:
+                //iconoPlaylist(r1, 31, 31, lblF16, 590, 50, 60, 60);//1
                 sombraPlaylist(btnPl5, 590, 150, 300, 70, true, false, false, lblF4, 659, 150, 230, 70, true, cg);
                 sombraPlaylist(btnPl6, 1030, 150, 300, 70, true, false, false, lblF5, 1100, 150, 230, 70, true, cg);
                 sombraPlaylist(btnPl7, 1430, 150, 300, 70, true, false, false, lblF6, 1500, 150, 230, 70, true, cg);
@@ -294,11 +322,43 @@ public class Main extends JFrame {
         pContenido.add(lbl);
     }
 
+    public void barraBusqueda() {
+        RoundTextField txtInput = new RoundTextField(1, 30); // 1 columna, radio 30
+        txtInput.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtInput.setForeground(cB); // Letra blanca
+        txtInput.setBackground(cN); // Fondo negro
+        txtInput.setCaretColor(cB); // Cursor blanco
+        txtInput.setBounds(700, 25, 600, 40);
+        
+        pContenido.add(txtInput);
+        
+    }
+    
+    public void obtenerBusqueda(){
+    
+    
+    }
+
     public void botonesPrincipal() {
-        botonPlaylist(190, 70, 60, 60, "/home/prome/NetBeansProjects/sonidITO/src/img/biblioteca.png", 98, 98, btnPl1, cN, false);
-        botonPlaylist(550, 25, 40, 40, "/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png", 41, 41, btnPl2, cN, false);
-        botonPlaylist(1835, 25, 60, 60, "/home/prome/NetBeansProjects/sonidITO/src/img/person1.png", 89, 89, btnPl3, cN, false);
+        botonPlaylist(630, 17, 64, 64, "/home/prome/NetBeansProjects/sonidITO/searching.png", 64, 64, btnS, false);
+        pContenido.add(btnS);
+        barraBusqueda();
+        botonPlaylist(190, 70, 60, 60, "/home/prome/NetBeansProjects/sonidITO/src/img/biblioteca.png", 98, 98, btnPl1, false);
+        botonPlaylist(550, 25, 40, 40, "/home/prome/NetBeansProjects/sonidITO/src/img/house-solid.png", 40, 40, btnPl2, false);
+        botonPlaylist(1835, 25, 60, 60, "/home/prome/NetBeansProjects/sonidITO/src/img/person1.png", 89, 89, btnPl3, false);
+        pContenido.add(lblF15);
         Re();
+    }
+
+    public void botonPlaylist(int x, int y, int width, int height, String ruta, int n1, int n2, JButton btn, Boolean bl) {
+        btn.setBounds(x, y, width, height);
+        rediIcon(ruta, n1, n2, btn);
+        btn.setOpaque(false);
+        btn.setBackground(new Color(0, 0, 0, 0));
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        pContenido.add(btn);
     }
 
     public void Re() {
@@ -306,17 +366,9 @@ public class Main extends JFrame {
         pContenido.revalidate();
     }
 
-    public void botonPlaylist(int x, int y, int width, int height, String ruta, int n1, int n2, JButton btn, Color cl, Boolean bl) {
-        btn.setBounds(x, y, width, height);
-        rediIcon(ruta, n1, n2, btn);
-        btn.setBackground(cl);
-        btn.setBorderPainted(bl);
-        pContenido.add(btn);
-    }
-
     public void botonesMenuPrincipal() {
 
-        btnPl12.setBounds(50, 450, 225, 220);//1   2   3   4   5   6
+        btnPl12.setBounds(50, 50, 225, 220);//1   2   3   4   5   6
         pContenido.add(btnPl12);
 
         btnPl13.setBounds(305, 450, 225, 220);
@@ -336,7 +388,6 @@ public class Main extends JFrame {
 
         btnPl18.setBounds(1450, 396, 135, 45); // ver mas
         pContenido.add(btnPl18);
-
         add(pContenido);
 
         setVisible(true);

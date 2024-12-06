@@ -2,6 +2,8 @@ package Interfaz;
 
 import Interfaz.playlist;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostgreSQLConnection {
 
@@ -38,6 +40,45 @@ public class PostgreSQLConnection {
         } catch (SQLException e) {
             System.err.println("No se pudieron obtener las canciones\n" + e.getMessage());
         }
+    }
+
+    public List<String[]> filtrarPorColumna(String columna, String valor) {
+        String consulta = "SELECT id_cancion, ruta_imagen, ruta_cancion, " + columna + " FROM cancion WHERE " + columna + " ~ ?";
+        List<String[]> resultados = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            pstmt.setString(1, valor);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int idCancion = rs.getInt("id_cancion");
+                    String rutaImagen = rs.getString("ruta_imagen");
+                    String rutaCancion = rs.getString("ruta_cancion");
+                    String texto = rs.getString(columna);
+
+                    // Incluye ruta_imagen y ruta_cancion
+                    resultados.add(new String[]{String.valueOf(idCancion), rutaImagen, rutaCancion, texto});
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        }
+
+        return resultados;
+    }
+
+    public List<String[]> buscarEnTodas(String valor) {
+//        String[] columnas = {"autor", "nombre", "album"};
+        String[] columnas = {"nombre"};
+        List<String[]> resultados = new ArrayList<>();
+
+        for (String columna : columnas) {
+            List<String[]> resultadosParciales = filtrarPorColumna(columna, valor);
+            resultados.addAll(resultadosParciales);
+        }
+
+        return resultados;
     }
 
     public void obtenerFavoritos() {
@@ -87,56 +128,55 @@ public class PostgreSQLConnection {
         }
     }
 
-    public void obtenerPlaylistExistentes() {
-        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+    public List<String[]> obtenerPlaylistExistentes() {
+        String consulta = "SELECT id_playlist, nombre, rutaimagen, id_cancion, numero_playlist FROM playlist";
+        List<String[]> resultados = new ArrayList<>();
 
-            String consulta = "SELECT * FROM playlist";
-            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
+            try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int id_Playlist = rs.getInt("id_playlist");
-                    String name_playlist = rs.getString("nombre");
-                    String ruta_imagen = rs.getString("rutaimagen");
-                    String id_cancion = rs.getString("id_cancion");
-                    String numero_playlist = rs.getString("numero_playlist");
+                    int idPlaylist = rs.getInt("id_playlist");
+                    String nombrePlaylist = rs.getString("nombre");
+                    String rutaImagen = rs.getString("rutaimagen");
+                    String idCancion = rs.getString("id_cancion");
+                    String numeroPlaylist = rs.getString("numero_playlist");
 
-                    System.out.println("\nID_Playlist:\n" + id_Playlist
-                            + "\nNombre_Playlist:\n" + name_playlist
-                            + "\nRuta_Imagen:\n" + ruta_imagen
-                            + "\nID_Cancion:\n" + id_cancion
-                            + "\nNumero_Playlist:\n" + numero_playlist
-                    );
+                    // Agregar los valores a la lista
+                    resultados.add(new String[]{
+                        String.valueOf(idPlaylist), nombrePlaylist, rutaImagen, idCancion, numeroPlaylist
+                    });
                 }
             }
         } catch (SQLException e) {
-            System.err.println("No se pudieron obtener las canciones\n" + e.getMessage());
+            System.err.println("No se pudieron obtener las playlists\n" + e.getMessage());
         }
+
+        return resultados;
     }
 
     public int obtenerMisPlaylistCantidad(int usr) {
-    int totalPlaylists = 0;
-    String consulta = "SELECT COUNT(*) AS total FROM \"misPlaylist\" WHERE id_usuario = ?";
+        int totalPlaylists = 0;
+        String consulta = "SELECT COUNT(*) AS total FROM \"misPlaylist\" WHERE id_usuario = ?";
 
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-         PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
-        pstmt.setInt(1, usr);
+            pstmt.setInt(1, usr);
 
-        try (ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) { // Solo hay una fila con el resultado de COUNT
-                totalPlaylists = rs.getInt("total");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Solo hay una fila con el resultado de COUNT
+                    totalPlaylists = rs.getInt("total");
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        return totalPlaylists;
     }
-    return totalPlaylists;
-}
 
-    
-    public  playlist obtenerPlaylistPorID(int id_playlist) {
-       playlist ps = new playlist(0,"","",0,0);
-       String consulta = "SELECT * FROM playlist WHERE numero_playlist = ?";
+    public playlist obtenerPlaylistPorID(int id_playlist) {
+        playlist ps = new playlist(0, "", "", 0, 0);
+        String consulta = "SELECT * FROM playlist WHERE numero_playlist = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
@@ -221,25 +261,6 @@ public class PostgreSQLConnection {
         }
     }
 
-    public void ordenarNombreDisponible() {
-        String consulta = "SELECT id_cancion,nombre  FROM cancion";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    int id_cancion = rs.getInt("id_cancion");
-                    String name_s = rs.getString("nombre");
-
-                    System.out.println("\nID_Cancion:\n" + id_cancion
-                            + "\nNombre_Cancion:\n" + name_s);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
-        }
-    }
-
     public void filtrarAlbum(String name_album) {
         String consulta = "SELECT id_cancion,album  FROM cancion WHERE album ~ ?";
 
@@ -261,25 +282,6 @@ public class PostgreSQLConnection {
         }
     }
 
-    public void ordenarAlbumDisponible() {
-        String consulta = "SELECT id_cancion,album  FROM cancion";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    int id_cancion = rs.getInt("id_cancion");
-                    String name_s = rs.getString("album");
-
-                    System.out.println("\nID_Cancion:\n" + id_cancion
-                            + "\nAlbum:\n" + name_s);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
-        }
-    }
-
     public void filtrarGenero(String name_genero) {
         String consulta = "SELECT id_cancion,genero  FROM cancion WHERE genero ~ ?";
 
@@ -294,6 +296,44 @@ public class PostgreSQLConnection {
 
                     System.out.println("\nID_Cancion:\n" + id_cancion
                             + "\nGenero:\n" + name_g);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        }
+    }
+
+    public void ordenarNombreDisponible() {
+        String consulta = "SELECT id_cancion,nombre  FROM cancion";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int id_cancion = rs.getInt("id_cancion");
+                    String name_s = rs.getString("nombre");
+
+                    System.out.println("\nID_Cancion:\n" + id_cancion
+                            + "\nNombre_Cancion:\n" + name_s);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
+        }
+    }
+
+    public void ordenarAlbumDisponible() {
+        String consulta = "SELECT id_cancion,album  FROM cancion";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int id_cancion = rs.getInt("id_cancion");
+                    String name_s = rs.getString("album");
+
+                    System.out.println("\nID_Cancion:\n" + id_cancion
+                            + "\nAlbum:\n" + name_s);
                 }
             }
         } catch (SQLException e) {
@@ -355,7 +395,7 @@ public class PostgreSQLConnection {
 
     public static void main(String[] args) {
         PostgreSQLConnection cndb = new PostgreSQLConnection();
-        int usr =cndb.obtenerMisPlaylistCantidad(1);
+        int usr = cndb.obtenerMisPlaylistCantidad(1);
         System.out.println(usr);
     }
 }

@@ -5,18 +5,17 @@ package Interfaz;
  * @author prome
  */
 public class playlist {
+
     int id_playlist;
     String nombre;
     String ruta_imagen;
-    int  id_cancion;
-    int numero_playlist;
+    String descripcion;
 
-    public playlist(int id_playlist, String nombre, String ruta_imagen, int id_cancion, int numero_playlist) {
+    public playlist(int id_playlist, String nombre, String ruta_imagen, String descripcion) {
         this.id_playlist = id_playlist;
         this.nombre = nombre;
         this.ruta_imagen = ruta_imagen;
-        this.id_cancion = id_cancion;
-        this.numero_playlist = numero_playlist;
+        this.descripcion = descripcion;
     }
 
     public int getId_playlist() {
@@ -43,26 +42,17 @@ public class playlist {
         this.ruta_imagen = ruta_imagen;
     }
 
-    public int getId_cancion() {
-        return id_cancion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setId_cancion(int id_cancion) {
-        this.id_cancion = id_cancion;
-    }
-
-    public int getNumero_playlist() {
-        return numero_playlist;
-    }
-
-    public void setNumero_playlist(int numero_playlist) {
-        this.numero_playlist = numero_playlist;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public String toString() {
-        return "\nId_playlist\n" + id_playlist + "Nombre\n" + nombre + "Ruta_imagen\n" + ruta_imagen + "Id_cancion\n" + id_cancion + "Numero_playlist\n" + numero_playlist + '\n';
+        return "\nId_playlist\n" + id_playlist + "Nombre\n" + nombre + "Ruta_imagen\n" + ruta_imagen + "Descripcion\n" + descripcion + '\n';
     }
-            
-    
+
 }

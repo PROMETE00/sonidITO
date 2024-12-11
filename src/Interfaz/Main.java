@@ -9,8 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -68,6 +71,7 @@ public class Main extends JFrame {
             super.paintComponent(g);
         }
     };
+
     public JLabel lblF2 = new JLabel();
     public JLabel lblF3 = new JLabel();
 
@@ -155,6 +159,9 @@ public class Main extends JFrame {
     public JPanel pContenido = new JPanel();
     PostgreSQLConnection cndb = new PostgreSQLConnection();
     public String rutaAB = "/home/prome/NetBeansProjects/sonidITO/";
+//    List<String> rutas = Arrays.asList("ruta1.png", "ruta2.png", "ruta3.png", "ruta4.png", "ruta5.png", "ruta6.png", "ruta7.png", "ruta8.png", "ruta9.png", "ruta10.png", "ruta11.png", "ruta12.png");
+//    List<String> nombresP = Arrays.asList("ruta1.png", "ruta2.png", "ruta3.png", "ruta4.png", "ruta5.png", "ruta6.png", "ruta7.png", "ruta8.png", "ruta9.png", "ruta10.png", "ruta11.png", "ruta12.png");
+    private ReproductorMP3 reproductor = new ReproductorMP3();
 
     public Main() {
         //frame principal 
@@ -174,7 +181,8 @@ public class Main extends JFrame {
         barraBusqueda();
         fondoPlaylist(); // Fondo primero
         botonesPrincipal();
-        misPlaylist(1, rutaAB + "src/img/lke.png", "", "", "", "", "", "", "", "", "", "", "");
+
+        misPlaylist(1);
         ordenamiento();
         barraBusqueda();
     }
@@ -259,139 +267,115 @@ public class Main extends JFrame {
 
     }
 
-    public void misPlaylist(int id_Usuario, String r1, String r2, String r3, String r4, String r5, String r6, String r7, String r8, String r9, String r10, String r11, String r12) {
-        int cantidad = cndb.obtenerMisPlaylistCantidad(id_Usuario);
-        int cantida = 12;
+    public void misPlaylist(int idUsuario) {
+        List<String[]> playlists = cndb.obtenerPlaylistUsuario(idUsuario);
 
-        lblF1.setBounds(190, 150, 70, 70);
-        lblF1.setOpaque(false);
-        pContenido.add(lblF1);
-        img(rutaAB + "src/img/lke.png", 31, 31, lblF2);
-        lblF2.setBounds(210, 157, 60, 60);
-        pContenido.add(lblF2);
-        sombraPlaylist(btnPl4, 190, 150, 300, 70, false, false, false, lblF3, 259, 150, 230, 70, true, cg);
+        List<String> nombresPlaylists = new ArrayList<>();
+        List<String> rutas = new ArrayList<>();
 
-        switch (cantida) {
-            case 1:
-                //iconoPlaylist(r1, 31, 31, lblF16, 590, 50, 60, 60);//1
-                //pContenido.add(lblF16);
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                break;
-            case 2:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                break;
-            case 3:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                break;
-            case 4:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                break;
-            case 5:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                break;
-            case 6:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                break;
-            case 7:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, false, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                break;
-            case 8:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, false, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl12, 190, 350, 300, 70, false, false, false, lblF11, 259, 350, 230, 70, true, cg);
-                break;
-            case 9:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, false, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl12, 190, 350, 300, 70, false, false, false, lblF11, 259, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl13, 590, 350, 300, 70, false, false, false, lblF12, 659, 350, 230, 70, true, cg);
-                break;
-            case 10:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, false, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl12, 190, 350, 300, 70, false, false, false, lblF11, 259, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl13, 590, 350, 300, 70, false, false, false, lblF12, 659, 350, 230, 70, true, cg);
-                break;
-            case 11:
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, false, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, false, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, false, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, false, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, false, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, false, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, false, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl12, 190, 350, 300, 70, false, false, false, lblF11, 259, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl13, 590, 350, 300, 70, false, false, false, lblF12, 659, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl14, 1030, 350, 300, 70, false, false, false, lblF13, 1100, 350, 230, 70, true, cg);
-                break;
-            case 12:
-                //iconoPlaylist(r1, 31, 31, lblF16, 590, 50, 60, 60);//1
-                sombraPlaylist(btnPl5, 590, 150, 300, 70, true, false, false, lblF4, 659, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl6, 1030, 150, 300, 70, true, false, false, lblF5, 1100, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl7, 1430, 150, 300, 70, true, false, false, lblF6, 1500, 150, 230, 70, true, cg);
-                sombraPlaylist(btnPl8, 190, 250, 300, 70, true, false, false, lblF7, 259, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl9, 590, 250, 300, 70, true, false, false, lblF8, 659, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl10, 1030, 250, 300, 70, true, false, false, lblF9, 1100, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl11, 1430, 250, 300, 70, true, false, false, lblF10, 1500, 250, 230, 70, true, cg);
-                sombraPlaylist(btnPl12, 190, 350, 300, 70, true, false, false, lblF11, 259, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl13, 590, 350, 300, 70, true, false, false, lblF12, 659, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl14, 1030, 350, 300, 70, true, false, false, lblF13, 1100, 350, 230, 70, true, cg);
-                sombraPlaylist(btnPl15, 1430, 350, 300, 70, true, false, false, lblF14, 1500, 350, 230, 70, true, cg);
-                break;
-            default:
-                break;
+        // Separar nombres y rutas
+        for (String[] playlist : playlists) {
+            nombresPlaylists.add(playlist[0]);
+            rutas.add(playlist[1]);
         }
-        Re();
-        pContenido.setComponentZOrder(btnPl5, pContenido.getComponentCount() - 5);
-        pContenido.setComponentZOrder(btnPl6, pContenido.getComponentCount() - 6);
-        pContenido.setComponentZOrder(btnPl7, pContenido.getComponentCount() - 7);
-        pContenido.setComponentZOrder(btnPl8, pContenido.getComponentCount() - 8);
-        pContenido.setComponentZOrder(btnPl9, pContenido.getComponentCount() - 9);
-        pContenido.setComponentZOrder(btnPl10, pContenido.getComponentCount() - 10);
-        pContenido.setComponentZOrder(btnPl11, pContenido.getComponentCount() - 11);
-        pContenido.setComponentZOrder(btnPl12, pContenido.getComponentCount() - 12);
-        pContenido.setComponentZOrder(btnPl13, pContenido.getComponentCount() - 13);
-        pContenido.setComponentZOrder(btnPl14, pContenido.getComponentCount() - 14);
-        pContenido.setComponentZOrder(btnPl15, pContenido.getComponentCount() - 15);
+
+        int filas = 3; // Número de filas
+        int columnas = 4; // Número de columnas
+        int espacioX = 400; // Espaciado horizontal entre playlists
+        int espacioY = 100; // Espaciado vertical entre filas
+        int inicioX = 190; // Posición inicial X
+        int inicioY = 150; // Posición inicial Y
+        int cantidad = Math.min(playlists.size(), 11); // Máximo de playlists dinámicas (11)
+
+        // Crear y posicionar la playlist especial "Mis Me Gustas"
+        int x = inicioX;
+        int y = inicioY;
+
+        // Fondo para "Mis Me Gustas"
+        JLabel fondoMisMeGustas = new JLabel();
+        fondoMisMeGustas.setOpaque(true);
+        fondoMisMeGustas.setBackground(cg);
+        fondoMisMeGustas.setBounds(x + 10, y, 280, 70);
+
+        // Icono de "Mis Me Gustas"
+        JLabel lblF2 = new JLabel();
+        img(rutaAB + "src/img/lke.png", 31, 31, lblF2); // Cargar la imagen en lblF2
+        lblF2.setBounds(x + 25, y + 10, 60, 60);
+
+        // Texto de "Mis Me Gustas" en un botón invisible
+        JButton botonMisMeGustas = new JButton("Mis Me Gustas");
+        botonMisMeGustas.setBounds(x + 70, y + 15, 220, 40);
+        botonMisMeGustas.setFocusPainted(false);
+        botonMisMeGustas.setContentAreaFilled(false);
+        botonMisMeGustas.setBorderPainted(false);
+        botonMisMeGustas.setForeground(cB); // Texto blanco
+        botonMisMeGustas.setFont(new Font("Arial", Font.BOLD, 14));
+
+        botonMisMeGustas.addActionListener(e -> {
+            System.out.println("Playlist seleccionada: Mis Me Gustas");
+        });
+
+        // Agregar componentes al contenedor
+        pContenido.add(fondoMisMeGustas);
+        pContenido.add(lblF2);
+        pContenido.add(botonMisMeGustas);
+
+        // Agregar playlists dinámicas
+        for (int i = 0; i < cantidad; i++) {
+            int fila = (i + 1) / columnas; // Desplazar una posición por "Mis Me Gustas"
+            int columna = (i + 1) % columnas;
+
+            x = inicioX + columna * espacioX;
+            y = inicioY + fila * espacioY;
+
+            // Fondo de playlist (debe empezar después del icono)
+            JLabel fondo = new JLabel();
+            fondo.setOpaque(true);
+            fondo.setBackground(cg);
+            fondo.setBounds(x + 70, y, 220, 70); // Ajuste aquí para que el fondo empiece después del icono
+
+            // Crear etiqueta para la imagen
+            JLabel imagen = new JLabel();
+            if (i < rutas.size()) {
+                ImageIcon icon = new ImageIcon(rutas.get(i));
+                Image img = icon.getImage().getScaledInstance(65, 70, Image.SCALE_SMOOTH);
+                imagen.setIcon(new ImageIcon(img));
+                imagen.setBounds(x + 10, y, 60, 70); // El icono permanece en su lugar
+            }
+
+            // Crear botón y agregar texto
+            JButton boton = new JButton(nombresPlaylists.get(i));
+            boton.setBounds(x + 70, y + 15, 220, 40); // El botón también se mantiene donde está
+            boton.setFocusPainted(false);
+            boton.setContentAreaFilled(false);
+            boton.setBorderPainted(false);
+            boton.setForeground(cB); // Texto blanco
+            boton.setFont(new Font("Arial", Font.PLAIN, 14));
+
+            // Acción al hacer clic en el botón
+            String nombre = nombresPlaylists.get(i);
+            String ruta = rutas.get(i);
+            boton.addActionListener(e -> {
+                System.out.println("Playlist seleccionada:");
+                System.out.println("Nombre: " + nombre);
+                System.out.println("Ruta: " + ruta);
+            });
+
+            // Agregar componentes al contenedor
+            pContenido.add(fondo);
+            pContenido.add(imagen);
+            pContenido.add(boton);
+
+            pContenido.setComponentZOrder(fondo, 30);
+            pContenido.setComponentZOrder(imagen, 29);
+            pContenido.setComponentZOrder(boton, 28);
+            pContenido.setComponentZOrder(lblF2, 27);
+            pContenido.setComponentZOrder(botonMisMeGustas, 26);
+        }
+
+        // Actualizar el contenedor
         pContenido.revalidate();
         pContenido.repaint();
-
     }
 
     public void sombraPlaylist(JButton btn, int x, int y, int width, int height, Boolean b1, Boolean b2, Boolean b3, JLabel lbl, int x2, int y2, int width2, int height2, Boolean b4, Color cl) {
@@ -512,11 +496,10 @@ public class Main extends JFrame {
             // Acción del botón
             int indice = i;
             boton.addActionListener(e -> {
-                System.out.println("Botón " + (indice + 1) + " presionado");
-                System.out.println("Datos de la canción: " + Arrays.toString(datos));
-                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3:" + datos[3] + "1:" + datos[1]);
-
-                barraReproduccion(ruta, datos[4], datos[1], datos[3]);
+//                System.out.println("Botón " + (indice + 1) + " presionado");
+//                System.out.println("Datos de la canción: " + Arrays.toString(datos));
+//                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3\n:" + datos[3] + "1:" + datos[1]);
+                barraReproduccion(ruta, datos[4], datos[5], rutaAB + datos[3]);
             });
 
             // Agregar el botón al panel
@@ -532,12 +515,38 @@ public class Main extends JFrame {
     }
 
     public void barraReproduccion(String portada, String nombreCancion, String duracion, String rutaCancion) {
-
         Boolean isFavorito = true;
 
+        JLabel duracionLabel = new JLabel(duracion);
+        duracionLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        duracionLabel.setForeground(cB);
+        duracionLabel.setBounds(1750, 980, 100, 80);
+        pContenido.add(duracionLabel);
+        System.out.println("Ruta completa del archivo: " + rutaCancion);
+
+        btnCReproducir.addActionListener(e -> reproductor.reproducir(rutaCancion, duracionLabel));
+
+        btnCAtras.addActionListener(e -> reproductor.pausar());
+
+        btnCSiguiente.addActionListener(e -> reproductor.detener());
+
+        fondoReproduccion();
+
+        // Elimina componentes anteriores
+        pContenido.remove(fondoImg);
+        pContenido.remove(nombreC);
+        pContenido.remove(duracionC);
+        pContenido.remove(btnCAtras);
+        pContenido.remove(btnCReproducir);
+        pContenido.remove(btnCSiguiente);
+        pContenido.remove(btnCFavorito);
+        pContenido.remove(btnCAñadir);
+
+        // Configura los componentes de la barra de reproducción
         img(portada, 60, 60, fondoImg);
         fondoImg.setBounds(80, 990, 60, 60);
         pContenido.add(fondoImg);
+
         nombreC.setText(nombreCancion);
         nombreC.setFont(new Font("Arial", Font.PLAIN, 24));
         nombreC.setForeground(cB);
@@ -561,43 +570,58 @@ public class Main extends JFrame {
         pContenido.add(btnCAtras);
 
         rediIcon(rutaAB + "playPause4.png", 60, 60, btnCReproducir);
-        btnCReproducir.setBounds(928, 990, 60, 60);
         btnCReproducir.setBackground(inv);
         btnCReproducir.setFocusPainted(false);
         btnCReproducir.setBorder(BorderFactory.createEmptyBorder());
         btnCReproducir.setContentAreaFilled(false);
+        btnCReproducir.setBounds(928, 990, 60, 60);
         pContenido.add(btnCReproducir);
 
         rediIcon(rutaAB + "adelante3.png", 60, 60, btnCSiguiente);
-        btnCSiguiente.setBounds(1028, 990, 60, 60);
         btnCSiguiente.setBackground(inv);
         btnCSiguiente.setFocusPainted(false);
         btnCSiguiente.setBorder(BorderFactory.createEmptyBorder());
         btnCSiguiente.setContentAreaFilled(false);
+        btnCSiguiente.setBounds(1028, 990, 60, 60);
         pContenido.add(btnCSiguiente);
 
         if (!isFavorito) {
             rediIcon(rutaAB + "corazon_vacio.png", 40, 40, btnCFavorito);
         } else {
             rediIcon(rutaAB + "corazon_lleno.png", 40, 40, btnCFavorito);
-
         }
+        btnCFavorito.setBounds(1528, 1000, 40, 40);
         btnCFavorito.setBackground(inv);
         btnCFavorito.setFocusPainted(false);
         btnCFavorito.setBorder(BorderFactory.createEmptyBorder());
         btnCFavorito.setContentAreaFilled(false);
-        btnCFavorito.setBounds(1528, 1000, 40, 40);
         pContenido.add(btnCFavorito);
 
         rediIcon(rutaAB + "playlist1.png", 40, 40, btnCAñadir);
-        btnCAñadir.setBounds(1628, 1000, 40, 40);
         btnCAñadir.setBackground(inv);
         btnCAñadir.setFocusPainted(false);
         btnCAñadir.setBorder(BorderFactory.createEmptyBorder());
         btnCAñadir.setContentAreaFilled(false);
+        btnCAñadir.setBounds(1628, 1000, 40, 40);
         pContenido.add(btnCAñadir);
 
+        // Ajusta el orden de los componentes para que el fondo esté detrás
+        pContenido.setComponentZOrder(fondoImg, 1); // Imagen encima del fondo
+        pContenido.setComponentZOrder(nombreC, 0);
+        pContenido.setComponentZOrder(duracionC, 0);
+        pContenido.setComponentZOrder(btnCAtras, 0);
+        pContenido.setComponentZOrder(btnCReproducir, 0);
+        pContenido.setComponentZOrder(btnCSiguiente, 0);
+        pContenido.setComponentZOrder(btnCFavorito, 0);
+        pContenido.setComponentZOrder(btnCAñadir, 0);
+
+        pContenido.revalidate();
+        pContenido.repaint();
+    }
+
+    public void fondoReproduccion() {
         RoundTextField reproduccion = new RoundTextField(1, 30); // 1 columna, radio 30
+        pContenido.remove(reproduccion);
         reproduccion.setFont(new Font("Arial", Font.PLAIN, 20));
         reproduccion.setEditable(false);
         reproduccion.setForeground(cB); // Letra blanca
@@ -605,17 +629,6 @@ public class Main extends JFrame {
         reproduccion.setCaretColor(inv); // Cursor blanco
         reproduccion.setBounds(50, 970, 1815, 100);
         pContenido.add(reproduccion);
-        pContenido.revalidate();
-        pContenido.repaint();
-        pContenido.setComponentZOrder(fondoImg, pContenido.getComponentCount() - 10);
-        pContenido.setComponentZOrder(nombreC, pContenido.getComponentCount() - 5);
-        pContenido.setComponentZOrder(duracionC, pContenido.getComponentCount() - 6);
-        pContenido.setComponentZOrder(btnCAtras, pContenido.getComponentCount() - 7);
-        pContenido.setComponentZOrder(btnCReproducir, pContenido.getComponentCount() - 8);
-        pContenido.setComponentZOrder(btnCSiguiente, pContenido.getComponentCount() - 9);
-        pContenido.setComponentZOrder(btnCFavorito, pContenido.getComponentCount() - 10);
-        pContenido.setComponentZOrder(btnCAñadir, pContenido.getComponentCount() - 11);
-
     }
 
     public List<String[]> filtrar(String txt) {
@@ -629,7 +642,8 @@ public class Main extends JFrame {
         int indice = 1; // Inicializar el índice
 
         for (String[] resultado : resultados) {
-            String claveUnica = resultado[0] + "|" + resultado[1] + "|" + resultado[2] + "|" + resultado[3];
+            // Modificar clave única para incluir duración (posición 4)
+            String claveUnica = resultado[0] + "|" + resultado[1] + "|" + resultado[2] + "|" + resultado[3] + "|" + resultado[4];
             if (resultadosUnicos.add(claveUnica)) { // Agregar al Set y verificar si es único
                 String[] partes = claveUnica.split("\\|");
                 resultadosEnumerados.add(new String[]{
@@ -637,10 +651,12 @@ public class Main extends JFrame {
                     partes[0], // ID de la canción
                     partes[1], // Ruta de la imagen
                     partes[2], // Ruta de la canción
-                    partes[3] // Texto
+                    partes[3], // Texto
+                    partes[4] // Duración
                 });
             }
         }
+
         pContenido.revalidate();
         pContenido.repaint();
         return resultadosEnumerados; // Retornar la lista enumerada
@@ -657,7 +673,7 @@ public class Main extends JFrame {
         botonPlaylist(630, 17, 64, 64, rutaAB + "searching.png", 64, 64, btnS, false);
         pContenido.add(btnS);
         barraBusqueda();
-        botonPlaylist(190, 70, 60, 60, rutaAB + "src/img/biblioteca.png", 98, 98, btnPl1, false);
+        botonPlaylist(190, 70, 60, 60, rutaAB + "", 98, 98, btnPl1, false);
         botonPlaylist(550, 25, 40, 40, rutaAB + "src/img/house-solid.png", 40, 40, btnPl2, false);
         botonPlaylist(1835, 25, 60, 60, rutaAB + "src/img/person1.png", 89, 89, btnPl3, false);
         pContenido.add(lblF15);
@@ -687,50 +703,79 @@ public class Main extends JFrame {
     }
 
     public void botonesMenuPrincipal() {
-        
-        cndb.obtenerPlaylistExistentes();
-        btnPl16.setBounds(185, 625, 225, 220);//1   2   3   4   5   6
-        btnPl17.setForeground(cN);
-        btnPl16.setText("PLAYLIST RECOMENDADA 1");
+        List<String[]> canciones = cndb.obtenerTodasCanciones();
 
-        pContenido.add(btnPl16);
-        btnPl17.setBounds(445, 625, 225, 220);
-        btnPl17.setText("PLAYLIST RECOMENDADA 2");
-        btnPl17.setForeground(cN);
-        pContenido.add(btnPl17);
+        if (canciones.size() < 6) {
+            System.err.println("No hay suficientes canciones para asignar a los botones.");
+            return;
+        }
 
-        btnPl18.setBounds(700, 625, 225, 220);
-        btnPl18.setText("PLAYLIST RECOMENDADA 3");
-        btnPl18.setForeground(cN);
-        pContenido.add(btnPl18);
+        JLabel canRec = new JLabel();
+        canRec.setText("CANCIONES RECOMENDADAS");
+        canRec.setBounds(180, 526, 435, 95);
+        canRec.setForeground(cB);
+        canRec.setFont(new Font("Arial", Font.PLAIN, 25));
+        pContenido.add(canRec);
 
-        btnPl19.setBounds(990, 625, 225, 220);
-        btnPl19.setText("PLAYLIST RECOMENDADA 4");
-        btnPl19.setForeground(cN);
-        pContenido.add(btnPl19);
+        JButton[] botones = {btnPl16, btnPl17, btnPl18, btnPl19, btnPl20, btnPl21};
+        JLabel[] etiquetas = new JLabel[6]; // Arreglo de etiquetas para los nombres
 
-        btnPl20.setBounds(1245, 625, 225, 220);
-        btnPl20.setText("PLAYLIST RECOMENDADA 5");
-        btnPl20.setForeground(cN);
-        pContenido.add(btnPl20);
+        // Método para actualizar las canciones
+        Runnable actualizarCanciones = () -> {
+            Collections.shuffle(canciones); // Revolver las canciones
+            List<String[]> seleccionadas = canciones.subList(0, 6);
 
-        btnPl21.setBounds(1500, 625, 225, 220);
-        btnPl21.setText("PLAYLIST RECOMENDADA 6");
-        btnPl21.setForeground(cN);
-        pContenido.add(btnPl21);
+            for (int i = 0; i < seleccionadas.size(); i++) {
+                String[] cancion = seleccionadas.get(i); // Cada canción es un arreglo de String
+                JButton boton = botones[i];
 
+                // Configurar el botón con la portada como ícono
+                rediIcon(rutaAB + cancion[5], 225, 225, boton);
+
+                // Configurar posición del botón
+                boton.setBounds(185 + (260 * i), 625, 225, 225);
+                pContenido.add(boton);
+
+                // Crear y configurar una etiqueta para el nombre de la canción
+                if (etiquetas[i] != null) {
+                    pContenido.remove(etiquetas[i]); // Eliminar la etiqueta previa si existe
+                }
+                JLabel etiqueta = new JLabel(cancion[1], SwingConstants.CENTER); // Texto centrado
+                etiqueta.setBounds(185 + (260 * i), 855, 225, 20); // Colocar debajo del botón
+                etiqueta.setForeground(cB); // Configurar el color del texto
+                etiquetas[i] = etiqueta;
+                pContenido.add(etiqueta);
+
+                boton.addActionListener(e -> {
+                    String portada = rutaAB + cancion[5];
+                    String nombreCancion = cancion[1];
+                    String duracion = cancion[4];
+                    String rutaCancion = cancion[6];
+                    barraReproduccion(portada, nombreCancion, duracion, rutaCancion);
+                });
+            }
+            pContenido.revalidate();
+            pContenido.repaint();
+        };
+
+        // Ejecutar la primera actualización de canciones
+        actualizarCanciones.run();
+
+        // Configurar el botón "VER MÁS"
         btnPl22.setBounds(1590, 546, 135, 45);
-        btnPl22.setText("VER MAS");
+        btnPl22.setText("VER MÁS");
+        btnPl22.addActionListener(e -> actualizarCanciones.run());
         btnPl22.setForeground(cN);
         pContenido.add(btnPl22);
 
-        barraReproduccion(rutaAB + "portadas/ER1.jpeg", "HERE COMES THE SUN", "3:00", "");
+        // Configurar la barra de reproducción inicial
+        barraReproduccion(rutaAB + "lp_7550766.png", "No se esta reproduciendo contenido", "0:00", rutaAB + "canciones/Pop/pop5.mp3");
 
+        // Configuración final del panel
         add(pContenido);
         setVisible(true);
         pContenido.revalidate();
         pContenido.repaint();
-
     }
 
     public static void main(String[] args) {

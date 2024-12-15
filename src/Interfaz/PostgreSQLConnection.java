@@ -4,6 +4,7 @@ import Interfaz.playlist;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class PostgreSQLConnection {
 
@@ -39,6 +40,240 @@ public class PostgreSQLConnection {
         }
 
         return canciones;
+    }
+
+    public usuario validarCredenciales(String correo, String contrasena) {
+        String sql = "SELECT id_usuario, nombre, apellidos, correo, contrasena, isadmin,preguntac FROM usuario WHERE correo = ? AND contrasena = ?";
+
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Establecer los parámetros de la consulta
+            stmt.setString(1, correo);
+            stmt.setString(2, contrasena);
+
+            // Ejecutar la consulta
+            ResultSet rs = stmt.executeQuery();
+
+            // Si se encuentra un usuario con esas credenciales
+            if (rs.next()) {
+                // Crear un objeto usuario con los datos obtenidos de la base de datos
+                return new usuario(
+                        rs.getInt("id_usuario"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("correo"),
+                        rs.getString("contrasena"),
+                        rs.getString("preguntac"),
+                        rs.getString("isadmin")
+                );
+            } else {
+                // Si no se encuentra el usuario o las credenciales son incorrectas
+                JOptionPane.showMessageDialog(null, "El correo o la contraseña son incorrectos.");
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos.");
+            return null;
+        }
+    }
+
+    public List<String[]> obtenrUsuarios() {
+        List<String[]> usuarios = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            System.out.println("Conexión exitosa a la base de datos"); // Verifica la conexión
+
+            String consulta = "SELECT * FROM usuario ORDER BY id_usuario ASC";
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(consulta)) {
+                while (rs.next()) {
+                    System.out.println("Se encontró una usuario: " + rs.getString("nombre")); // Depura los datos que se obtienen
+
+                    String[] fila = new String[]{
+                        String.valueOf(rs.getInt("id_usuario")),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("correo"),
+                        rs.getString("contrasena"),
+                        rs.getString("isadmin"),
+                        rs.getString("preguntac")
+                    };
+                    usuarios.add(fila);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener canciones: " + e.getMessage());
+        }
+
+        System.out.println("Canciones encontradas: " + usuarios.size()); // Verifica el tamaño de la lista
+        return usuarios;
+    }
+
+    public boolean insertarCancion(String nombre, String autor, String album, String duracion, String genero, String rutaImagen, String rutaCancion) {
+        String sql = "INSERT INTO cancion ( nombre, autor, album, duracion, genero, ruta_imagen, ruta_cancion) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = conectar(); // Llama al método conectar()
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Configurar los valores en la consulta
+            stmt.setString(1, nombre);
+            stmt.setString(2, autor);
+            stmt.setString(3, album);
+            stmt.setString(4, duracion);
+            stmt.setString(5, genero);
+            stmt.setString(6, rutaImagen);
+            stmt.setString(7, rutaCancion);
+
+            // Ejecutar la consulta y verificar si se insertó correctamente
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean insertarFav(int id_usuario, int id_cancion) {
+        // Consulta SQL para insertar en la tabla 'favoritosusuario'
+        String sql = "INSERT INTO favoritosusuario (id_usuario, id_cancion) VALUES (?, ?)";
+
+        try (Connection conn = conectar(); // Llama al método conectar()
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Asignar valores a los parámetros de la consulta
+            stmt.setInt(1, id_usuario);
+            stmt.setInt(2, id_cancion);
+
+            // Ejecutar la consulta y verificar si se insertó correctamente
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarFav(int id_usuario, int id_cancion) {
+        String sql = "DELETE FROM favoritosusuario WHERE id_usuario = ? AND id_cancion = ?";
+
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id_usuario);
+            stmt.setInt(2, id_cancion);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; 
+        }
+    }
+
+    public boolean eliminarPorId(String id) {
+        String sql = "DELETE FROM cancion WHERE id_cancion = ?";
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            int idEntero = Integer.parseInt(id);
+            stmt.setInt(1, idEntero);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean insertarUsuarios(String nombre, String apellidos, String correo, String contrasena, String isadmin, String preguntac) {
+        String sql = "INSERT INTO usuario ( nombre, apellidos, correo, contrasena, isadmin, preguntac) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = conectar(); // Llama al método conectar()
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Configurar los valores en la consulta
+            stmt.setString(1, nombre);
+            stmt.setString(2, apellidos);
+            stmt.setString(3, correo);
+            stmt.setString(4, contrasena);
+            stmt.setString(5, isadmin);
+            stmt.setString(6, preguntac);
+
+            // Ejecutar la consulta y verificar si se insertó correctamente
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean actualizarUsuario(usuario usuario) {
+        String sql = "UPDATE usuario SET nombre = ?, apellidos = ?, correo = ?, contrasena = ?,isadmin = ?, preguntac = ?  WHERE id_usuario = ?";
+
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Establecer los valores de las columnas usando los métodos getter de la clase Uusario
+            stmt.setString(1, usuario.getNombreUsuario());
+            stmt.setString(2, usuario.getApellidosUsuario());
+            stmt.setString(3, usuario.getCorreoUsuario());
+            stmt.setString(4, usuario.getContrasenaUsuario());
+            stmt.setString(5, usuario.getIsadminUsuario());
+            stmt.setString(6, usuario.getPrguntacUsuario());
+            stmt.setInt(7, usuario.getId_usuario());
+
+            // Ejecutar la actualización
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0; // Si se actualizó al menos una fila
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarPorIdUsuario(String id) {
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            int idEnterou = Integer.parseInt(id);
+            stmt.setInt(1, idEnterou);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Connection conectar() {
+        try {
+
+            Class.forName("org.postgresql.Driver");
+
+            return DriverManager.getConnection(url, user, password);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error: No se encontró el driver de PostgreSQL.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Error al conectar con la base de datos.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean actualizarCancion(cancion cancion) {
+        String sql = "UPDATE cancion SET nombre = ?, autor = ?, album = ?, duracion = ?, genero = ?, ruta_imagen = ?, ruta_cancion = ? WHERE id_cancion = ?";
+
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Establecer los valores de las columnas usando los métodos getter de la clase Cancion
+            stmt.setString(1, cancion.getNombre());
+            stmt.setString(2, cancion.getAutor());
+            stmt.setString(3, cancion.getAlbum());
+            stmt.setString(4, cancion.getDuracion());
+            stmt.setString(5, cancion.getGenero());
+            stmt.setString(6, cancion.getRuta_img());
+            stmt.setString(7, cancion.getRuta_can());
+            stmt.setInt(8, cancion.getId_cancion()); // El ID de la canción
+
+            // Ejecutar la actualización
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0; // Si se actualizó al menos una fila
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<String[]> filtrarPorColumna(String columna, String valor) {
@@ -136,13 +371,13 @@ public class PostgreSQLConnection {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int idPlaylist = rs.getInt("id_playlist");
-                    String nombrePlaylist = rs.getString("nombre_playlist");
-                    String rutaImagen = rs.getString("ruta_imagen");
-                    String descripcion = rs.getString("descripcion");
-                    resultados.add(new String[]{
-                        String.valueOf(idPlaylist), nombrePlaylist, rutaImagen, descripcion
-                    });
+
+                    String[] playlist = new String[8]; // Cambia el tamaño si hay más/menos columnas en tu tabla
+                    playlist[0] = String.valueOf(rs.getInt("id_playlist")); // Convertir ID a String
+                    playlist[1] = rs.getString("nombre_playlist");
+                    playlist[2] = rs.getString("ruta_imagen");
+                    playlist[3] = rs.getString("descripcion");
+                    resultados.add(playlist);
                 }
             }
         } catch (SQLException e) {
@@ -194,29 +429,27 @@ public class PostgreSQLConnection {
         return totalPlaylists;
     }
 
-    public playlist_cancion obtenerCancionesPlaylist(int id_playlist) {
-        playlist_cancion ps = new playlist_cancion(0, 0);
+    public List<String[]> obtenerCancionesPlaylist(int id_playlist) {
         String consulta = "SELECT * FROM playlist_cancion WHERE id_playlist= ?";
+        List<String[]> resultados = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
 
-            pstmt.setInt(1, id_playlist);
-
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int idPlaylist = rs.getInt("id_playlist");
-                    int idCancion = rs.getInt("id_cancion");
-                    ps.setId_playlist(id_playlist);
-                    ps.setId_cancion(idCancion);
+                    String[] playlist = new String[8]; // Cambia el tamaño si hay más/menos columnas en tu tabla
+                    playlist[0] = String.valueOf(rs.getInt("id_playlist")); // Convertir ID a String
+                    playlist[1] = rs.getString("nombre_playlist");
+                    playlist[2] = rs.getString("ruta_imagen");
+                    playlist[3] = rs.getString("descripcion");
+                    resultados.add(playlist);
                 }
             }
         } catch (SQLException e) {
             System.err.println("No se pudieron obtener los datos\n" + e.getMessage());
         }
-        return ps;
+        return resultados;
     }
-
-   
 
     public void ordenarAutorDisponible() {
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
@@ -412,7 +645,7 @@ public class PostgreSQLConnection {
 
     public static void main(String[] args) {
         PostgreSQLConnection cndb = new PostgreSQLConnection();
-        int usr = cndb.obtenerMisPlaylistCantidad(1);
-        System.out.println(usr);
+//        int usr = cndb.obtenerMisPlaylistCantidad(1);
+        System.out.println();
     }
 }

@@ -159,32 +159,71 @@ public class Main extends JFrame {
     public JPanel pContenido = new JPanel();
     PostgreSQLConnection cndb = new PostgreSQLConnection();
     public String rutaAB = "/home/prome/NetBeansProjects/sonidITO/";
-//    List<String> rutas = Arrays.asList("ruta1.png", "ruta2.png", "ruta3.png", "ruta4.png", "ruta5.png", "ruta6.png", "ruta7.png", "ruta8.png", "ruta9.png", "ruta10.png", "ruta11.png", "ruta12.png");
-//    List<String> nombresP = Arrays.asList("ruta1.png", "ruta2.png", "ruta3.png", "ruta4.png", "ruta5.png", "ruta6.png", "ruta7.png", "ruta8.png", "ruta9.png", "ruta10.png", "ruta11.png", "ruta12.png");
     private ReproductorMP3 reproductor = new ReproductorMP3();
+    private usuario usuarioActual;
+    private boolean isFavorito = false;
 
-    public Main() {
-        //frame principal 
+    public Main(usuario usr) {
+        this.usuarioActual = usr;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pContenido.setLayout(null);
         pContenido.setBackground(nF);
+//        System.out.print("dd"+usr);
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
         ImageIcon icon = new ImageIcon(rutaAB + "sonidITO.jpg");  // Especifica la ruta de tu ícono
         setIconImage(icon.getImage());
-        componentesActuales();
+//        componentesActuales();
+        playlistDesplegada(usr, 1);
         add(pContenido);
     }
 
-    public void componentesActuales() {
-        botonesMenuPrincipal();
-        barraBusqueda();
-        fondoPlaylist(); // Fondo primero
-        botonesPrincipal();
-
+    public void componentesActuales(usuario usr) {
+        botonesMenuPrincipal(usr);
+        barraBusqueda(usr);
+        fondoPlaylist(); // Fondo Cprimero
+        botonesPrincipal(usr);
         misPlaylist(1);
         ordenamiento();
-        barraBusqueda();
+    }
+
+    public void playlistDesplegada(usuario usr, int id_playlist) {
+        barraBusqueda2(usr);
+        contenidoPlaylist(1);
+        botonesPrincipal2(usr);
+        fondoPlaylist2(); // Fondo primero
+        ordenamiento();
+        barraReproduccion(usr, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
+
+    }
+
+    public void contenidoPlaylist(int idPlaylist) {
+        List<String[]> datos = cndb.obtenerCancionesPlaylist(idPlaylist);
+        JLabel img = new JLabel();
+        JLabel playlist = new JLabel();
+        JLabel nombre = new JLabel();
+        JButton play = new JButton();
+        play.setBounds(1630, 200, 100, 100);
+        play.setFocusPainted(false);
+        play.setBackground(inv);
+        play.setContentAreaFilled(false);
+        play.setBorderPainted(false);
+        rediIcon(rutaAB + "play.png", 100, 100, play);
+        playlist.setBounds(330, 50, 200, 200);
+        playlist.setText("Playlist");
+        playlist.setForeground(cB);
+        nombre.setForeground(cB);
+        nombre.setText("Liked Songs");
+        nombre.setFont(new Font("Arial", Font.BOLD, 80));
+        nombre.setBounds(325, 100, 600, 250);
+        img.setBounds(100, 100, 200, 200);
+        String ruta = rutaAB + "portadasPlaylist/portadaHipHop.jpg";
+        img(ruta, 200, 200, img);
+
+        pContenido.add(play);
+        pContenido.add(playlist);
+        pContenido.add(nombre);
+        pContenido.add(img);
     }
 
     public void pintarBoton(JButton nombreBoton, String txt, Color c1, Color c2, Color c3) {
@@ -239,6 +278,24 @@ public class Main extends JFrame {
         });
     }
 
+    public void fondoPlaylist2() {
+        if (!pContenido.isAncestorOf(lblF15)) {
+            lblF15.setOpaque(false); // Hacemos el fondo transparente si es necesario
+            lblF15.setBounds(0, 0, getWidth(), 350); // Tamaño inicial del fondo
+            pContenido.add(lblF15); // Añadir fondo al panel
+            pContenido.revalidate();
+            pContenido.repaint();
+
+        }
+        pContenido.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                lblF15.setBounds(0, 0, pContenido.getWidth(), 350);
+            }
+        });
+        pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
+    }
+
     public void rediIcon(String ruta, int n1, int n2, JButton btn) {
         ImageIcon iconoOriginal = new ImageIcon(ruta);
         Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(n1, n2, Image.SCALE_SMOOTH);
@@ -276,7 +333,9 @@ public class Main extends JFrame {
         // Separar nombres y rutas
         for (String[] playlist : playlists) {
             nombresPlaylists.add(playlist[0]);
-            rutas.add(playlist[1]);
+            String ru = rutaAB + playlist[1];
+            System.out.print(ru);
+            rutas.add(ru);
         }
 
         int filas = 3; // Número de filas
@@ -395,8 +454,7 @@ public class Main extends JFrame {
 
     }
 
-    public void barraBusqueda() {
-        // Crear o configurar el campo de texto solo una vez
+    public void barraBusqueda(usuario usr) {
         RoundTextField txtInput = new RoundTextField(1, 30);
         txtInput.setFont(new Font("Arial", Font.PLAIN, 20));
         txtInput.setForeground(cB);
@@ -410,12 +468,12 @@ public class Main extends JFrame {
         txtInput.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                actualizarResultados(txtInput.getText());
+                actualizarResultados(usr, txtInput.getText());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                actualizarResultados(txtInput.getText());
+                actualizarResultados(usr, txtInput.getText());
             }
 
             @Override
@@ -428,10 +486,40 @@ public class Main extends JFrame {
 
     }
 
-    private void actualizarResultados(String textoBusqueda) {
-        // Validar si el texto está vacío o contiene solo espacios
+    public void barraBusqueda2(usuario usr) {
+        RoundTextField txtInput = new RoundTextField(1, 30);
+        txtInput.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtInput.setForeground(cB);
+        txtInput.setBackground(cN);
+        txtInput.setCaretColor(cB);
+        txtInput.setBounds(700, 25, 600, 40);
+        txtInput.setName("barraBusqueda"); // Identificador para evitar duplicación
+        pContenido.add(txtInput);
+
+        // Listener para cambios en el texto
+        txtInput.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                actualizarResultados2(usr, txtInput.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                actualizarResultados2(usr, txtInput.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
+        pContenido.revalidate();
+        pContenido.repaint();
+
+    }
+
+    private void actualizarResultados(usuario usr, String textoBusqueda) {
         if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
-            // Eliminar cualquier resultado previo, si existen
             Component[] componentes = pContenido.getComponents();
             for (Component comp : componentes) {
                 if ("resultado".equals(comp.getName())) {
@@ -454,7 +542,7 @@ public class Main extends JFrame {
 
         // Obtener resultados y mostrarlos
         List<String[]> resultados = filtrar(textoBusqueda);
-        obtenerBusqueda(resultados);
+        obtenerBusqueda(usr, resultados);
 
         // Revalidar y repintar después de actualizar los resultados
         pContenido.revalidate();
@@ -462,10 +550,43 @@ public class Main extends JFrame {
         pContenido.paintImmediately(pContenido.getBounds()); // Fuerza el repintado inmediato
     }
 
-    public void obtenerBusqueda(List<String[]> resultados) {
+    private void actualizarResultados2(usuario usr, String textoBusqueda) {
+        if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
+            Component[] componentes = pContenido.getComponents();
+            for (Component comp : componentes) {
+                if ("resultado".equals(comp.getName())) {
+                    pContenido.remove(comp);
+                }
+            }
+            // Revalidar y repintar para limpiar la pantalla
+            pContenido.revalidate();
+            pContenido.repaint();
+            return; // No hacer nada más si el texto está vacío
+        }
+
+        // Eliminar componentes relacionados con los resultados, pero conservar otros
+        Component[] componentes = pContenido.getComponents();
+        for (Component comp : componentes) {
+            if ("resultado".equals(comp.getName())) {
+                pContenido.remove(comp);
+            }
+        }
+
+        // Obtener resultados y mostrarlos
+        List<String[]> resultados = filtrar(textoBusqueda);
+        obtenerBusqueda2(usr, resultados);
+
+        // Revalidar y repintar después de actualizar los resultados
+        pContenido.revalidate();
+        pContenido.repaint();
+        pContenido.paintImmediately(pContenido.getBounds()); // Fuerza el repintado inmediato
+    }
+
+    public void obtenerBusqueda(usuario usr, List<String[]> resultados) {
         // Crear y configurar botones dinámicos según los resultados
         for (int i = 0; i < Math.min(resultados.size(), 7); i++) {
             String[] datos = resultados.get(i);
+            JPanel pn = new JPanel();
 
             // Configurar botón
             RoundButton boton = new RoundButton(20);
@@ -499,11 +620,14 @@ public class Main extends JFrame {
 //                System.out.println("Botón " + (indice + 1) + " presionado");
 //                System.out.println("Datos de la canción: " + Arrays.toString(datos));
 //                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3\n:" + datos[3] + "1:" + datos[1]);
-                barraReproduccion(ruta, datos[4], datos[5], rutaAB + datos[3]);
+                String rutaC = rutaAB + datos[3];
+//                System.out.println(rutaC + "rurara");
+                barraReproduccion(usr, ruta, datos[4], datos[5], rutaC);
             });
 
             // Agregar el botón al panel
-            pContenido.add(boton);
+            pContenido.add(pn);
+            pn.add(boton);
             boton.setVisible(true);
             pContenido.setComponentZOrder(boton, pContenido.getComponentCount() - 30);
 
@@ -514,16 +638,84 @@ public class Main extends JFrame {
         pContenido.repaint();
     }
 
-    public void barraReproduccion(String portada, String nombreCancion, String duracion, String rutaCancion) {
-        Boolean isFavorito = true;
+    public void obtenerBusqueda2(usuario usr, List<String[]> resultados) {
+        // Crear y configurar botones dinámicos según los resultados
+        for (int i = 0; i < Math.min(resultados.size(), 7); i++) {
+            String[] datos = resultados.get(i);
+            JPanel pn = new JPanel();
 
+            // Configurar botón
+            RoundButton boton = new RoundButton(20);
+            boton.setName("resultado"); // Asignar identificador
+            int yPos = 74 + i * 60; // Posición vertical dinámica
+            btnRedondeado(boton, 20, 20, cB, inv, 705, yPos, 590, 50);
+
+            // Crear JLabel para la imagen y el texto
+            JLabel lblImagen = new JLabel();
+            JLabel lblTexto = new JLabel(datos[4]); // Texto de la posición [4]
+            lblTexto.setFont(new Font("Arial", Font.PLAIN, 14));
+            lblTexto.setForeground(cB);
+
+            String ruta = rutaAB + datos[2];
+            img(ruta, 30, 30, lblImagen); // Imagen desde la posición [2]
+            lblImagen.setBounds(20, 10, 30, 30);
+            lblTexto.setBounds(70, 15, 500, 20);
+
+            // Configuración del botón
+            boton.setLayout(null);
+            boton.setBackground(cN);
+            boton.setOpaque(false);
+            boton.setContentAreaFilled(false);
+            boton.setBorderPainted(false);
+            boton.add(lblImagen);
+            boton.add(lblTexto);
+
+            // Acción del botón
+            int indice = i;
+            boton.addActionListener(e -> {
+//                System.out.println("Botón " + (indice + 1) + " presionado");
+                System.out.println("Datos de la canción: " + Arrays.toString(datos));
+//                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3\n:" + datos[3] + "1:" + datos[1]);
+                String rutaC = rutaAB + datos[3];
+//                System.out.println(rutaC + "rurara");
+                barraReproduccion(usr, ruta, datos[4], datos[5], rutaC);
+            });
+
+            // Agregar el botón al panel
+            pContenido.add(pn);
+            pn.add(boton);
+            boton.setVisible(true);
+            pContenido.setComponentZOrder(boton, pContenido.getComponentCount() - 10);
+
+        }
+
+        // Revalidar y repintar nuevamente después de agregar los botones
+        pContenido.revalidate();
+        pContenido.repaint();
+    }
+
+    private void limpiarBarraReproduccion() {
+        pContenido.remove(fondoImg);
+        pContenido.remove(nombreC);
+        pContenido.remove(duracionC);
+        pContenido.remove(btnCAtras);
+        pContenido.remove(btnCReproducir);
+        pContenido.remove(btnCSiguiente);
+        pContenido.remove(btnCFavorito);
+        pContenido.remove(btnCAñadir);
+    }
+
+    public void barraReproduccion(usuario usr, String portada, String nombreCancion, String duracion, String rutaCancion) {
+        System.out.print(usr);
         JLabel duracionLabel = new JLabel(duracion);
         duracionLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         duracionLabel.setForeground(cB);
+//        duracionLabel.setOpaque(true); 
         duracionLabel.setBounds(1750, 980, 100, 80);
         pContenido.add(duracionLabel);
-        System.out.println("Ruta completa del archivo: " + rutaCancion);
-
+        String rutaCan = rutaAB + rutaCancion;
+//        System.out.println("Ruta completa del archivo: " + rutaCan);
+        favorito(1, 1);
         btnCReproducir.addActionListener(e -> reproductor.reproducir(rutaCancion, duracionLabel));
 
         btnCAtras.addActionListener(e -> reproductor.pausar());
@@ -539,7 +731,7 @@ public class Main extends JFrame {
         pContenido.remove(btnCAtras);
         pContenido.remove(btnCReproducir);
         pContenido.remove(btnCSiguiente);
-        pContenido.remove(btnCFavorito);
+//        pContenido.remove(btnCFavorito);
         pContenido.remove(btnCAñadir);
 
         // Configura los componentes de la barra de reproducción
@@ -561,7 +753,7 @@ public class Main extends JFrame {
         duracionC.setBackground(inv);
         pContenido.add(duracionC);
 
-        rediIcon(rutaAB + "atras3.png", 60, 60, btnCAtras);
+        rediIcon(rutaAB + "pause_7699371.png", 60, 60, btnCAtras);
         btnCAtras.setBackground(inv);
         btnCAtras.setFocusPainted(false);
         btnCAtras.setBorder(BorderFactory.createEmptyBorder());
@@ -569,7 +761,7 @@ public class Main extends JFrame {
         btnCAtras.setBounds(828, 990, 60, 60);
         pContenido.add(btnCAtras);
 
-        rediIcon(rutaAB + "playPause4.png", 60, 60, btnCReproducir);
+        rediIcon(rutaAB + "next_15194046.png", 60, 60, btnCReproducir);
         btnCReproducir.setBackground(inv);
         btnCReproducir.setFocusPainted(false);
         btnCReproducir.setBorder(BorderFactory.createEmptyBorder());
@@ -577,25 +769,13 @@ public class Main extends JFrame {
         btnCReproducir.setBounds(928, 990, 60, 60);
         pContenido.add(btnCReproducir);
 
-        rediIcon(rutaAB + "adelante3.png", 60, 60, btnCSiguiente);
+        rediIcon(rutaAB + "remove_1765994.png", 60, 60, btnCSiguiente);
         btnCSiguiente.setBackground(inv);
         btnCSiguiente.setFocusPainted(false);
         btnCSiguiente.setBorder(BorderFactory.createEmptyBorder());
         btnCSiguiente.setContentAreaFilled(false);
         btnCSiguiente.setBounds(1028, 990, 60, 60);
         pContenido.add(btnCSiguiente);
-
-        if (!isFavorito) {
-            rediIcon(rutaAB + "corazon_vacio.png", 40, 40, btnCFavorito);
-        } else {
-            rediIcon(rutaAB + "corazon_lleno.png", 40, 40, btnCFavorito);
-        }
-        btnCFavorito.setBounds(1528, 1000, 40, 40);
-        btnCFavorito.setBackground(inv);
-        btnCFavorito.setFocusPainted(false);
-        btnCFavorito.setBorder(BorderFactory.createEmptyBorder());
-        btnCFavorito.setContentAreaFilled(false);
-        pContenido.add(btnCFavorito);
 
         rediIcon(rutaAB + "playlist1.png", 40, 40, btnCAñadir);
         btnCAñadir.setBackground(inv);
@@ -612,11 +792,45 @@ public class Main extends JFrame {
         pContenido.setComponentZOrder(btnCAtras, 0);
         pContenido.setComponentZOrder(btnCReproducir, 0);
         pContenido.setComponentZOrder(btnCSiguiente, 0);
-        pContenido.setComponentZOrder(btnCFavorito, 0);
         pContenido.setComponentZOrder(btnCAñadir, 0);
-
         pContenido.revalidate();
         pContenido.repaint();
+    }
+
+    public void favorito(int id_usr, int id_can) {
+        btnCFavorito.addActionListener(e -> {
+            boolean exito; // Variable para manejar el resultado de la operación
+            if (!isFavorito) {
+                exito = cndb.insertarFav(id_usr, id_can); // Insertar en favoritos
+                if (exito) {
+                    System.out.println("Canción añadida a favoritos.");
+                    isFavorito = true; // Actualizar el estado a favorito
+                } else {
+                    System.out.println("Error al añadir la canción a favoritos.");
+                }
+            } else {
+                exito = cndb.eliminarFav(id_usr, id_can); // Eliminar de favoritos
+                if (exito) {
+                    System.out.println("Canción eliminada de favoritos.");
+                    isFavorito = false; // Actualizar el estado a no favorito
+                } else {
+                    System.out.println("Error al eliminar la canción de favoritos.");
+                }
+            }
+        });
+
+        if (!isFavorito) {
+            rediIcon(rutaAB + "corazon_vacio.png", 40, 40, btnCFavorito);
+        } else {
+            rediIcon(rutaAB + "corazon_lleno.png", 40, 40, btnCFavorito);
+        }
+        btnCFavorito.setBounds(1528, 1000, 40, 40);
+        btnCFavorito.setBackground(inv);
+        btnCFavorito.setFocusPainted(false);
+        btnCFavorito.setBorder(BorderFactory.createEmptyBorder());
+        btnCFavorito.setContentAreaFilled(false);
+        pContenido.add(btnCFavorito);
+        pContenido.setComponentZOrder(btnCFavorito, 0);
     }
 
     public void fondoReproduccion() {
@@ -627,7 +841,7 @@ public class Main extends JFrame {
         reproduccion.setForeground(cB); // Letra blanca
         reproduccion.setBackground(verdeB); // Fondo negro
         reproduccion.setCaretColor(inv); // Cursor blanco
-        reproduccion.setBounds(50, 970, 1815, 100);
+        reproduccion.setBounds(50, 970, 1815, 150);
         pContenido.add(reproduccion);
     }
 
@@ -669,11 +883,53 @@ public class Main extends JFrame {
         nombre.setBounds(x, y, width, height);
     }
 
-    public void botonesPrincipal() {
+    public void botonesPrincipal(usuario usr) {
         botonPlaylist(630, 17, 64, 64, rutaAB + "searching.png", 64, 64, btnS, false);
+        btnPl22.addActionListener(e -> {
+            // Llamamos al método barraReproduccion de la clase Main
+            usuario act = usuarioActual;
+            Main mainFrame = new Main(act); // O si ya tienes la instancia, usa esa.
+            String portada = "lp_7550766.png";  // La ruta completa de la portada
+            String nombreCancion = "Nombre de la canción";
+            String duracion = "";  // Duración de la canción
+            String rutaCancion = "/ruta/a/la/cancion.mp3";  // Ruta completa del archivo de música
+            mainFrame.barraReproduccion(usr, portada, nombreCancion, duracion, rutaCancion);
+            pContenido.repaint();
+            pContenido.revalidate();
+            this.dispose();
+        });
+
         pContenido.add(btnS);
-        barraBusqueda();
-        botonPlaylist(190, 70, 60, 60, rutaAB + "", 98, 98, btnPl1, false);
+        barraBusqueda(usr);
+        botonPlaylist(190, 70, 60, 60, rutaAB + "src/img/biblioteca.png", 98, 98, btnPl1, false);
+        botonPlaylist(550, 25, 40, 40, rutaAB + "src/img/house-solid.png", 40, 40, btnPl2, false);
+        botonPlaylist(1835, 25, 60, 60, rutaAB + "src/img/person1.png", 89, 89, btnPl3, false);
+        pContenido.add(lblF15);
+        Re();
+        pContenido.revalidate();
+        pContenido.repaint();
+
+    }
+
+    public void botonesPrincipal2(usuario usr) {
+        botonPlaylist(630, 17, 64, 64, rutaAB + "searching.png", 64, 64, btnS, false);
+        btnPl22.addActionListener(e -> {
+            // Llamamos al método barraReproduccion de la clase Main
+            usuario act = usuarioActual;
+            Main mainFrame = new Main(act); // O si ya tienes la instancia, usa esa.
+            String portada = "lp_7550766.png";  // La ruta completa de la portada
+            String nombreCancion = "Nombre de la canción";
+            String duracion = "";  // Duración de la canción
+            String rutaCancion = "/ruta/a/la/cancion.mp3";  // Ruta completa del archivo de música
+            mainFrame.barraReproduccion(usr, portada, nombreCancion, duracion, rutaCancion);
+            pContenido.repaint();
+            pContenido.revalidate();
+            this.dispose();
+        });
+
+        pContenido.add(btnS);
+        barraBusqueda(usr);
+//        botonPlaylist(190, 70, 60, 60, rutaAB + "src/img/biblioteca.png", 98, 98, btnPl1, false);
         botonPlaylist(550, 25, 40, 40, rutaAB + "src/img/house-solid.png", 40, 40, btnPl2, false);
         botonPlaylist(1835, 25, 60, 60, rutaAB + "src/img/person1.png", 89, 89, btnPl3, false);
         pContenido.add(lblF15);
@@ -702,8 +958,8 @@ public class Main extends JFrame {
         pContenido.revalidate();
     }
 
-    public void botonesMenuPrincipal() {
-        List<String[]> canciones = cndb.obtenerTodasCanciones();
+    public void botonesMenuPrincipal(usuario usr) {
+        List<String[]> canciones = cndb.obtenerPlaylistExistentes();
 
         if (canciones.size() < 6) {
             System.err.println("No hay suficientes canciones para asignar a los botones.");
@@ -711,7 +967,7 @@ public class Main extends JFrame {
         }
 
         JLabel canRec = new JLabel();
-        canRec.setText("CANCIONES RECOMENDADAS");
+        canRec.setText("PLAYLIST RECOMENDADAS");
         canRec.setBounds(180, 526, 435, 95);
         canRec.setForeground(cB);
         canRec.setFont(new Font("Arial", Font.PLAIN, 25));
@@ -728,9 +984,12 @@ public class Main extends JFrame {
             for (int i = 0; i < seleccionadas.size(); i++) {
                 String[] cancion = seleccionadas.get(i); // Cada canción es un arreglo de String
                 JButton boton = botones[i];
-
+//                System.out.print("C0" + cancion[0]+"\n");
+//                System.out.print("C1" +cancion[1]+"\n");
+//                System.out.print("C2" +cancion[2]+"\n");
+//                System.out.print("C3" +cancion[3]+"\n");
                 // Configurar el botón con la portada como ícono
-                rediIcon(rutaAB + cancion[5], 225, 225, boton);
+                rediIcon(rutaAB + cancion[2], 225, 225, boton);
 
                 // Configurar posición del botón
                 boton.setBounds(185 + (260 * i), 625, 225, 225);
@@ -747,11 +1006,10 @@ public class Main extends JFrame {
                 pContenido.add(etiqueta);
 
                 boton.addActionListener(e -> {
-                    String portada = rutaAB + cancion[5];
+                    String portada = rutaAB + cancion[2];
                     String nombreCancion = cancion[1];
-                    String duracion = cancion[4];
-                    String rutaCancion = cancion[6];
-                    barraReproduccion(portada, nombreCancion, duracion, rutaCancion);
+                    String descripcion = cancion[3];
+
                 });
             }
             pContenido.revalidate();
@@ -763,13 +1021,13 @@ public class Main extends JFrame {
 
         // Configurar el botón "VER MÁS"
         btnPl22.setBounds(1590, 546, 135, 45);
-        btnPl22.setText("VER MÁS");
+        btnPl22.setText("ACTUALIZAR");
         btnPl22.addActionListener(e -> actualizarCanciones.run());
         btnPl22.setForeground(cN);
         pContenido.add(btnPl22);
 
         // Configurar la barra de reproducción inicial
-        barraReproduccion(rutaAB + "lp_7550766.png", "No se esta reproduciendo contenido", "0:00", rutaAB + "canciones/Pop/pop5.mp3");
+        barraReproduccion(usr, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
 
         // Configuración final del panel
         add(pContenido);
@@ -778,9 +1036,15 @@ public class Main extends JFrame {
         pContenido.repaint();
     }
 
+    public int obtenerIdUsr(usuario usr) {
+        int idUsuario = usuarioActual.getId_usuario();
+        return idUsuario;
+    }
+
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
-            new Main().setVisible(true);
+            usuario nu = new usuario(0, "", "", "", "", "", "");
+            new Main(nu).setVisible(true);
         });
     }
 }

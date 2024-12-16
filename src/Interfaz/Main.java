@@ -177,8 +177,8 @@ public class Main extends JFrame {
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
         ImageIcon icon = new ImageIcon(rutaAB + "sonidITO.jpg");  // Especifica la ruta de tu ícono
         setIconImage(icon.getImage());
-//        usuario pr = new usuario(1, "Prometeo", "Mendoza", "opromete@gmail.com", "1234", "false");
-        componentesActuales(usr);
+        usuario pr = new usuario(1, "Prometeo", "Mendoza", "opromete@gmail.com", "1234", "false");
+        componentesActuales(pr);
 //        playlistDesplegada(usr);
 //        favDesplegada(usr);
         add(pContenido);

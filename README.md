@@ -10,6 +10,39 @@ en las canciones, usuario y editarlos prácticamente todo lo que con lleva un CR
 usuario este cuenta con una ventana principal en la que podemos ver los me gustas de cada usuario  correspondiente
 como una serie de playlist ya establecidas
 
+---
+
+EJECUCION DEL PROGRAMA
+
+![Creacion cuenta usuario](capturas/crearCuenta.png)
+Crea tu cuenta con tus datos correspondientes
+
+![Usuario creado correctamente](capturas/cap2.png)
+Confirmacion del usuario creado correctamente
+
+![Pdf creado](capturas/cap3.png)
+Se crea un pdf
+
+![Usuario creado correctamente](capturas/confi.png)
+Confirmacion del usuario creado via pdf
+
+![Pantalla inicio sesion](capturas/cap4.png)
+Pantalla inicio sesion
+
+![Menu principal](capturas/ejec1.png)
+Menu principal
+
+![Menu tus canciones favoritas](capturas/ejec2.png)
+Menu tus canciones favoritas
+
+![Alguna playlist seleccionada](capturas/ejec3.png)
+Alguna playlist seleccionada
+
+![Cancion no agregada a favoritos](capturas/capa.png)
+Cancion no agregada a favoritos
+
+![Cancion agregada a favoritos](capturas/capb.png)
+Cancion agregada a favoritos
 
 
 # Documentación de Métodos de Acceso a la Base de Datos
@@ -191,9 +224,26 @@ Obtiene todas las playlists disponibles en el sistema.
 ### Documentación de la interfaz  
 La interfaz de este programa cuenta con un total de 7 paginas aproximadamente contando el main en las que se incluye toda la gestión del 
 programa desde la creación de usuarios desde la vista del administrador\usuario hasta la reproducción de musica
+Inicio de sesion este es capaz de determinar si es administrador o usuario y redirigirlos a su propias ventanas
+![alt text](capturas/capture_20241216084620486.bmp)
 
+Crear Uusario desde la vista del usuario el sistema le da la opcion a el usuario a crear un nuevo usuario eso si no puede eleguir si es administrador o usuario
+![alt text](capturas/capture_20241216085223305.bmp)
 
+Menu Administrador
+![alt text](capturas/capture_20241216085307128.bmp)
+Este menu cuenta con 5 botones cada uno con su propia funcionalidad
 
+Insercion de datos
+![alt text](capturas/capture_20241216085347655.bmp) ![alt text](capturas/capture_20241216085409619.bmp)
+
+Edicion de Registros
+![alt text](ccapturas/apture_20241216085430299.bmp) ![alt text](capture_20241216085535361.bmp)
+
+Cada edicion de registros teniendo sus popios botones para eliminar, actualizar y refrescar contando tambien con una barra de bussqueda
+![alt text](capture_20241216085448592.bmp)
+![alt text](capture_20241216085511685.bmp)
+![alt text](capture_20241216085550206.bmp)
 ### Funcionalidad
 Video de explicación: 
 https://youtu.be/m42nrGEQo1A 

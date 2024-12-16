@@ -19,6 +19,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 public class Main extends JFrame {
 
@@ -161,7 +166,6 @@ public class Main extends JFrame {
     public String rutaAB = "/home/prome/NetBeansProjects/sonidITO/";
     private ReproductorMP3 reproductor = new ReproductorMP3();
     private usuario usuarioActual;
-    private boolean isFavorito = false;
 
     public Main(usuario usr) {
         this.usuarioActual = usr;
@@ -173,8 +177,8 @@ public class Main extends JFrame {
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
         ImageIcon icon = new ImageIcon(rutaAB + "sonidITO.jpg");  // Especifica la ruta de tu ícono
         setIconImage(icon.getImage());
-//        componentesActuales();
-        playlistDesplegada(usr, 1);
+        componentesActuales(usr);
+//        favDesplegada(usr);
         add(pContenido);
     }
 
@@ -183,21 +187,35 @@ public class Main extends JFrame {
         barraBusqueda(usr);
         fondoPlaylist(); // Fondo Cprimero
         botonesPrincipal(usr);
-        misPlaylist(1);
+        misPlaylist(usr);
         ordenamiento();
     }
 
-    public void playlistDesplegada(usuario usr, int id_playlist) {
+//    public void playlistDesplegada(usuario usr) {
+//        barraBusqueda2(usr);
+//        botonesPrincipal2(usr);
+//        fondoPlaylist2(); // Fondo primero
+//        ordenamiento();
+//        favDesplegada(usr);
+//        barraReproduccion(usr, 16, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
+//
+//    }
+    public void favDesplegada(usuario usr) {
+        mostrarCancionesFavoritasEnInterfaz(usr);
         barraBusqueda2(usr);
-        contenidoPlaylist(1);
         botonesPrincipal2(usr);
         fondoPlaylist2(); // Fondo primero
         ordenamiento();
-        barraReproduccion(usr, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
+        barraReproduccion(usr, 16, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
 
     }
 
     public void contenidoPlaylist(int idPlaylist) {
+
+        playlist pl = cndb.obtenerPlaylistPorId(idPlaylist);
+        String nombreP = pl.nombre;
+        String descripcion = pl.descripcion;
+        String rutaImagen = pl.ruta_imagen;
         List<String[]> datos = cndb.obtenerCancionesPlaylist(idPlaylist);
         JLabel img = new JLabel();
         JLabel playlist = new JLabel();
@@ -213,14 +231,137 @@ public class Main extends JFrame {
         playlist.setText("Playlist");
         playlist.setForeground(cB);
         nombre.setForeground(cB);
-        nombre.setText("Liked Songs");
+        nombre.setText(nombreP);
         nombre.setFont(new Font("Arial", Font.BOLD, 80));
         nombre.setBounds(325, 100, 600, 250);
         img.setBounds(100, 100, 200, 200);
-        String ruta = rutaAB + "portadasPlaylist/portadaHipHop.jpg";
+        String ruta = rutaAB + rutaImagen;
         img(ruta, 200, 200, img);
 
         pContenido.add(play);
+        pContenido.add(playlist);
+        pContenido.add(nombre);
+        pContenido.add(img);
+    }
+
+    public void mostrarCancionesFavoritasEnInterfaz(usuario usr) {
+        String[] columnNames = {"Título", "Artista", "Álbum", "Duración"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas sean no editables
+            }
+        };
+
+        int id_usuario = usr.getId_usuario();
+        // Obtener la lista de canciones favoritas
+        List<cancion> cancionesFavoritasDetalladas = obtenerCancionesFavoritasDetalladas(id_usuario);
+
+        if (cancionesFavoritasDetalladas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El usuario no tiene canciones favoritas.");
+        } else {
+            for (cancion cancion : cancionesFavoritasDetalladas) {
+                String[] data = {cancion.getNombre(), cancion.getArtista(), cancion.getAlbum(), cancion.getDuracion()};
+                model.addRow(data);
+            }
+        }
+
+        // Crear JTable con configuraciones
+        JTable table = new JTable(model);
+        table.setFont(new Font("Arial", Font.PLAIN, 18));
+        table.setRowHeight(40);
+        table.setForeground(cB); // Texto blanco
+        table.setGridColor(cN);  // Líneas negras
+        table.setShowGrid(true);
+        table.setOpaque(false); // Transparencia
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Seleccionar filas completas
+
+        // Configurar para que seleccione filas completas
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false); // Evitar selección de columnas
+
+        // Listener para imprimir datos en consola cuando se selecciona una fila
+        table.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {  // Evita que se active múltiples veces
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) { // Verifica que haya una fila seleccionada
+                    String titulo = (String) table.getValueAt(selectedRow, 0);
+                    String artista = (String) table.getValueAt(selectedRow, 1);
+                    String album = (String) table.getValueAt(selectedRow, 2);
+                    String duracion = (String) table.getValueAt(selectedRow, 3);
+                    List<String> cn = cndb.obtenerDetallesCancionPorNombre(titulo);
+
+//                    System.out.println("ID Canción: " + cn.get(0));        // ID
+//                    System.out.println("Nombre: " + cn.get(1));           // Nombre de la canción
+//                    System.out.println("Artista: " + cn.get(2));          // Artista
+//                    System.out.println("Álbum: " + cn.get(3));            // Álbum
+//                    System.out.println("Duración: " + cn.get(4));         // Duración
+//                    System.out.println("Portada: " + cn.get(5));          // Ruta de la imagen
+//                    System.out.println("Ruta Canción: " + cn.get(6));     // Ruta de la canción
+//                    System.out.println("Género: " + cn.get(7));           // Género
+                    int numero = Integer.parseInt(cn.get(0));;
+                    String portada = rutaAB + cn.get(5);
+                    String rutac = rutaAB + cn.get(6);
+                    barraReproduccion(usr, numero, portada, titulo, duracion, rutac);
+                }
+            }
+        });
+
+        // Renderer para hacer transparente el fondo y personalizar estilo
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (isSelected) {
+                    c.setBackground(new Color(50, 50, 50, 200)); // Color de selección semi-transparente
+                } else {
+                    c.setBackground(new Color(0, 0, 0, 0)); // Fondo transparente
+                }
+                c.setForeground(cB); // Texto blanco
+                setHorizontalAlignment(CENTER); // Centrar texto
+                return c;
+            }
+        });
+
+        // Configurar encabezado de la tabla
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 20));
+        header.setForeground(cN);
+        header.setBackground(inv);
+        header.setOpaque(false);
+
+        // JScrollPane transparente
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBorder(null);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.setBorder(null);
+        scrollPane.setBounds(0, 350, 1920, 620);
+
+        pContenido.add(scrollPane);
+
+        // Otros elementos de la interfaz
+        JLabel playlist = new JLabel("Playlist");
+        playlist.setBounds(330, 50, 200, 200);
+        playlist.setForeground(cB);
+
+        JLabel nombre = new JLabel("Tus me gustas");
+        nombre.setForeground(cB);
+        nombre.setFont(new Font("Arial", Font.BOLD, 80));
+        nombre.setBounds(325, 100, 600, 250);
+
+//        JButton play = new JButton();
+//        play.setBounds(1630, 200, 100, 100);
+//        play.setFocusPainted(false);
+//        play.setContentAreaFilled(false);
+//        play.setBorderPainted(false);
+//        rediIcon(rutaAB + "play.png", 100, 100, play);
+//        play.addActionListener(e -> barraReproduccion(usr, numero, portada, titulo, duracion, rutac));
+        JLabel img = new JLabel();
+        img.setBounds(100, 100, 200, 200);
+        img(rutaAB + "src/img/lke.png", 200, 200, img);
+
+//        pContenido.add(play);
         pContenido.add(playlist);
         pContenido.add(nombre);
         pContenido.add(img);
@@ -279,14 +420,12 @@ public class Main extends JFrame {
     }
 
     public void fondoPlaylist2() {
-        if (!pContenido.isAncestorOf(lblF15)) {
-            lblF15.setOpaque(false); // Hacemos el fondo transparente si es necesario
-            lblF15.setBounds(0, 0, getWidth(), 350); // Tamaño inicial del fondo
-            pContenido.add(lblF15); // Añadir fondo al panel
-            pContenido.revalidate();
-            pContenido.repaint();
+        lblF15.setOpaque(false); // Hacemos el fondo transparente si es necesario
+        lblF15.setBounds(0, 0, getWidth(), 350); // Tamaño inicial del fondo
+        pContenido.add(lblF15); // Añadir fondo al panel
+        pContenido.revalidate();
+        pContenido.repaint();
 
-        }
         pContenido.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -294,6 +433,8 @@ public class Main extends JFrame {
             }
         });
         pContenido.setComponentZOrder(lblF15, pContenido.getComponentCount() - 1);
+        pContenido.repaint();
+        pContenido.revalidate();
     }
 
     public void rediIcon(String ruta, int n1, int n2, JButton btn) {
@@ -324,7 +465,8 @@ public class Main extends JFrame {
 
     }
 
-    public void misPlaylist(int idUsuario) {
+    public void misPlaylist(usuario usr) {
+        int idUsuario = usr.getId_usuario();
         List<String[]> playlists = cndb.obtenerPlaylistUsuario(idUsuario);
 
         List<String> nombresPlaylists = new ArrayList<>();
@@ -371,7 +513,8 @@ public class Main extends JFrame {
         botonMisMeGustas.setFont(new Font("Arial", Font.BOLD, 14));
 
         botonMisMeGustas.addActionListener(e -> {
-            System.out.println("Playlist seleccionada: Mis Me Gustas");
+            pContenido.removeAll();
+            favDesplegada(usr);
         });
 
         // Agregar componentes al contenedor
@@ -415,9 +558,9 @@ public class Main extends JFrame {
             String nombre = nombresPlaylists.get(i);
             String ruta = rutas.get(i);
             boton.addActionListener(e -> {
-                System.out.println("Playlist seleccionada:");
-                System.out.println("Nombre: " + nombre);
-                System.out.println("Ruta: " + ruta);
+                System.out.println("Playlist seleccionada:" + "\n");
+                System.out.println("\nNombre: " + nombre + "\n");
+                System.out.println("\nRuta: " + ruta + "\n");
             });
 
             // Agregar componentes al contenedor
@@ -437,6 +580,28 @@ public class Main extends JFrame {
         pContenido.repaint();
     }
 
+    public List<cancion> obtenerCancionesFavoritasDetalladas(int id_usuario) {
+        List<Integer> idsCancionesFavoritas = cndb.obtenerCancionesFavoritas(id_usuario);
+        List<cancion> detallesCancionesFavoritas = cndb.obtenerDetallesCancionesFavoritas(idsCancionesFavoritas);
+        return detallesCancionesFavoritas;
+    }
+
+//    public void imprimirCancionesFavoritas(int id_usuario) {
+//        List<cancion> cancionesFavoritasDetalladas = obtenerCancionesFavoritasDetalladas(id_usuario);
+//
+//        if (cancionesFavoritasDetalladas.isEmpty()) {
+//            System.out.println("El usuario no tiene canciones favoritas.");
+//        } else {
+//            for (cancion cancion : cancionesFavoritasDetalladas) {
+//                System.out.println("Canción: " + cancion.getNombre());
+//                System.out.println("Artista: " + cancion.getArtista());
+//                System.out.println("Álbum: " + cancion.getAlbum());
+//                System.out.println("Duración: " + cancion.getDuracion());
+//                System.out.println("Género: " + cancion.getGenero());
+//                System.out.println("-------------");
+//            }
+//        }
+//    }
     public void sombraPlaylist(JButton btn, int x, int y, int width, int height, Boolean b1, Boolean b2, Boolean b3, JLabel lbl, int x2, int y2, int width2, int height2, Boolean b4, Color cl) {
         LineBorder b = new LineBorder(cg);
         btn.setBounds(x, y, width, height);
@@ -621,8 +786,9 @@ public class Main extends JFrame {
 //                System.out.println("Datos de la canción: " + Arrays.toString(datos));
 //                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3\n:" + datos[3] + "1:" + datos[1]);
                 String rutaC = rutaAB + datos[3];
-//                System.out.println(rutaC + "rurara");
-                barraReproduccion(usr, ruta, datos[4], datos[5], rutaC);
+//                System.out.println("Datos pos 0,1:\n" + datos[0])
+                int numero = Integer.parseInt(datos[0]);;
+                barraReproduccion(usr, numero, ruta, datos[4], datos[5], rutaC);
             });
 
             // Agregar el botón al panel
@@ -678,7 +844,9 @@ public class Main extends JFrame {
 //                System.out.println("Datos de la canción: " + "4:" + datos[2] + "3\n:" + datos[3] + "1:" + datos[1]);
                 String rutaC = rutaAB + datos[3];
 //                System.out.println(rutaC + "rurara");
-                barraReproduccion(usr, ruta, datos[4], datos[5], rutaC);
+//                System.out.println("Datos pos 0,2:\n" + datos[0]);
+                int numero = Integer.parseInt(datos[0]);
+                barraReproduccion(usr, numero, ruta, datos[4], datos[5], rutaC);
             });
 
             // Agregar el botón al panel
@@ -705,17 +873,25 @@ public class Main extends JFrame {
         pContenido.remove(btnCAñadir);
     }
 
-    public void barraReproduccion(usuario usr, String portada, String nombreCancion, String duracion, String rutaCancion) {
-        System.out.print(usr);
+    public void barraReproduccion(usuario usr, int idcan, String portada, String nombreCancion, String duracion, String rutaCancion) {
+//        System.out.print(usr);
+        boolean esfav = cndb.existeFav(idcan, idcan);
         JLabel duracionLabel = new JLabel(duracion);
         duracionLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         duracionLabel.setForeground(cB);
 //        duracionLabel.setOpaque(true); 
         duracionLabel.setBounds(1750, 980, 100, 80);
         pContenido.add(duracionLabel);
+        int id = usr.getId_usuario();
         String rutaCan = rutaAB + rutaCancion;
+
 //        System.out.println("Ruta completa del archivo: " + rutaCan);
-        favorito(1, 1);
+        // Determinar si la canción ya está en favoritos
+        boolean esfavInicial = cndb.existeFav(id, idcan);
+
+// Llamar al método favorito con el valor inicial correcto
+        favorito(id, idcan, esfavInicial);
+
         btnCReproducir.addActionListener(e -> reproductor.reproducir(rutaCancion, duracionLabel));
 
         btnCAtras.addActionListener(e -> reproductor.pausar());
@@ -797,33 +973,41 @@ public class Main extends JFrame {
         pContenido.repaint();
     }
 
-    public void favorito(int id_usr, int id_can) {
+    public void favorito(int id_usr, int id_can, boolean esfavInicial) {
+        AtomicBoolean esfav = new AtomicBoolean(esfavInicial); // Wrapper para esfav
+
         btnCFavorito.addActionListener(e -> {
             boolean exito; // Variable para manejar el resultado de la operación
-            if (!isFavorito) {
-                exito = cndb.insertarFav(id_usr, id_can); // Insertar en favoritos
+
+            if (!esfav.get()) { // Usar get() para obtener el valor
+                exito = cndb.insertarFav(id_usr, id_can);
                 if (exito) {
                     System.out.println("Canción añadida a favoritos.");
-                    isFavorito = true; // Actualizar el estado a favorito
+                    rediIcon(rutaAB + "corazon_lleno.png", 40, 40, btnCFavorito);
+                    esfav.set(true); // Actualizar el estado a favorito
                 } else {
                     System.out.println("Error al añadir la canción a favoritos.");
                 }
-            } else {
-                exito = cndb.eliminarFav(id_usr, id_can); // Eliminar de favoritos
+            } else { // Si ya es favorito
+                exito = cndb.eliminarFav(id_usr, id_can);
                 if (exito) {
                     System.out.println("Canción eliminada de favoritos.");
-                    isFavorito = false; // Actualizar el estado a no favorito
+                    rediIcon(rutaAB + "corazon_vacio.png", 40, 40, btnCFavorito);
+                    esfav.set(false); // Actualizar el estado a no favorito
                 } else {
                     System.out.println("Error al eliminar la canción de favoritos.");
                 }
             }
         });
 
-        if (!isFavorito) {
+        // Configurar el ícono inicial según el estado `esfav`
+        if (!esfav.get()) { // Usar get() para verificar el valor inicial
             rediIcon(rutaAB + "corazon_vacio.png", 40, 40, btnCFavorito);
         } else {
             rediIcon(rutaAB + "corazon_lleno.png", 40, 40, btnCFavorito);
         }
+
+        // Configuraciones adicionales del botón
         btnCFavorito.setBounds(1528, 1000, 40, 40);
         btnCFavorito.setBackground(inv);
         btnCFavorito.setFocusPainted(false);
@@ -889,11 +1073,12 @@ public class Main extends JFrame {
             // Llamamos al método barraReproduccion de la clase Main
             usuario act = usuarioActual;
             Main mainFrame = new Main(act); // O si ya tienes la instancia, usa esa.
+            int id = 0;  // La ruta completa de la portada
             String portada = "lp_7550766.png";  // La ruta completa de la portada
             String nombreCancion = "Nombre de la canción";
             String duracion = "";  // Duración de la canción
             String rutaCancion = "/ruta/a/la/cancion.mp3";  // Ruta completa del archivo de música
-            mainFrame.barraReproduccion(usr, portada, nombreCancion, duracion, rutaCancion);
+            mainFrame.barraReproduccion(usr, id, portada, nombreCancion, duracion, rutaCancion);
             pContenido.repaint();
             pContenido.revalidate();
             this.dispose();
@@ -917,11 +1102,12 @@ public class Main extends JFrame {
             // Llamamos al método barraReproduccion de la clase Main
             usuario act = usuarioActual;
             Main mainFrame = new Main(act); // O si ya tienes la instancia, usa esa.
+            int id = 0;  // La ruta completa de la portada
             String portada = "lp_7550766.png";  // La ruta completa de la portada
             String nombreCancion = "Nombre de la canción";
             String duracion = "";  // Duración de la canción
             String rutaCancion = "/ruta/a/la/cancion.mp3";  // Ruta completa del archivo de música
-            mainFrame.barraReproduccion(usr, portada, nombreCancion, duracion, rutaCancion);
+            mainFrame.barraReproduccion(usr, id, portada, nombreCancion, duracion, rutaCancion);
             pContenido.repaint();
             pContenido.revalidate();
             this.dispose();
@@ -1027,7 +1213,7 @@ public class Main extends JFrame {
         pContenido.add(btnPl22);
 
         // Configurar la barra de reproducción inicial
-        barraReproduccion(usr, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
+        barraReproduccion(usr, 16, rutaAB + "portadas/Pop15.jpg", "My way", "3:28", rutaAB + "canciones/Pop/pop15.mp3");
 
         // Configuración final del panel
         add(pContenido);

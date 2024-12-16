@@ -151,6 +151,129 @@ public class PostgreSQLConnection {
         }
     }
 
+    public boolean existeFav(int id_usuario, int id_cancion) {
+        String sql = "SELECT 1 FROM favoritosusuario WHERE id_usuario = ? AND id_cancion = ? LIMIT 1";
+
+        try (Connection conn = conectar(); // Conexión a la base de datos
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Asignar valores a los parámetros de la consulta
+            stmt.setInt(1, id_usuario);
+            stmt.setInt(2, id_cancion);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // Retorna true si hay una fila, false si no
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Devuelve false si ocurre algún error
+        }
+    }
+
+    public playlist obtenerPlaylistPorId(int id_playlist) {
+        String sql = "SELECT id_playlist, nombre_playlist, ruta_imagen, descripcion "
+                + "FROM playlist_existente WHERE id_playlist = ?";
+        try (Connection conn = conectar(); // Conexión a la base de datos
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Asignar valor al parámetro
+            stmt.setInt(1, id_playlist);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) { // Si hay resultados
+                    // Crear y retornar un objeto Playlist
+                    return new playlist(
+                            rs.getInt("id_playlist"),
+                            rs.getString("nombre_playlist"),
+                            rs.getString("ruta_imagen"),
+                            rs.getString("descripcion")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Retorna null si no se encontró la playlist
+    }
+
+    public List<Integer> obtenerCancionesFavoritas(int id_usuario) {
+        List<Integer> cancionesFavoritas = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+
+            // Consulta para obtener todos los id_cancion que coincidan con el id_usuario dado
+            String consulta = "SELECT id_cancion FROM favoritosusuario WHERE id_usuario = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(consulta)) {
+
+                // Asignar el parámetro de id_usuario a la consulta
+                stmt.setInt(1, id_usuario);
+
+                // Ejecutar la consulta
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        // Obtener id_cancion y agregarlo a la lista como Integer
+                        cancionesFavoritas.add(rs.getInt("id_cancion"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("No se pudieron obtener las canciones favoritas\n" + e.getMessage());
+        }
+
+        return cancionesFavoritas;
+    }
+
+    public List<cancion> obtenerDetallesCancionesFavoritas(List<Integer> idsCanciones) {
+        List<cancion> detallesCanciones = new ArrayList<>();
+
+        if (idsCanciones.isEmpty()) {
+            return detallesCanciones; // Retorna una lista vacía si no hay IDs
+        }
+
+        // Construir la consulta con IN (?, ?, ...)
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < idsCanciones.size(); i++) {
+            placeholders.append("?");
+            if (i < idsCanciones.size() - 1) {
+                placeholders.append(", ");
+            }
+        }
+
+        String consulta = "SELECT id_cancion, nombre, artista, album, duracion, ruta_imagen, ruta_cancion, genero "
+                + "FROM cancion WHERE id_cancion IN (" + placeholders + ")";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement stmt = conn.prepareStatement(consulta)) {
+
+            // Asignar los valores de los IDs a los placeholders
+            for (int i = 0; i < idsCanciones.size(); i++) {
+                stmt.setInt(i + 1, idsCanciones.get(i));
+            }
+
+            // Ejecutar la consulta y procesar los resultados
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    cancion cancion = new cancion(
+                            rs.getInt("id_cancion"),
+                            rs.getString("nombre"),
+                            rs.getString("artista"),
+                            rs.getString("album"),
+                            rs.getString("duracion"),
+                            rs.getString("ruta_imagen"),
+                            rs.getString("ruta_cancion"),
+                            rs.getString("genero")
+                    );
+                    detallesCanciones.add(cancion);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener detalles de las canciones\n" + e.getMessage());
+        }
+
+        return detallesCanciones;
+    }
+
     public boolean eliminarFav(int id_usuario, int id_cancion) {
         String sql = "DELETE FROM favoritosusuario WHERE id_usuario = ? AND id_cancion = ?";
 
@@ -161,8 +284,38 @@ public class PostgreSQLConnection {
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; 
+            return false;
         }
+    }
+
+    public List<String> obtenerDetallesCancionPorNombre(String nombreCancion) {
+        String sql = "SELECT id_cancion, nombre, artista, album, duracion, ruta_imagen, ruta_cancion, genero "
+                + "FROM cancion WHERE nombre = ?";
+
+        List<String> detallesCancion = new ArrayList<>();
+
+        try (Connection conn = conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nombreCancion);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Agregar los detalles a la lista en orden
+                    detallesCancion.add(String.valueOf(rs.getInt("id_cancion")));  // Convertir el ID a String
+                    detallesCancion.add(rs.getString("nombre"));
+                    detallesCancion.add(rs.getString("artista"));
+                    detallesCancion.add(rs.getString("album"));
+                    detallesCancion.add(rs.getString("duracion"));
+                    detallesCancion.add(rs.getString("ruta_imagen"));
+                    detallesCancion.add(rs.getString("ruta_cancion"));
+                    detallesCancion.add(rs.getString("genero"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Si no se encontraron resultados, la lista estará vacía
+        return detallesCancion;
     }
 
     public boolean eliminarPorId(String id) {
@@ -259,7 +412,7 @@ public class PostgreSQLConnection {
 
             // Establecer los valores de las columnas usando los métodos getter de la clase Cancion
             stmt.setString(1, cancion.getNombre());
-            stmt.setString(2, cancion.getAutor());
+            stmt.setString(2, cancion.getArtista());
             stmt.setString(3, cancion.getAlbum());
             stmt.setString(4, cancion.getDuracion());
             stmt.setString(5, cancion.getGenero());

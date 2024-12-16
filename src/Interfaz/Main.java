@@ -193,9 +193,9 @@ public class Main extends JFrame {
         ordenamiento();
     }
 
-    public void playlistDesplegada(usuario usr) {
+    public void playlistDesplegada(usuario usr, int idp) {
         barraBusqueda2(usr);
-        mostrarCancionesDePlaylistEnInterfaz(usr, 1);
+        mostrarCancionesDePlaylistEnInterfaz(usr, idp);
         botonesPrincipal2(usr);
         fondoPlaylist2(); // Fondo primero
         ordenamiento();
@@ -639,9 +639,12 @@ public class Main extends JFrame {
 
             // Acción al hacer clic en el botón
             boton.addActionListener(e -> {
-                System.out.println("ID Playlist: " + idPlaylist);
-                System.out.println("Nombre: " + nombresPlaylists.get(index));
-                System.out.println("Ruta: " + rutas.get(index));
+                pContenido.removeAll();
+//                System.out.println("ID Playlist: " + idPlaylist);
+//                System.out.println("Nombre: " + nombresPlaylists.get(index));
+//                System.out.println("Ruta: " + rutas.get(index));
+                int numero = Integer.parseInt(idPlaylist);
+                playlistDesplegada(usr, numero);
             });
 
             // Agregar componentes al contenedor
@@ -1105,7 +1108,7 @@ public class Main extends JFrame {
         reproduccion.setForeground(cB); // Letra blanca
         reproduccion.setBackground(verdeB); // Fondo negro
         reproduccion.setCaretColor(inv); // Cursor blanco
-        reproduccion.setBounds(50, 970, 1815, 150);
+        reproduccion.setBounds(50, 970, 1815, 100);
         pContenido.add(reproduccion);
     }
 
@@ -1279,10 +1282,9 @@ public class Main extends JFrame {
                 pContenido.add(etiqueta);
 
                 boton.addActionListener(e -> {
-                    String portada = rutaAB + cancion[2];
-                    String nombreCancion = cancion[1];
-                    String descripcion = cancion[3];
-
+                    pContenido.removeAll();
+                    int numero = Integer.parseInt(cancion[0]);
+                    playlistDesplegada(usr, numero);
                 });
             }
             pContenido.revalidate();

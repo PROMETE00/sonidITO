@@ -33,23 +33,25 @@ import com.itextpdf.text.Paragraph;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+
 /**
  *
  * @author mendo
  */
 public class Interfaz extends javax.swing.JFrame {
-
-    public String url = "jdbc:postgresql://localhost:5432/postgres";
+   
+    public String url = "jdbc:postgresql://localhost:5432/sonido";
     public String user = "postgres";
-    public String password = "98127463";
+    public String password = "passwor";
+   
 
     /**
      * Creates new form Interfaz
      */
-    Color inv = new Color(0, 0, 0, 0);
-
+    Color inv = new Color(0,0,0,0);
+        
+    
     CardLayout card;
-
     public Interfaz() {
         initComponents();
         configurarTablaCanciones();
@@ -62,20 +64,21 @@ public class Interfaz extends javax.swing.JFrame {
         jButton17usuario.setVisible(FALSE);
         TxtBuscarUsuario.setVisible(FALSE);
         jButton17usuario.setVisible(FALSE);
-
+       
         this.setExtendedState(this.MAXIMIZED_BOTH);
         //inicio seccion
-        textoSombra correoe = new textoSombra(" correoejemplo@gmail.com", txtCorreoInicioS);
-        textoSombra corrcontra = new textoSombra(" Contraseña", txtContraseñaInicio);
+        textoSombra correoe = new textoSombra (" correoejemplo@gmail.com",txtCorreoInicioS);
+        textoSombra corrcontra = new textoSombra (" Contraseña",txtContraseñaInicio);
         //crear usuario
-        textoSombra correo2 = new textoSombra(" Nombres", txtNombres);
-        textoSombra apellidos = new textoSombra(" Apellidos", txtApellidos);
-        textoSombra correocrear = new textoSombra(" correoejemplo@gmail.com", txtCorreoCrearCuenta);
-        textoSombra contracrear = new textoSombra(" Contraseña", txtContraseñaCrearCuenta);
-        textoSombra contracrearconformar = new textoSombra(" Confirmar Contraseña", txtConfirmarCC);
+        textoSombra correo2 = new textoSombra (" Nombres",txtNombres);
+        textoSombra apellidos = new textoSombra (" Apellidos",txtApellidos);
+        textoSombra correocrear = new textoSombra (" correoejemplo@gmail.com",txtCorreoCrearCuenta);
+        textoSombra contracrear = new textoSombra (" Contraseña",txtContraseñaCrearCuenta);
+        textoSombra contracrearconformar = new textoSombra (" Confirmar Contraseña",txtConfirmarCC);
         //Restablecer Contraseña  
-        textoSombra correorecu = new textoSombra("correoejemplo@gmail.com", correorecuperarcontra);
-
+        textoSombra correorecu = new textoSombra ("correoejemplo@gmail.com",correorecuperarcontra);
+        
+        
         //botones invisibles
         btnrestablecerC.setBackground(inv);
         btnrestablecerC.setFocusPainted(false);
@@ -116,60 +119,60 @@ public class Interfaz extends javax.swing.JFrame {
         bntAceptarAUsuario.setBackground(inv);
         bntAceptarAUsuario.setFocusPainted(false);
         btnCancelarAUsuario.setBackground(inv);
-        btnCancelarAUsuario.setFocusPainted(false);
+        btnCancelarAUsuario.setFocusPainted(false);    
     }
-
+    
     //configurar tablas
     /*Tabla de caniones*/
     private void configurarTablaCanciones() {
-        DefaultTableModel modeloTabla = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "Artista", "Álbum", "Duración", "Género", "Ruta Imagen", "Ruta Canción"},
-                0
-        );
-        jTResultados.setModel(modeloTabla);
+    DefaultTableModel modeloTabla = new DefaultTableModel(
+        new String[]{"ID", "Nombre", "Artista", "Álbum", "Duración", "Género", "Ruta Imagen", "Ruta Canción"},
+        0
+    );
+    jTResultados.setModel(modeloTabla);
     }
-
     //Tabla Uusarios
     private void configurarTablaUsuarios() {
-        DefaultTableModel modeloTablaUs = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "Apellidos", "Correo", "Contraseña", "Admin"},
-                0
-        );
-        jTResultados.setModel(modeloTablaUs);
+    DefaultTableModel modeloTablaUs = new DefaultTableModel(
+        new String[]{"ID", "Nombre", "Apellidos", "Correo", "Contraseña", "Admin"},
+        0
+    );
+    jTResultados.setModel(modeloTablaUs);
     }
-
     private void generarPDFUsuario(String nombre, String apellidos, String correo) {
-        // Nombre dinámico para el PDF basado en el nombre del usuario
-        String rutaPDF = "Usuario_" + nombre.replace(" ", "_") + ".pdf";
+    // Nombre dinámico para el PDF basado en el nombre del usuario
+    String rutaPDF = "Usuario_" + nombre.replace(" ", "_") + ".pdf";
 
-        // Crear un nuevo documento PDF
-        Document documento = new Document();
+    // Crear un nuevo documento PDF
+    Document documento = new Document();
 
-        try {
-            // Crear escritor para el PDF
-            PdfWriter.getInstance(documento, new FileOutputStream(rutaPDF));
+    try {
+        // Crear escritor para el PDF
+        PdfWriter.getInstance(documento, new FileOutputStream(rutaPDF));
 
-            // Abrir el documento
-            documento.open();
+        // Abrir el documento
+        documento.open();
 
-            // Agregar contenido al PDF
-            documento.add(new Paragraph("Bienvenido, " + nombre + " " + apellidos + "!"));
-            documento.add(new Paragraph("Correo registrado: " + correo));
-            documento.add(new Paragraph("Gracias por registrarte en nuestro sistema."));
-            documento.add(new Paragraph("Este PDF fue generado automáticamente."));
+        // Agregar contenido al PDF
+        documento.add(new Paragraph("Bienvenido, " + nombre + " " + apellidos + "!"));
+        documento.add(new Paragraph("Correo registrado: " + correo));
+        documento.add(new Paragraph("Gracias por registrarte en nuestro sistema."));
+        documento.add(new Paragraph("Este PDF fue generado automáticamente."));
 
-            // Mensaje de éxito
-            JOptionPane.showMessageDialog(this, "PDF generado correctamente: " + rutaPDF);
+        // Mensaje de éxito
+        JOptionPane.showMessageDialog(this, "PDF generado correctamente: " + rutaPDF);
 
-        } catch (FileNotFoundException | DocumentException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al generar el PDF.");
-        } finally {
-            // Cerrar el documento
-            documento.close();
-        }
+    } catch (FileNotFoundException | DocumentException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al generar el PDF.");
+    } finally {
+        // Cerrar el documento
+        documento.close();
     }
+}
 
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2083,7 +2086,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void txtCorreoInicioSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoInicioSActionPerformed
 
-
+                
     }//GEN-LAST:event_txtCorreoInicioSActionPerformed
 
     private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
@@ -2099,36 +2102,36 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoCrearCuentaActionPerformed
 
     private void btnInicioSeccion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSeccion1ActionPerformed
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardCrearU");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardCrearU");
     }//GEN-LAST:event_btnInicioSeccion1ActionPerformed
 
     private void flecha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flecha1ActionPerformed
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardInicio");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardInicio");
     }//GEN-LAST:event_flecha1ActionPerformed
 
     private void btnInicioSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSeccionActionPerformed
-        String correo = txtCorreoInicioS.getText();
-        String contrasena = new String(txtContraseñaInicio.getPassword()); // Convertir de JPasswordField a String
+    String correo = txtCorreoInicioS.getText();
+    String contrasena = new String(txtContraseñaInicio.getPassword()); // Convertir de JPasswordField a String
 
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        usuario usuario = baseDeDatos.validarCredenciales(correo, contrasena);
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    usuario usuario = baseDeDatos.validarCredenciales(correo, contrasena);
 
-        if (usuario != null) {
-            // Verificar el rol del usuario
-            if ("true".equalsIgnoreCase(usuario.getIsadminUsuario())) {
-                card = (CardLayout) this.panelprincipal.getLayout();
-                card.show(panelprincipal, "cardVentacaMAdmin"); // Ventana de administrador
-                JOptionPane.showMessageDialog(this, "Bienvenido, Administrador");
-            } else if ("false".equalsIgnoreCase(usuario.getIsadminUsuario())) {
-                new Main(usuario).setVisible(true);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Rol desconocido. Contacta al administrador.");
-            }
+    if (usuario != null) {
+        // Verificar el rol del usuario
+        if ("true".equalsIgnoreCase(usuario.getIsadminUsuario())) {
+            card = (CardLayout)this.panelprincipal.getLayout();
+            card.show(panelprincipal, "cardVentacaMAdmin"); // Ventana de administrador
+            JOptionPane.showMessageDialog(this, "Bienvenido, Administrador");
+        } else if ("false".equalsIgnoreCase(usuario.getIsadminUsuario())) {
+            new Main(usuario).setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Rol desconocido. Contacta al administrador.");
         }
-
+    }
+        
 
     }//GEN-LAST:event_btnInicioSeccionActionPerformed
 
@@ -2137,34 +2140,34 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContraseñaCrearCuentaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardPregunta");
+        
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardPregunta");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnrestablecerCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrestablecerCActionPerformed
         // TODO add your handling code here:
-
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardRestablecerC");
+        
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardRestablecerC");
     }//GEN-LAST:event_btnrestablecerCActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardNuevaContra");
-
+ 
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardNuevaContra");
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void flecha2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flecha2ActionPerformed
         // TODO add your handling code here:
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardInicio");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardInicio");
     }//GEN-LAST:event_flecha2ActionPerformed
 
     private void flecha3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flecha3ActionPerformed
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardRestablecerC");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardRestablecerC");
     }//GEN-LAST:event_flecha3ActionPerformed
 
     private void correorecuperarcontraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correorecuperarcontraActionPerformed
@@ -2180,8 +2183,8 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void flecha4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flecha4ActionPerformed
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardPregunta");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardPregunta");
     }//GEN-LAST:event_flecha4ActionPerformed
 
     private void botonx1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonx1ActionPerformed
@@ -2190,209 +2193,210 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void regresarInicioAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarInicioAdminActionPerformed
         // TODO add your handling code here:
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardInicio");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardInicio");
     }//GEN-LAST:event_regresarInicioAdminActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
+        
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardAgregarCancion");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardAgregarCancion");
         //cardAgregarCancion
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // Crear instancia de la clase que contiene el método obtenerTodasCanciones
-        TxtBuscarCancioes.setVisible(TRUE);
-        jButton16.setVisible(TRUE);
-        TxtBuscarUsuario.setVisible(FALSE);
-        jButton17usuario.setVisible(FALSE);
-        btnEliminarAUsuario.setVisible(FALSE);
-        bntAceptarAUsuario.setVisible(FALSE);
-        btnCancelarAUsuario.setVisible(FALSE);
-        btnEliminarA.setVisible(TRUE);
-        bntAceptarA.setVisible(TRUE);
-        btnCancelarA.setVisible(TRUE);
+    // Crear instancia de la clase que contiene el método obtenerTodasCanciones
+    TxtBuscarCancioes.setVisible(TRUE);
+    jButton16.setVisible(TRUE);
+    TxtBuscarUsuario.setVisible(FALSE);
+    jButton17usuario.setVisible(FALSE);
+    btnEliminarAUsuario.setVisible(FALSE);
+    bntAceptarAUsuario.setVisible(FALSE);
+    btnCancelarAUsuario.setVisible(FALSE);
+    btnEliminarA.setVisible(TRUE);
+    bntAceptarA.setVisible(TRUE);
+    btnCancelarA.setVisible(TRUE);
+   
+    configurarTablaCanciones();
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection(); 
 
-        configurarTablaCanciones();
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    // Llamar al método obtenerTodasCanciones
+    List<String[]> canciones = baseDeDatos.obtenerTodasCanciones();
 
-        // Llamar al método obtenerTodasCanciones
-        List<String[]> canciones = baseDeDatos.obtenerTodasCanciones();
+    // Obtener el modelo de la tabla
+    DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
 
-        // Obtener el modelo de la tabla
-        DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
+    // Limpiar la tabla antes de llenar con nuevos datos
+    modeloTabla.setRowCount(0);
 
-        // Limpiar la tabla antes de llenar con nuevos datos
-        modeloTabla.setRowCount(0);
+    // Agregar los datos obtenidos a la tabla
+    for (String[] fila : canciones) {
+        modeloTabla.addRow(fila);
+    }
 
-        // Agregar los datos obtenidos a la tabla
-        for (String[] fila : canciones) {
-            modeloTabla.addRow(fila);
-        }
-
-        // Opcional: Mensaje si no se encontraron resultados
-        if (canciones.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron Usuarios en la base de datos.");
-        }
+    // Opcional: Mensaje si no se encontraron resultados
+    if (canciones.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron Usuarios en la base de datos.");
+    }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void verUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verUsuariosActionPerformed
-        TxtBuscarCancioes.setVisible(FALSE);
-        jButton16.setVisible(FALSE);
-        TxtBuscarUsuario.setVisible(TRUE);
-        jButton17usuario.setVisible(TRUE);
-        btnEliminarAUsuario.setVisible(TRUE);
-        bntAceptarAUsuario.setVisible(TRUE);
-        btnCancelarAUsuario.setVisible(TRUE);
-        btnEliminarA.setVisible(FALSE);
-        bntAceptarA.setVisible(FALSE);
-        btnCancelarA.setVisible(FALSE);
+    TxtBuscarCancioes.setVisible(FALSE);
+    jButton16.setVisible(FALSE);
+    TxtBuscarUsuario.setVisible(TRUE);
+    jButton17usuario.setVisible(TRUE);
+    btnEliminarAUsuario.setVisible(TRUE);
+    bntAceptarAUsuario.setVisible(TRUE);
+    btnCancelarAUsuario.setVisible(TRUE);
+    btnEliminarA.setVisible(FALSE);
+    bntAceptarA.setVisible(FALSE);
+    btnCancelarA.setVisible(FALSE);
+       
+       
+    configurarTablaUsuarios();
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection(); 
 
-        configurarTablaUsuarios();
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    // Llamar al método obtenerTodasCanciones
+    List<String[]> Usuarios = baseDeDatos.obtenrUsuarios();
 
-        // Llamar al método obtenerTodasCanciones
-        List<String[]> Usuarios = baseDeDatos.obtenrUsuarios();
+    // Obtener el modelo de la tabla
+    DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
 
-        // Obtener el modelo de la tabla
-        DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
+    // Limpiar la tabla antes de llenar con nuevos datos
+    modeloTablaUs.setRowCount(0);
 
-        // Limpiar la tabla antes de llenar con nuevos datos
-        modeloTablaUs.setRowCount(0);
+    // Agregar los datos obtenidos a la tabla
+    for (String[] fila : Usuarios) {
+        modeloTablaUs.addRow(fila);
+    }
 
-        // Agregar los datos obtenidos a la tabla
-        for (String[] fila : Usuarios) {
-            modeloTablaUs.addRow(fila);
-        }
-
-        // Opcional: Mensaje si no se encontraron resultados
-        if (Usuarios.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron Uusarios en la base de datos.");
-        }
+    // Opcional: Mensaje si no se encontraron resultados
+    if (Usuarios.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron Uusarios en la base de datos.");
+    }
     }//GEN-LAST:event_verUsuariosActionPerformed
     //Editar Usuarios
     private void bntAceptarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAceptarAActionPerformed
-        int filaSeleccionada = jTResultados.getSelectedRow();
+    int filaSeleccionada = jTResultados.getSelectedRow();
 
-        if (filaSeleccionada != -1) {
-            // Obtener los valores de la fila seleccionada
-            int idCancion = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 0).toString());
-            String nombre = jTResultados.getValueAt(filaSeleccionada, 1).toString();
-            String artista = jTResultados.getValueAt(filaSeleccionada, 2).toString();
-            String album = jTResultados.getValueAt(filaSeleccionada, 3).toString();
-            String duracion = jTResultados.getValueAt(filaSeleccionada, 4).toString();
-            int genero = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 5).toString());
-            String rutaImagen = jTResultados.getValueAt(filaSeleccionada, 6).toString();
-            String rutaCancion = jTResultados.getValueAt(filaSeleccionada, 7).toString();
+    if (filaSeleccionada != -1) {
+        // Obtener los valores de la fila seleccionada
+        int idCancion = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 0).toString());
+        String nombre = jTResultados.getValueAt(filaSeleccionada, 1).toString();
+        String artista = jTResultados.getValueAt(filaSeleccionada, 2).toString();
+        String album = jTResultados.getValueAt(filaSeleccionada, 3).toString();
+        String duracion = jTResultados.getValueAt(filaSeleccionada, 4).toString();
+        int genero = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 5).toString());
+        String rutaImagen = jTResultados.getValueAt(filaSeleccionada, 6).toString();
+        String rutaCancion = jTResultados.getValueAt(filaSeleccionada, 7).toString();
 
-            // Crear un objeto Cancion con los valores obtenidos
-            cancion ncancion = new cancion(idCancion, nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
+        // Crear un objeto Cancion con los valores obtenidos
+        cancion ncancion = new cancion(idCancion, nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
 
-            // Crear instancia de la clase de conexión a la base de datos
-            PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+        // Crear instancia de la clase de conexión a la base de datos
+        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
 
-            // Llamar al método para actualizar la canción en la base de datos
-            boolean exito = baseDeDatos.actualizarCancion(ncancion);
+        // Llamar al método para actualizar la canción en la base de datos
+        boolean exito = baseDeDatos.actualizarCancion(ncancion);
 
-            if (exito) {
-                // Actualizar la fila en el JTable con los nuevos valores
-                DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
-                modeloTabla.setValueAt(nombre, filaSeleccionada, 1); // Actualizar la columna "Nombre"
-                modeloTabla.setValueAt(artista, filaSeleccionada, 2);  // Actualizar la columna "Autor"
-                modeloTabla.setValueAt(album, filaSeleccionada, 3);  // Actualizar la columna "Álbum"
-                modeloTabla.setValueAt(duracion, filaSeleccionada, 4); // Actualizar la columna "Duración"
-                modeloTabla.setValueAt(genero, filaSeleccionada, 5);  // Actualizar la columna "Género"
-                modeloTabla.setValueAt(rutaImagen, filaSeleccionada, 6); // Actualizar la columna "Ruta Imagen"
-                modeloTabla.setValueAt(rutaCancion, filaSeleccionada, 7); // Actualizar la columna "Ruta Canción"
+        if (exito) {
+            // Actualizar la fila en el JTable con los nuevos valores
+            DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
+            modeloTabla.setValueAt(nombre, filaSeleccionada, 1); // Actualizar la columna "Nombre"
+            modeloTabla.setValueAt(artista, filaSeleccionada, 2);  // Actualizar la columna "Autor"
+            modeloTabla.setValueAt(album, filaSeleccionada, 3);  // Actualizar la columna "Álbum"
+            modeloTabla.setValueAt(duracion, filaSeleccionada, 4); // Actualizar la columna "Duración"
+            modeloTabla.setValueAt(genero, filaSeleccionada, 5);  // Actualizar la columna "Género"
+            modeloTabla.setValueAt(rutaImagen, filaSeleccionada, 6); // Actualizar la columna "Ruta Imagen"
+            modeloTabla.setValueAt(rutaCancion, filaSeleccionada, 7); // Actualizar la columna "Ruta Canción"
 
-                JOptionPane.showMessageDialog(this, "Canción actualizada correctamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al actualizar la canción.");
-            }
+            JOptionPane.showMessageDialog(this, "Canción actualizada correctamente.");
         } else {
-            JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para actualizar.");
+            JOptionPane.showMessageDialog(this, "Error al actualizar la canción.");
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para actualizar.");
+    }
     }//GEN-LAST:event_bntAceptarAActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         ///*
         // Obtener el texto que el usuario ingresó en TxtBuscarCanciones
-        String nombreCancion = TxtBuscarCancioes.getText().trim();
+    String nombreCancion = TxtBuscarCancioes.getText().trim();
+    
+    // Validar que el campo no esté vacío
+    if (nombreCancion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre para buscar.");
+        return;
+    }
+    
+    // Limpiar la tabla antes de mostrar los nuevos resultados
+    DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
+    modeloTabla.setRowCount(0);
 
-        // Validar que el campo no esté vacío
-        if (nombreCancion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre para buscar.");
-            return;
+    // Llamar al método de búsqueda en la base de datos
+    List<String[]> canciones = buscarCancionesPorNombre(nombreCancion);
+
+    // Si no se encontraron canciones
+    if (canciones.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron canciones con ese nombre.");
+    } else {
+        // Agregar los resultados a la tabla jTResultados
+        for (String[] cancion : canciones) {
+            modeloTabla.addRow(cancion);
         }
-
-        // Limpiar la tabla antes de mostrar los nuevos resultados
-        DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
-        modeloTabla.setRowCount(0);
-
-        // Llamar al método de búsqueda en la base de datos
-        List<String[]> canciones = buscarCancionesPorNombre(nombreCancion);
-
-        // Si no se encontraron canciones
-        if (canciones.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron canciones con ese nombre.");
-        } else {
-            // Agregar los resultados a la tabla jTResultados
-            for (String[] cancion : canciones) {
-                modeloTabla.addRow(cancion);
-            }
-        }
-
+    }
+        
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void atrasMAbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasMAbtnActionPerformed
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardVentacaMAdmin");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardVentacaMAdmin");
     }//GEN-LAST:event_atrasMAbtnActionPerformed
 
     private void btnAgregarFormularioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFormularioActionPerformed
+    
+    String nombre = txtNombreISC.getText();  
+    String artista = txtArtistaISC.getText();         
+    String album = txtAlbumISC.getText();        
+    String duracion = txtDuracionISC.getText();    
+    String rutaImagen = txtRutaDePortadaISC.getText();
+    String rutaCancion = txtRutadeCancionISC.getText();
 
-        String nombre = txtNombreISC.getText();
-        String artista = txtArtistaISC.getText();
-        String album = txtAlbumISC.getText();
-        String duracion = txtDuracionISC.getText();
-        String rutaImagen = txtRutaDePortadaISC.getText();
-        String rutaCancion = txtRutadeCancionISC.getText();
+    // Obtener el valor seleccionado del ComboBox
+    String valorSeleccionado = comboGeneroISC.getSelectedItem().toString();
 
-        // Obtener el valor seleccionado del ComboBox
-        String valorSeleccionado = comboGeneroISC.getSelectedItem().toString();
+    // Convertir el valor a un entero
+    int genero = 0;
+    try {
+        genero = Integer.parseInt(valorSeleccionado);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El género seleccionado no es un número válido.");
+        return;
+    }
 
-        // Convertir el valor a un entero
-        int genero = 0;
-        try {
-            genero = Integer.parseInt(valorSeleccionado);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El género seleccionado no es un número válido.");
-            return;
-        }
+    // Verificar que todos los campos estén completos
+    if (nombre.isEmpty() || artista.isEmpty() || album.isEmpty() || duracion.isEmpty() || rutaImagen.isEmpty() || rutaCancion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.");
+        return;
+    }
 
-        // Verificar que todos los campos estén completos
-        if (nombre.isEmpty() || artista.isEmpty() || album.isEmpty() || duracion.isEmpty() || rutaImagen.isEmpty() || rutaCancion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.");
-            return;
-        }
+    // Crear la conexión a la base de datos
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    boolean exito = baseDeDatos.insertarCancion(nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
 
-        // Crear la conexión a la base de datos
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarCancion(nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
-
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Canción agregada correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al agregar la canción a la base de datos.");
-        }
-
-
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "Canción agregada correctamente.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al agregar la canción a la base de datos.");
+    }
+        
+       
     }//GEN-LAST:event_btnAgregarFormularioActionPerformed
 
     private void jbLpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLpActionPerformed
@@ -2403,199 +2407,200 @@ public class Interfaz extends javax.swing.JFrame {
         txtDuracionISC.setText("");
         txtRutadeCancionISC.setText("");
         txtRutaDePortadaISC.setText("");
-
+        
     }//GEN-LAST:event_jbLpActionPerformed
 
     private void btnEliminarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAActionPerformed
-
-        int filaSeleccionada = jTResultados.getSelectedRow();
-        int respuesta = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de que deseas eliminar este registro?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
+       
+    int filaSeleccionada = jTResultados.getSelectedRow();
+    int respuesta = JOptionPane.showConfirmDialog(
+            this, 
+            "¿Estás seguro de que deseas eliminar este registro?", 
+            "Confirmar eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE
         );
-        if (respuesta == JOptionPane.YES_OPTION) {
+    if (respuesta == JOptionPane.YES_OPTION) {
+   
+        if (filaSeleccionada != -1) {
+            // Obtener el ID de la fila seleccionada (suponiendo que está en la primera columna)
+            String id = jTResultados.getValueAt(filaSeleccionada, 0).toString();
 
-            if (filaSeleccionada != -1) {
-                // Obtener el ID de la fila seleccionada (suponiendo que está en la primera columna)
-                String id = jTResultados.getValueAt(filaSeleccionada, 0).toString();
+            // Eliminar el registro de la base de datos
+            PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+            boolean exito = baseDeDatos.eliminarPorId(id); // Implementa este método en tu clase de conexión
 
-                // Eliminar el registro de la base de datos
-                PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-                boolean exito = baseDeDatos.eliminarPorId(id); // Implementa este método en tu clase de conexión
-
-                if (exito) {
-                    // Eliminar la fila del JTable
-                    DefaultTableModel modelo = (DefaultTableModel) jTResultados.getModel();
-                    modelo.removeRow(filaSeleccionada);
-                    JOptionPane.showMessageDialog(this, "Fila eliminada correctamente.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error al eliminar la fila de la base de datos.");
-                }
+            if (exito) {
+                // Eliminar la fila del JTable
+                DefaultTableModel modelo = (DefaultTableModel) jTResultados.getModel();
+                modelo.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(this, "Fila eliminada correctamente.");
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para eliminar.");
+                JOptionPane.showMessageDialog(this, "Error al eliminar la fila de la base de datos.");
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para eliminar.");
         }
+    }  
     }//GEN-LAST:event_btnEliminarAActionPerformed
 
     private void btnCancelarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAActionPerformed
-        configurarTablaCanciones();
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    configurarTablaCanciones();
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection(); 
 
-        // Llamar al método obtenerTodasCanciones
-        List<String[]> canciones = baseDeDatos.obtenerTodasCanciones();
+    // Llamar al método obtenerTodasCanciones
+    List<String[]> canciones = baseDeDatos.obtenerTodasCanciones();
 
-        // Obtener el modelo de la tabla
-        DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
+    // Obtener el modelo de la tabla
+    DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
 
-        // Limpiar la tabla antes de llenar con nuevos datos
-        modeloTabla.setRowCount(0);
+    // Limpiar la tabla antes de llenar con nuevos datos
+    modeloTabla.setRowCount(0);
 
-        // Agregar los datos obtenidos a la tabla
-        for (String[] fila : canciones) {
-            modeloTabla.addRow(fila);
-        }
+    // Agregar los datos obtenidos a la tabla
+    for (String[] fila : canciones) {
+        modeloTabla.addRow(fila);
+    }
 
-        // Opcional: Mensaje si no se encontraron resultados
-        if (canciones.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron Usuarios en la base de datos.");
-        }
+    // Opcional: Mensaje si no se encontraron resultados
+    if (canciones.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron Usuarios en la base de datos.");
+    }
     }//GEN-LAST:event_btnCancelarAActionPerformed
 
     private void btnEliminarAUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAUsuarioActionPerformed
-
-        int filaSeleccionada = jTResultados.getSelectedRow();
-        int respuesta = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de que deseas eliminar este registro?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
+       
+    int filaSeleccionada = jTResultados.getSelectedRow();
+    int respuesta = JOptionPane.showConfirmDialog(
+            this, 
+            "¿Estás seguro de que deseas eliminar este registro?", 
+            "Confirmar eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE
         );
-        if (respuesta == JOptionPane.YES_OPTION) {
+    if (respuesta == JOptionPane.YES_OPTION) {
+   
+        if (filaSeleccionada != -1) {
+            // Obtener el ID de la fila seleccionada (suponiendo que está en la primera columna)
+            String id = jTResultados.getValueAt(filaSeleccionada, 0).toString();
 
-            if (filaSeleccionada != -1) {
-                // Obtener el ID de la fila seleccionada (suponiendo que está en la primera columna)
-                String id = jTResultados.getValueAt(filaSeleccionada, 0).toString();
+            // Eliminar el registro de la base de datos
+            PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+            boolean exito = baseDeDatos.eliminarPorIdUsuario(id); // Implementa este método en tu clase de conexión
 
-                // Eliminar el registro de la base de datos
-                PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-                boolean exito = baseDeDatos.eliminarPorIdUsuario(id); // Implementa este método en tu clase de conexión
-
-                if (exito) {
-                    // Eliminar la fila del JTable
-                    DefaultTableModel modelo = (DefaultTableModel) jTResultados.getModel();
-                    modelo.removeRow(filaSeleccionada);
-                    JOptionPane.showMessageDialog(this, "Fila eliminada correctamente.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error al eliminar la fila de la base de datos.");
-                }
+            if (exito) {
+                // Eliminar la fila del JTable
+                DefaultTableModel modelo = (DefaultTableModel) jTResultados.getModel();
+                modelo.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(this, "Fila eliminada correctamente.");
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para eliminar.");
+                JOptionPane.showMessageDialog(this, "Error al eliminar la fila de la base de datos.");
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para eliminar.");
         }
+    }  
     }//GEN-LAST:event_btnEliminarAUsuarioActionPerformed
 
     private void bntAceptarAUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntAceptarAUsuarioActionPerformed
         int filaSeleccionada = jTResultados.getSelectedRow();
         if (filaSeleccionada != -1) {
-            // Obtener los valores de la fila seleccionada
-            int idUsuario = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 0).toString());
-            String nombre = jTResultados.getValueAt(filaSeleccionada, 1).toString();
-            String apellidos = jTResultados.getValueAt(filaSeleccionada, 2).toString();
-            String correo = jTResultados.getValueAt(filaSeleccionada, 3).toString();
-            String contrasena = jTResultados.getValueAt(filaSeleccionada, 4).toString();
-            String isadmin = jTResultados.getValueAt(filaSeleccionada, 5).toString();
-            String prguntac = jTResultados.getValueAt(filaSeleccionada, 6).toString();
+        // Obtener los valores de la fila seleccionada
+        int idUsuario = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 0).toString());
+        String nombre = jTResultados.getValueAt(filaSeleccionada, 1).toString();
+        String apellidos = jTResultados.getValueAt(filaSeleccionada, 2).toString();
+        String correo = jTResultados.getValueAt(filaSeleccionada, 3).toString();
+        String contrasena = jTResultados.getValueAt(filaSeleccionada, 4).toString();
+        String isadmin = jTResultados.getValueAt(filaSeleccionada, 5).toString();
+        String prguntac = jTResultados.getValueAt(filaSeleccionada, 6).toString();
+        
 
-            // Crear un objeto 
-            usuario nusuario = new usuario(idUsuario, nombre, apellidos, correo, contrasena, isadmin);
+        // Crear un objeto 
+        usuario nusuario = new usuario(idUsuario, nombre, apellidos, correo, contrasena, isadmin);
 
-            // Crear instancia de la clase de conexión a la base de datos
-            PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+        // Crear instancia de la clase de conexión a la base de datos
+        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
 
-            // Llamar al método para actualizar la canción en la base de datos
-            boolean exito = baseDeDatos.actualizarUsuario(nusuario);
+        // Llamar al método para actualizar la canción en la base de datos
+        boolean exito = baseDeDatos.actualizarUsuario(nusuario);
 
-            if (exito) {
-                // Actualizar la fila en el JTable con los nuevos valores
-                DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
-                modeloTablaUs.setValueAt(nombre, filaSeleccionada, 1);
-                modeloTablaUs.setValueAt(apellidos, filaSeleccionada, 2);
-                modeloTablaUs.setValueAt(correo, filaSeleccionada, 3);
-                modeloTablaUs.setValueAt(contrasena, filaSeleccionada, 4);
-                modeloTablaUs.setValueAt(isadmin, filaSeleccionada, 5);
-                modeloTablaUs.setValueAt(prguntac, filaSeleccionada, 6);
+        if (exito) {
+            // Actualizar la fila en el JTable con los nuevos valores
+            DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
+            modeloTablaUs.setValueAt(nombre, filaSeleccionada, 1); 
+            modeloTablaUs.setValueAt(apellidos, filaSeleccionada, 2);  
+            modeloTablaUs.setValueAt(correo, filaSeleccionada, 3);  
+            modeloTablaUs.setValueAt(contrasena, filaSeleccionada, 4); 
+            modeloTablaUs.setValueAt(isadmin, filaSeleccionada, 5);  
+            modeloTablaUs.setValueAt(prguntac, filaSeleccionada, 6); 
 
-                JOptionPane.showMessageDialog(this, "Usuario actualizada correctamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al actualizar el usuario.");
-            }
+            JOptionPane.showMessageDialog(this, "Usuario actualizada correctamente.");
         } else {
-            JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para actualizar.");
+            JOptionPane.showMessageDialog(this, "Error al actualizar el usuario.");
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila para actualizar.");
+    }
     }//GEN-LAST:event_bntAceptarAUsuarioActionPerformed
 
     private void btnCancelarAUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAUsuarioActionPerformed
         // TODO add your handling code here:
         configurarTablaUsuarios();
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection(); 
 
-        // Llamar al método obtenerTodasCanciones
-        List<String[]> Usuarios = baseDeDatos.obtenrUsuarios();
+    // Llamar al método obtenerTodasCanciones
+    List<String[]> Usuarios = baseDeDatos.obtenrUsuarios();
 
-        // Obtener el modelo de la tabla
-        DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
+    // Obtener el modelo de la tabla
+    DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
 
-        // Limpiar la tabla antes de llenar con nuevos datos
-        modeloTablaUs.setRowCount(0);
+    // Limpiar la tabla antes de llenar con nuevos datos
+    modeloTablaUs.setRowCount(0);
 
-        // Agregar los datos obtenidos a la tabla
-        for (String[] fila : Usuarios) {
-            modeloTablaUs.addRow(fila);
-        }
+    // Agregar los datos obtenidos a la tabla
+    for (String[] fila : Usuarios) {
+        modeloTablaUs.addRow(fila);
+    }
 
-        // Opcional: Mensaje si no se encontraron resultados
-        if (Usuarios.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron Uusarios en la base de datos.");
-        }
-
+    // Opcional: Mensaje si no se encontraron resultados
+    if (Usuarios.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron Uusarios en la base de datos.");
+    }
+        
     }//GEN-LAST:event_btnCancelarAUsuarioActionPerformed
 
     private void jButton17usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17usuarioActionPerformed
         // TxtBuscarUsuario
-        String nombreUsuario = TxtBuscarUsuario.getText().trim();
+         String nombreUsuario = TxtBuscarUsuario.getText().trim();
+    
+    // Validar que el campo no esté vacío
+    if (nombreUsuario.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre para buscar.");
+        return;
+    }
+    
+    // Limpiar la tabla antes de mostrar los nuevos resultados
+    DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
+    modeloTablaUs.setRowCount(0);
 
-        // Validar que el campo no esté vacío
-        if (nombreUsuario.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre para buscar.");
-            return;
+    // Llamar al método de búsqueda en la base de datos
+    List<String[]> usuarios = buscarUsuarioPorNombre(nombreUsuario );
+
+    // Si no se encontraron canciones
+    if (usuarios.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron canciones con ese nombre.");
+    } else {
+        // Agregar los resultados a la tabla jTResultados
+        for (String[] usuario : usuarios) {
+            modeloTablaUs.addRow(usuario);
         }
-
-        // Limpiar la tabla antes de mostrar los nuevos resultados
-        DefaultTableModel modeloTablaUs = (DefaultTableModel) jTResultados.getModel();
-        modeloTablaUs.setRowCount(0);
-
-        // Llamar al método de búsqueda en la base de datos
-        List<String[]> usuarios = buscarUsuarioPorNombre(nombreUsuario);
-
-        // Si no se encontraron canciones
-        if (usuarios.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron canciones con ese nombre.");
-        } else {
-            // Agregar los resultados a la tabla jTResultados
-            for (String[] usuario : usuarios) {
-                modeloTablaUs.addRow(usuario);
-            }
-        }
+    }
     }//GEN-LAST:event_jButton17usuarioActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardAgregaruA");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardAgregaruA");
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void txtArtistaISCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArtistaISCActionPerformed
@@ -2609,13 +2614,13 @@ public class Interfaz extends javax.swing.JFrame {
         txtCorreousuarios.setText("");
         txtContrasenausuarios.setText(" ");
         txtConfirmarContrasenausuarios.setText(" ");
-
+       
     }//GEN-LAST:event_jbLp1ActionPerformed
 
     private void atrasMAbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasMAbtn1ActionPerformed
         // cardVentacaMAdmin
-        card = (CardLayout) this.panelprincipal.getLayout();
-        card.show(panelprincipal, "cardVentacaMAdmin");
+        card = (CardLayout)this.panelprincipal.getLayout();
+        card.show(panelprincipal,"cardVentacaMAdmin");
     }//GEN-LAST:event_atrasMAbtn1ActionPerformed
 
     private void txtNombreusuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreusuariosActionPerformed
@@ -2625,134 +2630,137 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnAgregarFormulario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFormulario1ActionPerformed
         // TODO add your handling code here:
         // Obtener los valores de los campos de texto
-        String nombre = txtNombreusuarios.getText();
-        String apellidos = txtApellidosusuarios.getText();
-        String correo = txtCorreousuarios.getText();
-        String contrasena = txtContrasenausuarios.getText();
-        String confirmarContrasena = txtConfirmarContrasenausuarios.getText();
-        String isadmin = txtIsAdminusuarios.getSelectedItem().toString();
+    String nombre = txtNombreusuarios.getText();
+    String apellidos = txtApellidosusuarios.getText();
+    String correo = txtCorreousuarios.getText();
+    String contrasena = txtContrasenausuarios.getText();
+    String confirmarContrasena = txtConfirmarContrasenausuarios.getText(); 
+    String isadmin = txtIsAdminusuarios.getSelectedItem().toString();
+   
 
-        // Validar que las contraseñas coincidan
-        if (!contrasena.equals(confirmarContrasena)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden. Por favor, verifica.");
-            return;
-        }
+    // Validar que las contraseñas coincidan
+    if (!contrasena.equals(confirmarContrasena)) {
+        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden. Por favor, verifica.");
+        return;
+    }
 
-        // Validar que los demás campos no estén vacíos
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || isadmin.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
-            return;
-        }
+    // Validar que los demás campos no estén vacíos
+    if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || isadmin.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
+        return;
+    }
 
-        // Llamar al método de inserción
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
+    // Llamar al método de inserción
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
 
-        // Mostrar mensaje según el resultado
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Usuario insertado correctamente.");
-            generarPDFUsuario(nombre, apellidos, correo);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al insertar el usuario.");
-        }
+    // Mostrar mensaje según el resultado
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "Usuario insertado correctamente.");
+        generarPDFUsuario(nombre, apellidos, correo);
+       
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al insertar el usuario.");
+    }
     }//GEN-LAST:event_btnAgregarFormulario1ActionPerformed
 
     private void btnCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCuentaActionPerformed
         // rbTerminos
         // Validar que el RadioButton esté seleccionado
-        if (!rbAceptaTerminos.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Debes aceptar los términos y condiciones para continuar.");
-            return; // Detener la ejecución si no está seleccionado
-        }
+    if (!rbAceptaTerminos.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Debes aceptar los términos y condiciones para continuar.");
+        return; // Detener la ejecución si no está seleccionado
+    }
 
-        // Obtener los valores de los campos de texto
-        String nombre = txtNombres.getText();
-        String apellidos = txtApellidos.getText();
-        String correo = txtCorreoCrearCuenta.getText();
-        String contrasena = txtContraseñaCrearCuenta.getText();
-        String confirmarContrasena = txtConfirmarCC.getText(); // Campo de confirmación
+    // Obtener los valores de los campos de texto
+    String nombre = txtNombres.getText();
+    String apellidos = txtApellidos.getText();
+    String correo = txtCorreoCrearCuenta.getText();
+    String contrasena = txtContraseñaCrearCuenta.getText();
+    String confirmarContrasena = txtConfirmarCC.getText(); // Campo de confirmación
+    
 
-        // Validar que las contraseñas coincidan
-        if (!contrasena.equals(confirmarContrasena)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden. Por favor, verifica.");
-            return;
-        }
+    // Validar que las contraseñas coincidan
+    if (!contrasena.equals(confirmarContrasena)) {
+        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden. Por favor, verifica.");
+        return;
+    }
 
-        // Validar que los demás campos no estén vacíos
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
-            return;
-        }
+    // Validar que los demás campos no estén vacíos
+    if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
+        return;
+    }
 
-        // Establecer isadmin directamente en false
-        String isadmin = "false"; // Siempre será false
+    // Establecer isadmin directamente en false
+    String isadmin = "false"; // Siempre será false
 
-        // Llamar al método de inserción
-        PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
+    // Llamar al método de inserción
+    PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
+    boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
 
-        // Mostrar mensaje según el resultado
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Usuario insertado correctamente.");
-            // Generar el PDF para el usuario creado
-            generarPDFUsuario(nombre, apellidos, correo);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al insertar el usuario.");
-        }
+    // Mostrar mensaje según el resultado
+    if (exito) {
+        JOptionPane.showMessageDialog(this, "Usuario insertado correctamente.");
+        // Generar el PDF para el usuario creado
+        generarPDFUsuario(nombre, apellidos, correo);
+        
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al insertar el usuario.");
+    }
     }//GEN-LAST:event_btnCrearCuentaActionPerformed
 
     private void rcancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rcancionActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Seleccionar Canción");
-
-        // Permite seleccionar solo archivos (no directorios)
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        // Mostrar el cuadro de diálogo
-        int result = fileChooser.showOpenDialog(this);
-
-        // Si se selecciona un archivo
-        if (result == JFileChooser.APPROVE_OPTION) {
-            // Obtener el archivo seleccionado
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-
-            // Obtener la ruta del archivo seleccionado
-            String rutaCancion = archivoSeleccionado.getAbsolutePath();
-
-            // Colocar la ruta en el JTextField correspondiente
-            txtRutadeCancionISC.setText(rutaCancion);
-        }
-
+    fileChooser.setDialogTitle("Seleccionar Canción");
+    
+    // Permite seleccionar solo archivos (no directorios)
+    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    
+    // Mostrar el cuadro de diálogo
+    int result = fileChooser.showOpenDialog(this);
+    
+    // Si se selecciona un archivo
+    if (result == JFileChooser.APPROVE_OPTION) {
+        // Obtener el archivo seleccionado
+        File archivoSeleccionado = fileChooser.getSelectedFile();
+        
+        // Obtener la ruta del archivo seleccionado
+        String rutaCancion = archivoSeleccionado.getAbsolutePath();
+        
+        // Colocar la ruta en el JTextField correspondiente
+        txtRutadeCancionISC.setText(rutaCancion);
+    }
+        
     }//GEN-LAST:event_rcancionActionPerformed
 
     private void rportadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rportadaActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Seleccionar Portada");
-
-        // Permite seleccionar solo archivos (no directorios)
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        // Mostrar el cuadro de diálogo
-        int result = fileChooser.showOpenDialog(this);
-
-        // Si se selecciona un archivo
-        if (result == JFileChooser.APPROVE_OPTION) {
-            // Obtener el archivo seleccionado
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-
-            // Obtener la ruta del archivo seleccionado
-            String rutaPortada = archivoSeleccionado.getAbsolutePath();
-
-            // Colocar la ruta en el JTextField correspondiente
-            txtRutaDePortadaISC.setText(rutaPortada);
-        }
+    fileChooser.setDialogTitle("Seleccionar Portada");
+    
+    // Permite seleccionar solo archivos (no directorios)
+    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    
+    // Mostrar el cuadro de diálogo
+    int result = fileChooser.showOpenDialog(this);
+    
+    // Si se selecciona un archivo
+    if (result == JFileChooser.APPROVE_OPTION) {
+        // Obtener el archivo seleccionado
+        File archivoSeleccionado = fileChooser.getSelectedFile();
+        
+        // Obtener la ruta del archivo seleccionado
+        String rutaPortada = archivoSeleccionado.getAbsolutePath();
+        
+        // Colocar la ruta en el JTextField correspondiente
+        txtRutaDePortadaISC.setText(rutaPortada);
+    }
 
     }//GEN-LAST:event_rportadaActionPerformed
 
+   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2784,65 +2792,65 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
     }
-
     ///clase rdondear paneles
     public List<String[]> buscarCancionesPorNombre(String nombreCancion) {
-        List<String[]> canciones = new ArrayList<>();
-        String consulta = "SELECT * FROM cancion WHERE nombre LIKE ?";
+    List<String[]> canciones = new ArrayList<>();
+    String consulta = "SELECT * FROM cancion WHERE nombre LIKE ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement stmt = conn.prepareStatement(consulta)) {
+    try (Connection conn = DriverManager.getConnection(url, user, password);
+         PreparedStatement stmt = conn.prepareStatement(consulta)) {
 
-            // Usamos el parámetro para hacer la búsqueda de canciones que contienen el nombre proporcionado
-            stmt.setString(1, "%" + nombreCancion + "%");
+        // Usamos el parámetro para hacer la búsqueda de canciones que contienen el nombre proporcionado
+        stmt.setString(1, "%" + nombreCancion + "%");
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    String[] fila = new String[]{
-                        String.valueOf(rs.getInt("id_cancion")),
-                        rs.getString("nombre"),
-                        rs.getString("artista"),
-                        rs.getString("album"),
-                        rs.getString("duracion"),
-                        rs.getString("genero"),
-                        rs.getString("ruta_imagen"),
-                        rs.getString("ruta_cancion")
-                    };
-                    canciones.add(fila);
-                }
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String[] fila = new String[]{
+                    String.valueOf(rs.getInt("id_cancion")),
+                    rs.getString("nombre"),
+                    rs.getString("artista"),
+                    rs.getString("album"),
+                    rs.getString("duracion"),
+                    rs.getString("genero"),
+                    rs.getString("ruta_imagen"),
+                    rs.getString("ruta_cancion")
+                };
+                canciones.add(fila);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar canciones por nombre: " + e.getMessage());
         }
-        return canciones;
+    } catch (SQLException e) {
+        System.err.println("Error al buscar canciones por nombre: " + e.getMessage());
     }
-
+    return canciones;
+}
     public List<String[]> buscarUsuarioPorNombre(String nombreUsuario) {
-        List<String[]> usuarios = new ArrayList<>();
-        String consulta = "SELECT * FROM usuario WHERE nombre LIKE ?";
+    List<String[]> usuarios = new ArrayList<>();
+    String consulta = "SELECT * FROM usuario WHERE nombre LIKE ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement stmt = conn.prepareStatement(consulta)) {
+    try (Connection conn = DriverManager.getConnection(url, user, password);
+         PreparedStatement stmt = conn.prepareStatement(consulta)) {
 
-            // Usamos el parámetro para hacer la búsqueda de canciones que contienen el nombre proporcionado
-            stmt.setString(1, "%" + nombreUsuario + "%");
+        // Usamos el parámetro para hacer la búsqueda de canciones que contienen el nombre proporcionado
+        stmt.setString(1, "%" + nombreUsuario + "%");
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    String[] fila = new String[]{
-                        String.valueOf(rs.getInt("id_usuario")),
-                        rs.getString("nombre"),
-                        rs.getString("apellidos"),
-                        rs.getString("correo"),
-                        rs.getString("contrasena"),
-                        rs.getString("isadmin")
-                    };
-                    usuarios.add(fila);
-                }
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String[] fila = new String[]{
+                    String.valueOf(rs.getInt("id_usuario")),
+                    rs.getString("nombre"),
+                    rs.getString("apellidos"),
+                    rs.getString("correo"),
+                    rs.getString("contrasena"),
+                    rs.getString("isadmin")
+                };
+                usuarios.add(fila);
             }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar Usuarios por nombre: " + e.getMessage());
         }
-        return usuarios;
+    } catch (SQLException e) {
+        System.err.println("Error al buscar Usuarios por nombre: " + e.getMessage());
     }
+    return usuarios;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AgregarPlaylist;

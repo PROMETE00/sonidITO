@@ -39,7 +39,7 @@ import java.io.FileOutputStream;
  */
 public class Interfaz extends javax.swing.JFrame {
 
-    public String url = "jdbc:postgresql://localhost:5432/sonidITO";
+    public String url = "jdbc:postgresql://localhost:5432/postgres";
     public String user = "postgres";
     public String password = "98127463";
 
@@ -73,10 +73,8 @@ public class Interfaz extends javax.swing.JFrame {
         textoSombra correocrear = new textoSombra(" correoejemplo@gmail.com", txtCorreoCrearCuenta);
         textoSombra contracrear = new textoSombra(" Contraseña", txtContraseñaCrearCuenta);
         textoSombra contracrearconformar = new textoSombra(" Confirmar Contraseña", txtConfirmarCC);
-        textoSombra color = new textoSombra("¿Cual es tu color favorito?", txtcolorfavorito);
         //Restablecer Contraseña  
         textoSombra correorecu = new textoSombra("correoejemplo@gmail.com", correorecuperarcontra);
-        textoSombra pregunta1c = new textoSombra("¿cual es tu color favorito?", preguntac);
 
         //botones invisibles
         btnrestablecerC.setBackground(inv);
@@ -125,7 +123,7 @@ public class Interfaz extends javax.swing.JFrame {
     /*Tabla de caniones*/
     private void configurarTablaCanciones() {
         DefaultTableModel modeloTabla = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "autor", "Álbum", "Duración", "Género", "Ruta Imagen", "Ruta Canción"},
+                new String[]{"ID", "Nombre", "Artista", "Álbum", "Duración", "Género", "Ruta Imagen", "Ruta Canción"},
                 0
         );
         jTResultados.setModel(modeloTabla);
@@ -134,7 +132,7 @@ public class Interfaz extends javax.swing.JFrame {
     //Tabla Uusarios
     private void configurarTablaUsuarios() {
         DefaultTableModel modeloTablaUs = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "Apellidos", "Correo", "Contraseña", "Admin", "Color Favorito"},
+                new String[]{"ID", "Nombre", "Apellidos", "Correo", "Contraseña", "Admin"},
                 0
         );
         jTResultados.setModel(modeloTablaUs);
@@ -215,9 +213,6 @@ public class Interfaz extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
-        jLabel38 = new javax.swing.JLabel();
-        txtcolorfavorito = new javax.swing.JPasswordField();
-        jSeparator10 = new javax.swing.JSeparator();
         flecha1 = new javax.swing.JButton();
         RestablecerContra = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -313,8 +308,6 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         btnAgregarFormulario1 = new javax.swing.JButton();
-        txtPreguntaCusuarios = new javax.swing.JTextField();
-        jLabel34 = new javax.swing.JLabel();
         AgregarPlaylist = new javax.swing.JPanel();
         jLabel45 = new javax.swing.JLabel();
         jButton13 = new javax.swing.JButton();
@@ -596,16 +589,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         jSeparator7.setForeground(new java.awt.Color(72, 71, 113));
 
-        jLabel38.setBackground(new java.awt.Color(13, 11, 66));
-        jLabel38.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(13, 11, 66));
-        jLabel38.setText("Pregunta para recuperar contraseña");
-
-        txtcolorfavorito.setForeground(new java.awt.Color(13, 11, 66));
-        txtcolorfavorito.setBorder(null);
-
-        jSeparator10.setForeground(new java.awt.Color(72, 71, 113));
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -623,18 +606,14 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel38)
-                                    .addComponent(rbAceptaTerminos, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(rbAceptaTerminos, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtContraseñaCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtConfirmarCC, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtcolorfavorito, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(153, 153, 153))))
         );
         jPanel4Layout.setVerticalGroup(
@@ -662,15 +641,9 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(txtConfirmarCC, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel38)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtcolorfavorito, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addComponent(rbAceptaTerminos)
-                .addGap(18, 18, 18)
+                .addGap(83, 83, 83)
                 .addComponent(btnCrearCuenta)
                 .addContainerGap(49, Short.MAX_VALUE))
         );
@@ -1315,11 +1288,11 @@ public class Interfaz extends javax.swing.JFrame {
             MenuAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuAdministradorLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addGroup(MenuAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(regresarInicioAdmin)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addContainerGap(253, Short.MAX_VALUE))
         );
         MenuAdministradorLayout.setVerticalGroup(
             MenuAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1419,7 +1392,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         comboGeneroISC.setBackground(new java.awt.Color(136, 111, 70));
         comboGeneroISC.setEditable(true);
-        comboGeneroISC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pop", "Rock", "English Rock", "Electronica", "Reggaetón", "Cumbia", "Banda " }));
+        comboGeneroISC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2" }));
 
         rcancion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/subir.png"))); // NOI18N
         rcancion.addActionListener(new java.awt.event.ActionListener() {
@@ -1628,12 +1601,6 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        txtPreguntaCusuarios.setBackground(new java.awt.Color(136, 111, 70));
-
-        jLabel34.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        jLabel34.setForeground(new java.awt.Color(136, 111, 70));
-        jLabel34.setText("¿Color Favorito?");
-
         javax.swing.GroupLayout AgregarUsuarioLayout = new javax.swing.GroupLayout(AgregarUsuario);
         AgregarUsuario.setLayout(AgregarUsuarioLayout);
         AgregarUsuarioLayout.setHorizontalGroup(
@@ -1645,38 +1612,28 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(atrasMAbtn1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AgregarUsuarioLayout.createSequentialGroup()
-                .addContainerGap(310, Short.MAX_VALUE)
+                .addContainerGap(362, Short.MAX_VALUE)
+                .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel32)
+                    .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel25)
+                        .addComponent(jLabel33)))
                 .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AgregarUsuarioLayout.createSequentialGroup()
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(9, 9, 9)
+                        .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtIsAdminusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCorreousuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombreusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtApellidosusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(AgregarUsuarioLayout.createSequentialGroup()
-                        .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel31)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel32)
-                            .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel25)
-                                .addComponent(jLabel33)))
-                        .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(AgregarUsuarioLayout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(AgregarUsuarioLayout.createSequentialGroup()
-                                        .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtIsAdminusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtCorreousuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtNombreusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtApellidosusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(txtContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(AgregarUsuarioLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtPreguntaCusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtConfirmarContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(75, 75, 75)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtConfirmarContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(73, 205, Short.MAX_VALUE)
                 .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jbLp1)
                     .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1687,7 +1644,7 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGroup(AgregarUsuarioLayout.createSequentialGroup()
                             .addGap(10, 10, 10)
                             .addComponent(jLabel26))))
-                .addContainerGap(296, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
         AgregarUsuarioLayout.setVerticalGroup(
             AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1723,11 +1680,7 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtConfirmarContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(AgregarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPreguntaCusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtConfirmarContrasenausuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(AgregarUsuarioLayout.createSequentialGroup()
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1736,7 +1689,7 @@ public class Interfaz extends javax.swing.JFrame {
                         .addComponent(jLabel26)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbLp1)))
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         panelprincipal.add(AgregarUsuario, "cardAgregaruA");
@@ -2169,12 +2122,14 @@ public class Interfaz extends javax.swing.JFrame {
                 card.show(panelprincipal, "cardVentacaMAdmin"); // Ventana de administrador
                 JOptionPane.showMessageDialog(this, "Bienvenido, Administrador");
             } else if ("false".equalsIgnoreCase(usuario.getIsadminUsuario())) {
-                new Main(usuario).setVisible(true); // Ventana de usuario
+                new Main(usuario).setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Rol desconocido. Contacta al administrador.");
             }
         }
+
+
     }//GEN-LAST:event_btnInicioSeccionActionPerformed
 
     private void txtContraseñaCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaCrearCuentaActionPerformed
@@ -2240,8 +2195,8 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_regresarInicioAdminActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-//        new Main().setVisible(true); // Ventana de usuario
-//        dispose();
+
+        dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -2329,15 +2284,15 @@ public class Interfaz extends javax.swing.JFrame {
             // Obtener los valores de la fila seleccionada
             int idCancion = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 0).toString());
             String nombre = jTResultados.getValueAt(filaSeleccionada, 1).toString();
-            String autor = jTResultados.getValueAt(filaSeleccionada, 2).toString();
+            String artista = jTResultados.getValueAt(filaSeleccionada, 2).toString();
             String album = jTResultados.getValueAt(filaSeleccionada, 3).toString();
             String duracion = jTResultados.getValueAt(filaSeleccionada, 4).toString();
-            String genero = jTResultados.getValueAt(filaSeleccionada, 5).toString();
+            int genero = Integer.parseInt(jTResultados.getValueAt(filaSeleccionada, 5).toString());
             String rutaImagen = jTResultados.getValueAt(filaSeleccionada, 6).toString();
             String rutaCancion = jTResultados.getValueAt(filaSeleccionada, 7).toString();
 
             // Crear un objeto Cancion con los valores obtenidos
-            cancion ncancion = new cancion(idCancion, nombre, autor, album, duracion, genero, rutaImagen, rutaCancion);
+            cancion ncancion = new cancion(idCancion, nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
 
             // Crear instancia de la clase de conexión a la base de datos
             PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
@@ -2349,7 +2304,7 @@ public class Interfaz extends javax.swing.JFrame {
                 // Actualizar la fila en el JTable con los nuevos valores
                 DefaultTableModel modeloTabla = (DefaultTableModel) jTResultados.getModel();
                 modeloTabla.setValueAt(nombre, filaSeleccionada, 1); // Actualizar la columna "Nombre"
-                modeloTabla.setValueAt(autor, filaSeleccionada, 2);  // Actualizar la columna "Autor"
+                modeloTabla.setValueAt(artista, filaSeleccionada, 2);  // Actualizar la columna "Autor"
                 modeloTabla.setValueAt(album, filaSeleccionada, 3);  // Actualizar la columna "Álbum"
                 modeloTabla.setValueAt(duracion, filaSeleccionada, 4); // Actualizar la columna "Duración"
                 modeloTabla.setValueAt(genero, filaSeleccionada, 5);  // Actualizar la columna "Género"
@@ -2403,25 +2358,36 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnAgregarFormularioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFormularioActionPerformed
 
         String nombre = txtNombreISC.getText();
-        String autor = txtArtistaISC.getText();
+        String artista = txtArtistaISC.getText();
         String album = txtAlbumISC.getText();
         String duracion = txtDuracionISC.getText();
-        String genero = comboGeneroISC.getSelectedItem().toString();
         String rutaImagen = txtRutaDePortadaISC.getText();
         String rutaCancion = txtRutadeCancionISC.getText();
 
-        if (nombre.isEmpty() || autor.isEmpty() || album.isEmpty() || duracion.isEmpty() || genero.isEmpty() || rutaImagen.isEmpty() || rutaCancion.isEmpty()) {
+        // Obtener el valor seleccionado del ComboBox
+        String valorSeleccionado = comboGeneroISC.getSelectedItem().toString();
+
+        // Convertir el valor a un entero
+        int genero = 0;
+        try {
+            genero = Integer.parseInt(valorSeleccionado);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El género seleccionado no es un número válido.");
+            return;
+        }
+
+        // Verificar que todos los campos estén completos
+        if (nombre.isEmpty() || artista.isEmpty() || album.isEmpty() || duracion.isEmpty() || rutaImagen.isEmpty() || rutaCancion.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.");
             return;
         }
 
         // Crear la conexión a la base de datos
         PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarCancion(nombre, autor, album, duracion, genero, rutaImagen, rutaCancion);
+        boolean exito = baseDeDatos.insertarCancion(nombre, artista, album, duracion, genero, rutaImagen, rutaCancion);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Canción agregada correctamente.");
-
         } else {
             JOptionPane.showMessageDialog(this, "Error al agregar la canción a la base de datos.");
         }
@@ -2545,7 +2511,7 @@ public class Interfaz extends javax.swing.JFrame {
             String prguntac = jTResultados.getValueAt(filaSeleccionada, 6).toString();
 
             // Crear un objeto 
-            usuario nusuario = new usuario(idUsuario, nombre, apellidos, correo, contrasena, prguntac, isadmin);
+            usuario nusuario = new usuario(idUsuario, nombre, apellidos, correo, contrasena, isadmin);
 
             // Crear instancia de la clase de conexión a la base de datos
             PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
@@ -2643,7 +2609,7 @@ public class Interfaz extends javax.swing.JFrame {
         txtCorreousuarios.setText("");
         txtContrasenausuarios.setText(" ");
         txtConfirmarContrasenausuarios.setText(" ");
-        txtPreguntaCusuarios.setText(" ");
+
     }//GEN-LAST:event_jbLp1ActionPerformed
 
     private void atrasMAbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasMAbtn1ActionPerformed
@@ -2665,7 +2631,6 @@ public class Interfaz extends javax.swing.JFrame {
         String contrasena = txtContrasenausuarios.getText();
         String confirmarContrasena = txtConfirmarContrasenausuarios.getText();
         String isadmin = txtIsAdminusuarios.getSelectedItem().toString();
-        String preguntac = txtPreguntaCusuarios.getText();
 
         // Validar que las contraseñas coincidan
         if (!contrasena.equals(confirmarContrasena)) {
@@ -2674,14 +2639,14 @@ public class Interfaz extends javax.swing.JFrame {
         }
 
         // Validar que los demás campos no estén vacíos
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || isadmin.isEmpty() || preguntac.isEmpty()) {
+        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || isadmin.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
             return;
         }
 
         // Llamar al método de inserción
         PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin, preguntac);
+        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
 
         // Mostrar mensaje según el resultado
         if (exito) {
@@ -2707,7 +2672,6 @@ public class Interfaz extends javax.swing.JFrame {
         String correo = txtCorreoCrearCuenta.getText();
         String contrasena = txtContraseñaCrearCuenta.getText();
         String confirmarContrasena = txtConfirmarCC.getText(); // Campo de confirmación
-        String preguntac = txtcolorfavorito.getText();
 
         // Validar que las contraseñas coincidan
         if (!contrasena.equals(confirmarContrasena)) {
@@ -2716,7 +2680,7 @@ public class Interfaz extends javax.swing.JFrame {
         }
 
         // Validar que los demás campos no estén vacíos
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || preguntac.isEmpty()) {
+        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, llena todos los campos antes de insertar.");
             return;
         }
@@ -2726,7 +2690,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         // Llamar al método de inserción
         PostgreSQLConnection baseDeDatos = new PostgreSQLConnection();
-        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin, preguntac);
+        boolean exito = baseDeDatos.insertarUsuarios(nombre, apellidos, correo, contrasena, isadmin);
 
         // Mostrar mensaje según el resultado
         if (exito) {
@@ -2836,7 +2800,7 @@ public class Interfaz extends javax.swing.JFrame {
                     String[] fila = new String[]{
                         String.valueOf(rs.getInt("id_cancion")),
                         rs.getString("nombre"),
-                        rs.getString("autor"),
+                        rs.getString("artista"),
                         rs.getString("album"),
                         rs.getString("duracion"),
                         rs.getString("genero"),
@@ -2869,8 +2833,7 @@ public class Interfaz extends javax.swing.JFrame {
                         rs.getString("apellidos"),
                         rs.getString("correo"),
                         rs.getString("contrasena"),
-                        rs.getString("isadmin"),
-                        rs.getString("preguntac")
+                        rs.getString("isadmin")
                     };
                     usuarios.add(fila);
                 }
@@ -2958,8 +2921,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -3006,7 +2967,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator13;
@@ -3052,10 +3012,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreISC;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtNombreusuarios;
-    private javax.swing.JTextField txtPreguntaCusuarios;
     private javax.swing.JTextField txtRutaDePortadaISC;
     private javax.swing.JTextField txtRutadeCancionISC;
-    private javax.swing.JPasswordField txtcolorfavorito;
     private javax.swing.JButton verUsuarios;
     // End of variables declaration//GEN-END:variables
 

@@ -5,69 +5,73 @@ package Interfaz;
  * @author yael
  */
 public class usuario {
+
     int id_usuario;
     String nombre;
     String apellidos;
     String correo;
     String contrasena;
-    String prguntac;
     String isadmin;
-    
-    public usuario(int id_usuario, String nombre, String apellidos, String correo, String contrasena, String prguntac, String isadmin){
+
+    public usuario(int id_usuario, String nombre, String apellidos, String correo, String contrasena, String isadmin) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
         this.contrasena = contrasena;
-        this.prguntac = prguntac;
         this.isadmin = isadmin;
     }
 
-
-    public int getId_usuario(){
+    public int getId_usuario() {
         return id_usuario;
     }
-    public void setId_usuario(int id_usuario){
+
+    public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
-    public String getNombreUsuario(){
+
+    public String getNombreUsuario() {
         return nombre;
     }
-    public void setNombreUsuario (String nombre){
+
+    public void setNombreUsuario(String nombre) {
         this.nombre = nombre;
     }
-    public String getApellidosUsuario(){
+
+    public String getApellidosUsuario() {
         return apellidos;
     }
-    public void setApellidosUsuario(String apellidos){
+
+    public void setApellidosUsuario(String apellidos) {
         this.apellidos = apellidos;
     }
-    public String getCorreoUsuario(){
+
+    public String getCorreoUsuario() {
         return correo;
     }
-    public void setCorreoUsuario(String correo){
+
+    public void setCorreoUsuario(String correo) {
         this.correo = correo;
     }
-    public String getContrasenaUsuario(){
+
+    public String getContrasenaUsuario() {
         return contrasena;
     }
-    public void setContrasenaUsuario(String contrasena){
+
+    public void setContrasenaUsuario(String contrasena) {
         this.contrasena = contrasena;
     }
-    public String getPrguntacUsuario(){
-        return prguntac;
-    }
-    public void setPrguntacUsuario (String prguntac){
-        this.prguntac = prguntac;
-    }
-    public String getIsadminUsuario(){
+
+    public String getIsadminUsuario() {
         return isadmin;
     }
-    public void setisAdminUsuario(String isadmin){
+
+    public void setisAdminUsuario(String isadmin) {
         this.isadmin = isadmin;
     }
+
     @Override
     public String toString() {
-        return  "\nId_usuario:\n" + id_usuario + "\nNombre\n" + nombre + "\nApellidos\n" + apellidos + "\nCorreo\n" + correo + "\nContrasena\n" + contrasena + "\nColor favorito\n" + prguntac + "\nEs admin" + isadmin + "\n";
+        return "\nId_usuario:\n" + id_usuario + "\nNombre\n" + nombre + "\nApellidos\n" + apellidos + "\nCorreo\n" + correo + "\nContrasena\n" + contrasena + "\nEs admin" + isadmin + "\n";
     }
 }

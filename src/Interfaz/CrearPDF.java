@@ -17,10 +17,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class CrearPDF {
+
     public static void main(String[] args) {
         // Nombre del usuario
         String nombreUsuario = "Juan Pérez";
-        
+
         // Ruta donde se generará el PDF
         String rutaPDF = "Usuario_" + nombreUsuario.replace(" ", "_") + ".pdf";
 
@@ -48,4 +49,3 @@ public class CrearPDF {
         }
     }
 }
-

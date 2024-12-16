@@ -5,16 +5,17 @@ package Interfaz;
  * @author prome
  */
 public class cancion {
+
     int id_cancion;
     String nombre;
     String artista;
     String album;
     String duracion;
-    String genero;
+    int genero;
     String ruta_img;
     String ruta_can;
 
-    public cancion(int id_cancion, String nombre, String artista, String album, String duracion, String genero, String ruta_img, String ruta_can) {
+    public cancion(int id_cancion, String nombre, String artista, String album, String duracion, int genero, String ruta_img, String ruta_can) {
         this.id_cancion = id_cancion;
         this.nombre = nombre;
         this.artista = artista;
@@ -65,11 +66,11 @@ public class cancion {
         this.duracion = duracion;
     }
 
-    public String getGenero() {
+    public int getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(int genero) {
         this.genero = genero;
     }
 
@@ -91,7 +92,7 @@ public class cancion {
 
     @Override
     public String toString() {
-        return  "\nId_can\n" + id_cancion + "Nombre\n" + nombre + "Autor\n" + artista + "Album\n" + album + "Duracion\n" + duracion + "Genero\n" + genero + "Ruta_img\n" + ruta_img + "Ruta_can\n" + ruta_can + '\n';
+        return "\nId_can\n" + id_cancion + "Nombre\n" + nombre + "Autor\n" + artista + "Album\n" + album + "Duracion\n" + duracion + "Genero\n" + genero + "Ruta_img\n" + ruta_img + "Ruta_can\n" + ruta_can + '\n';
     }
-    
+
 }

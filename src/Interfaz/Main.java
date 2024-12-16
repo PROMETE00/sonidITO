@@ -173,13 +173,13 @@ public class Main extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pContenido.setLayout(null);
         pContenido.setBackground(nF);
-//        System.out.print("dd"+usr);
+        System.out.print("dd" + usr);
         pContenido.setPreferredSize(new Dimension(getWidth(), getHeight()));
         ImageIcon icon = new ImageIcon(rutaAB + "sonidITO.jpg");  // Especifica la ruta de tu ícono
         setIconImage(icon.getImage());
-        usuario pr = new usuario(1, "Prometeo", "Mendoza", "opromete@gmail.com", "1234", "azul", "false");
-//        componentesActuales(pr);
-        playlistDesplegada(usr);
+//        usuario pr = new usuario(1, "Prometeo", "Mendoza", "opromete@gmail.com", "1234", "false");
+        componentesActuales(usr);
+//        playlistDesplegada(usr);
 //        favDesplegada(usr);
         add(pContenido);
     }
@@ -260,7 +260,7 @@ public class Main extends JFrame {
                     String album = (String) table.getValueAt(selectedRow, 2);
                     String duracion = (String) table.getValueAt(selectedRow, 3);
 
-                    // Obtener detalles adicionales de la canción
+                    // Obtener detalles adicionales cndbde la canción
                     List<String> cn = cndb.obtenerDetallesCancionPorNombre(titulo);
                     int numero = Integer.parseInt(cn.get(0)); // ID canción
                     String portada = rutaAB + cn.get(5);      // Ruta de la imagen
@@ -549,16 +549,16 @@ public class Main extends JFrame {
         int idUsuario = usr.getId_usuario();
         List<String[]> playlists = cndb.obtenerPlaylistUsuario(idUsuario);
 
+        // Listas para almacenar los datos de las playlists
         List<String> idsPlaylists = new ArrayList<>();
         List<String> nombresPlaylists = new ArrayList<>();
         List<String> rutas = new ArrayList<>();
 
-        // Separar nombres y rutas
+        // Separar los datos de las playlists
         for (String[] playlist : playlists) {
             idsPlaylists.add(playlist[0]); // id_playlist
             nombresPlaylists.add(playlist[1]); // nombre_playlist
-            String ru = rutaAB + playlist[2]; // ruta_imagen
-            rutas.add(ru);
+            rutas.add(rutaAB + playlist[2]); // ruta_imagen
         }
 
         int filas = 3; // Número de filas
@@ -595,7 +595,7 @@ public class Main extends JFrame {
 
         botonMisMeGustas.addActionListener(e -> {
             pContenido.removeAll();
-            favDesplegada(usr);
+            favDesplegada(usr); // Acción al hacer clic en "Mis Me Gustas"
         });
 
         // Agregar componentes al contenedor
@@ -606,18 +606,18 @@ public class Main extends JFrame {
         // Agregar playlists dinámicas
         for (int i = 0; i < cantidad; i++) {
             final int index = i;
-            String idPlaylist = idsPlaylists.get(index);
+            String idPlaylist = idsPlaylists.get(index); // Recuperar ID de la playlist
             int fila = (i + 1) / columnas; // Desplazar una posición por "Mis Me Gustas"
             int columna = (i + 1) % columnas;
 
             x = inicioX + columna * espacioX;
             y = inicioY + fila * espacioY;
 
-            // Fondo de playlist (debe empezar después del icono)
+            // Fondo de playlist
             JLabel fondo = new JLabel();
             fondo.setOpaque(true);
             fondo.setBackground(cg);
-            fondo.setBounds(x + 70, y, 220, 70); // Ajuste aquí para que el fondo empiece después del icono
+            fondo.setBounds(x + 70, y, 220, 70);
 
             // Crear etiqueta para la imagen
             JLabel imagen = new JLabel();
@@ -625,12 +625,12 @@ public class Main extends JFrame {
                 ImageIcon icon = new ImageIcon(rutas.get(i));
                 Image img = icon.getImage().getScaledInstance(65, 70, Image.SCALE_SMOOTH);
                 imagen.setIcon(new ImageIcon(img));
-                imagen.setBounds(x + 10, y, 60, 70); // El icono permanece en su lugar
+                imagen.setBounds(x + 10, y, 60, 70);
             }
 
             // Crear botón y agregar texto
             JButton boton = new JButton(nombresPlaylists.get(index));
-            boton.setBounds(x + 70, y + 15, 220, 40); // El botón también se mantiene donde está
+            boton.setBounds(x + 70, y + 15, 220, 40);
             boton.setFocusPainted(false);
             boton.setContentAreaFilled(false);
             boton.setBorderPainted(false);
@@ -638,13 +638,10 @@ public class Main extends JFrame {
             boton.setFont(new Font("Arial", Font.PLAIN, 14));
 
             // Acción al hacer clic en el botón
-            String nombre = nombresPlaylists.get(i);
-            String ruta = rutas.get(i);
             boton.addActionListener(e -> {
                 System.out.println("ID Playlist: " + idPlaylist);
                 System.out.println("Nombre: " + nombresPlaylists.get(index));
                 System.out.println("Ruta: " + rutas.get(index));
-
             });
 
             // Agregar componentes al contenedor
@@ -652,6 +649,7 @@ public class Main extends JFrame {
             pContenido.add(imagen);
             pContenido.add(boton);
 
+            // Ordenar componentes
             pContenido.setComponentZOrder(fondo, 30);
             pContenido.setComponentZOrder(imagen, 29);
             pContenido.setComponentZOrder(boton, 28);
@@ -1321,7 +1319,7 @@ public class Main extends JFrame {
 
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
-            usuario nu = new usuario(0, "", "", "", "", "", "");
+            usuario nu = new usuario(0, "", "", "", "", "");
             new Main(nu).setVisible(true);
         });
     }

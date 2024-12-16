@@ -228,7 +228,7 @@ public class Main extends JFrame {
         List<cancion> cancionesDePlaylist = cndb.obtenerCancionesDePlaylist(idPlaylist);
 
         if (cancionesDePlaylist.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La playlist no contiene canciones.");
+//            JOptionPane.showMessageDialog(null, "La playlist no contiene canciones.");
         } else {
             for (cancion cancion : cancionesDePlaylist) {
                 String[] data = {cancion.getNombre(), cancion.getArtista(), cancion.getAlbum(), cancion.getDuracion()};
@@ -974,8 +974,13 @@ public class Main extends JFrame {
         boolean esfavInicial = cndb.existeFav(id, idcan);
 
         favorito(id, idcan, esfavInicial);
+        JSlider barraProgreso = new JSlider(0, 100);
+        barraProgreso.setBounds(260, 1340, 1400, 50);
+        barraProgreso.setValue(1);
+        barraProgreso.setBackground(cB);
+        pContenido.add(barraProgreso);
 
-        btnCReproducir.addActionListener(e -> reproductor.reproducir(rutaCancion, duracionLabel));
+        btnCReproducir.addActionListener(e -> reproductor.reproducir(rutaCancion, duracionLabel, barraProgreso));
 
         btnCAtras.addActionListener(e -> reproductor.pausar());
 
@@ -1108,7 +1113,7 @@ public class Main extends JFrame {
         reproduccion.setForeground(cB); // Letra blanca
         reproduccion.setBackground(verdeB); // Fondo negro
         reproduccion.setCaretColor(inv); // Cursor blanco
-        reproduccion.setBounds(50, 970, 1815, 100);
+        reproduccion.setBounds(50, 970, 1815, 150);
         pContenido.add(reproduccion);
     }
 

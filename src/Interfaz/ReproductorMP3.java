@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.Timer;
 import javazoom.jl.player.Player;
 
@@ -17,16 +18,17 @@ public class ReproductorMP3 {
     Color inv = new Color(0, 0, 0, 0);
     Color verdeB = new Color(31, 157, 62);
     private int currentPosition = 0;  // Variable para almacenar la posición de la canción
+    public JSlider barraProgres;
 
     public void reproducirPausar(String rutaCancion, JLabel duracionLabel) {
         if (isPlaying) {
             pausar();
         } else {
-            reproducir(rutaCancion, duracionLabel);
+            reproducir(rutaCancion, duracionLabel,barraProgres);
         }
     }
 
-    public void reproducir(String rutaCancion, JLabel duracionLabel) {
+    public void reproducir(String rutaCancion, JLabel duracionLabel, JSlider barraProgreso) {
         if (!esArchivoValido(rutaCancion)) {
             System.err.println("El archivo no es válido o no existe: " + rutaCancion);
             return;
@@ -43,6 +45,7 @@ public class ReproductorMP3 {
             player = new Player(is);
 
             duracionSegundos = obtenerDuracion(rutaCancion);
+            barraProgreso.setMaximum(duracionSegundos);
 
             if (timer != null) {
                 timer.stop();
@@ -58,9 +61,13 @@ public class ReproductorMP3 {
                     duracionLabel.setBackground(verdeB);
                     duracionLabel.setForeground(Color.white);
                     duracionLabel.setText(String.format("%02d:%02d", minutos, segundos));
+
+                    // Actualiza la posición de la barra
+                    barraProgreso.setValue(barraProgreso.getMaximum() - duracionSegundos);
                 } else {
                     timer.stop();
                     duracionLabel.setText("0:00");
+                    barraProgreso.setValue(0);
                     detener(); // Al finalizar la canción
                 }
             });

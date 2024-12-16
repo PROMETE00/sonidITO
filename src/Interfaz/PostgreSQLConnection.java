@@ -541,7 +541,7 @@ public class PostgreSQLConnection {
     }
 
     public List<String[]> obtenerPlaylistUsuario(int idUsuario) {
-        String consulta = "SELECT p.nombre_playlist, p.ruta_imagen FROM mis_playlist m "
+        String consulta = "SELECT p.id_playlist, p.nombre_playlist, p.ruta_imagen FROM mis_playlist m "
                 + "INNER JOIN playlist_existente p ON m.id_playlist = p.id_playlist "
                 + "WHERE m.id_usuario = ?";
         List<String[]> resultados = new ArrayList<>();
@@ -551,9 +551,10 @@ public class PostgreSQLConnection {
             pstmt.setInt(1, idUsuario);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
+                    String idPlaylist = String.valueOf(rs.getInt("id_playlist"));
                     String nombrePlaylist = rs.getString("nombre_playlist");
                     String rutaImagen = rs.getString("ruta_imagen");
-                    resultados.add(new String[]{nombrePlaylist, rutaImagen});
+                    resultados.add(new String[]{idPlaylist, nombrePlaylist, rutaImagen});
                 }
             }
         } catch (SQLException e) {
@@ -561,6 +562,63 @@ public class PostgreSQLConnection {
         }
 
         return resultados;
+    }
+
+    public List<cancion> obtenerCancionesDePlaylist(int idPlaylist) {
+        String consulta = "SELECT c.id_cancion, c.nombre, c.artista, c.album, c.duracion, c.ruta_imagen, c.ruta_cancion, c.genero "
+                + "FROM playlist_cancion pc "
+                + "INNER JOIN cancion c ON pc.id_cancion = c.id_cancion "
+                + "WHERE pc.id_playlist = ?";
+        List<cancion> canciones = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            pstmt.setInt(1, idPlaylist);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    cancion cancion = new cancion(
+                            rs.getInt("id_cancion"),
+                            rs.getString("nombre"),
+                            rs.getString("artista"),
+                            rs.getString("album"),
+                            rs.getString("duracion"),
+                            rs.getString("ruta_imagen"),
+                            rs.getString("ruta_cancion"),
+                            rs.getString("genero")
+                    );
+                    canciones.add(cancion);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener canciones de la playlist: " + e.getMessage());
+        }
+
+        return canciones;
+    }
+
+    public String[] obtenerDatosPlaylist(int idPlaylist) {
+        String consulta = "SELECT id_playlist, nombre_playlist, ruta_imagen FROM playlist_existente WHERE id_playlist = ?";
+        String[] datosPlaylist = null;
+
+        try (Connection conn = DriverManager.getConnection(url, user, password); PreparedStatement pstmt = conn.prepareStatement(consulta)) {
+
+            pstmt.setInt(1, idPlaylist);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt("id_playlist");
+                    String nombre = rs.getString("nombre_playlist");
+                    String rutaImagen = rs.getString("ruta_imagen");
+
+                    datosPlaylist = new String[]{String.valueOf(id), nombre, rutaImagen};
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener los datos de la playlist: " + e.getMessage());
+        }
+
+        return datosPlaylist;
     }
 
     public int obtenerMisPlaylistCantidad(int usr) {

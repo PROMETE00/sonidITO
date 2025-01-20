@@ -1,4 +1,4 @@
-Aplicacion: sonioITO
+Aplicacion: sonidITO
 El objetivo de esta apliacacion es hacer una aplicacion similar a una aplicación de
 musica como lo es un Spotify pero de manera local o escalable a la nube , cuenta con un CRUD de administrador que tiene la capacidad agregar registros de 
 en las canciones, usuario y editarlos prácticamente todo lo que con lleva un CRUD mientras que del lado del

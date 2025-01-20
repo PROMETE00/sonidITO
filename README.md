@@ -239,6 +239,3 @@ Cada edicion de registros teniendo sus popios botones para eliminar, actualizar 
 ![alt text](capture_20241216085448592.bmp)
 ![alt text](capture_20241216085511685.bmp)
 ![alt text](capture_20241216085550206.bmp)
-### Funcionalidad
-Video de explicación: 
-https://youtu.be/m42nrGEQo1A 

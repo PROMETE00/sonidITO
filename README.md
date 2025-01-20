@@ -1,8 +1,3 @@
-EQUIPO 10
-integrantes:
-Mendoza Luis Prometeo
-Mendoza Villafaña Eder Yael
-
 Este programa llamado sonioITO esta creado como un proyecto de Tópicos Avanzados de Programación con el
 objetivo de profundizar en el tema de la base de datos este programa esta hecho similar a una aplicación de
 musica como lo es un Spotify cuenta con un CRUD de administrador que tiene la capacidad agregar registros de 

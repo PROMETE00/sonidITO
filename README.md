@@ -1,6 +1,6 @@
-Este programa llamado sonioITO esta creado como un proyecto de Tópicos Avanzados de Programación con el
-objetivo de profundizar en el tema de la base de datos este programa esta hecho similar a una aplicación de
-musica como lo es un Spotify cuenta con un CRUD de administrador que tiene la capacidad agregar registros de 
+Aplicacion: sonioITO
+El objetivo de esta apliacacion es hacer una aplicacion similar a una aplicación de
+musica como lo es un Spotify pero de manera local o escalable a la nube , cuenta con un CRUD de administrador que tiene la capacidad agregar registros de 
 en las canciones, usuario y editarlos prácticamente todo lo que con lleva un CRUD mientras que del lado del
 usuario este cuenta con una ventana principal en la que podemos ver los me gustas de cada usuario  correspondiente
 como una serie de playlist ya establecidas

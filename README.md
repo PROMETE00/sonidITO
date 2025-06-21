@@ -235,7 +235,4 @@ Insercion de datos
 Edicion de Registros
 ![alt text](ccapturas/apture_20241216085430299.bmp) ![alt text](capture_20241216085535361.bmp)
 
-Cada edicion de registros teniendo sus popios botones para eliminar, actualizar y refrescar contando tambien con una barra de bussqueda
-![alt text](capture_20241216085448592.bmp)
-![alt text](capture_20241216085511685.bmp)
-![alt text](capture_20241216085550206.bmp)
+

@@ -247,5 +247,3 @@ This menu has 5 buttons, each with specific functionality
 Data insertion
 ![alt text](capturas/capture_20241216085347655.bmp) ![alt text](capturas/capture_20241216085409619.bmp)
 
-Record editing
-![alt text](ccapturas/apture_20241216085430299.bmp) ![alt text](capture_20241216085535361.bmp)

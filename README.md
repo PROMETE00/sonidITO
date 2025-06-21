@@ -1,9 +1,22 @@
 Aplicacion: sonidITO
-El objetivo de esta apliacacion es hacer una aplicacion similar a una aplicación de
-musica como lo es un Spotify pero de manera local o escalable a la nube , cuenta con un CRUD de administrador que tiene la capacidad agregar registros de 
-en las canciones, usuario y editarlos prácticamente todo lo que con lleva un CRUD mientras que del lado del
-usuario este cuenta con una ventana principal en la que podemos ver los me gustas de cada usuario  correspondiente
-como una serie de playlist ya establecidas
+
+Features 
+
+    User Interface : Similar to Spotify, with a clean and intuitive design.
+    Admin CRUD : Allows administrators to add, edit, and manage songs, users, and playlists.
+    User Experience :
+        View personalized "Likes" (songs the user has marked as favorites).
+        Access pre-defined playlists.
+        Explore recommended playlists based on user preferences.
+         
+     
+
+Technologies Used 
+
+    Programming Language : Java
+    Database : MySQL
+    Design : User-friendly interface inspired by Spotify.
+     
 
 ---
 

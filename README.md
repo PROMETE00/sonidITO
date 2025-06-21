@@ -1,251 +1,251 @@
-Aplicacion: sonidITO
+Application: sonidITO
 
-Features 
+# Features 
 
-    User Interface : Similar to Spotify, with a clean and intuitive design.
-    Admin CRUD : Allows administrators to add, edit, and manage songs, users, and playlists.
-    User Experience :
-        View personalized "Likes" (songs the user has marked as favorites).
-        Access pre-defined playlists.
-        Explore recommended playlists based on user preferences.
-         
-     
+## User Interface : 
+Similar to Spotify, with a clean and intuitive design.
 
-Technologies Used 
+## Admin CRUD : 
+Allows administrators to add, edit, and manage songs, users, and playlists.
 
-    Programming Language : Java
-    Database : MySQL
-    Design : User-friendly interface inspired by Spotify.
-     
+## User Experience :
+
+View personalized "Likes" (songs the user has marked as favorites).
+
+Access pre-defined playlists.
+
+Explore recommended playlists based on user prefererences.
+
+# Technologies Used 
+
+Programming Language : Java
+
+Database : MySQL
+
+Design : User-friendly interface inspired by Spotify.
+    
+---
+
+PROGRAM EXECUTION
+![User account creation](capturas/crearCuenta.png)  
+Create your account with your corresponding details  
+
+![User created successfully](capturas/cap2.png)  
+Confirmation of successfully created user  
+
+![PDF created](capturas/cap3.png)  
+A PDF is generated  
+
+![User created successfully](capturas/confi.png)  
+User creation confirmation via PDF  
+
+![Login screen](capturas/cap4.png)  
+Login screen  
+
+![Main menu](capturas/ejec1.png)  
+Main menu  
+
+![Your favorite songs menu](capturas/ejec2.png)  
+Your favorite songs menu  
+
+![Selected playlist](capturas/ejec3.png)  
+Selected playlist  
+
+![Song not added to favorites](capturas/capa.png)  
+Song not added to favorites  
+
+![Song added to favorites](capturas/capb.png)  
+Song added to favorites  
+
+
+# Database Access Methods Documentation
+
+This file describes the methods used to interact with the database in a playlist and song management system.
 
 ---
 
-EJECUCION DEL PROGRAMA
+## obtenerCancionesDePlaylist(int idPlaylist)  
+### Purpose  
+Retrieves all songs associated with a specific playlist.  
 
-![Creacion cuenta usuario](capturas/crearCuenta.png)
-Crea tu cuenta con tus datos correspondientes
+### Parameters  
+- idPlaylist: Unique identifier of the playlist.  
 
-![Usuario creado correctamente](capturas/cap2.png)
-Confirmacion del usuario creado correctamente
+### Return  
+- A list of song objects representing the playlist's songs.  
 
-![Pdf creado](capturas/cap3.png)
-Se crea un pdf
-
-![Usuario creado correctamente](capturas/confi.png)
-Confirmacion del usuario creado via pdf
-
-![Pantalla inicio sesion](capturas/cap4.png)
-Pantalla inicio sesion
-
-![Menu principal](capturas/ejec1.png)
-Menu principal
-
-![Menu tus canciones favoritas](capturas/ejec2.png)
-Menu tus canciones favoritas
-
-![Alguna playlist seleccionada](capturas/ejec3.png)
-Alguna playlist seleccionada
-
-![Cancion no agregada a favoritos](capturas/capa.png)
-Cancion no agregada a favoritos
-
-![Cancion agregada a favoritos](capturas/capb.png)
-Cancion agregada a favoritos
-
-
-# Documentación de Métodos de Acceso a la Base de Datos
-
-Este archivo describe los métodos utilizados para interactuar con la base de datos en un sistema de gestión de playlists y canciones.
+### Functionality  
+1. Executes an SQL query joining the playlist_song and song tables.  
+2. Processes the result and builds a list of song objects.  
+3. Handles SQL exceptions and returns an empty list in case of error.  
 
 ---
 
-## obtenerCancionesDePlaylist(int idPlaylist)
-### Propósito
-Obtiene todas las canciones asociadas a una playlist específica.
+## obtenerDetallesCancionPorNombre(String nombreCancion)  
+### Purpose  
+Retrieves the details of a specific song based on its name.  
 
-### Parámetros
-- idPlaylist: Identificador único de la playlist.
+### Parameters  
+- nombreCancion: Name of the song to search for.  
 
-### Retorno
-- Una lista de objetos cancion que representan las canciones de la playlist.
+### Return  
+- A string list (List<String>) containing the song details in the following order:  
+  1. Song ID  
+  2. Name  
+  3. Artist  
+  4. Album  
+  5. Duration  
+  6. Image path  
+  7. Song path  
+  8. Genre  
 
-### Funcionalidad
-1. Realiza una consulta SQL con una unión entre las tablas playlist_cancion y cancion.
-2. Procesa el resultado y construye una lista de objetos cancion.
-3. Maneja excepciones SQL y retorna una lista vacía en caso de error.
+### Functionality  
+- Performs an SQL query to find a song with a matching name.  
+- Returns an empty list if not found.  
+---
+## obtenerDatosPlaylist(int idPlaylist)  
+### Purpose  
+Retrieves basic data of a specific playlist.  
+
+### Parameters  
+- idPlaylist: Unique identifier of the playlist.  
+
+### Return  
+- A string array (String[]) containing:  
+  - Playlist ID  
+  - Playlist name  
+  - Associated image path  
+
+### Functionality  
+- Queries the playlist_existente table to get playlist data.  
+- Handles errors and returns null if any issues occur.  
 
 ---
 
-## obtenerDetallesCancionPorNombre(String nombreCancion)
-### Propósito
-Recupera los detalles de una canción específica basada en su nombre.
+## obtenerPlaylistUsuario(int idUsuario)  
+### Purpose  
+Gets all playlists associated with a user.  
 
-### Parámetros
-- nombreCancion: Nombre de la canción a buscar.
+### Parameters  
+- idUsuario: Unique user identifier.  
 
-### Retorno
-- Una lista de cadenas (List<String>) que contiene los detalles de la canción en el siguiente orden:
-  1. ID de la canción
-  2. Nombre
-  3. Artista
-  4. Álbum
-  5. Duración
-  6. Ruta de imagen
-  7. Ruta de la canción
-  8. Género
+### Return  
+- A list of string arrays (List<String[]>), where each array contains:  
+  1. Playlist ID  
+  2. Playlist name  
+  3. Image path  
 
-### Funcionalidad
-- Realiza una consulta SQL para encontrar una canción cuyo nombre coincida.
-- Si no se encuentra, retorna una lista vacía.
+### Functionality  
+- Performs an SQL query to get user-related playlists.  
+- Returns an empty list in case of error.  
 
 ---
 
-## obtenerDatosPlaylist(int idPlaylist)
-### Propósito
-Obtiene los datos básicos de una playlist específica.
+## obtenerCancionesFavoritas(int id_usuario)  
+### Purpose  
+Retrieves songs marked as favorites by a user.  
 
-### Parámetros
-- idPlaylist: Identificador único de la playlist.
+### Parameters  
+- id_usuario: Unique user identifier.  
 
-### Retorno
-- Un arreglo de cadenas (String[]) con los datos:
-  - ID de la playlist
-  - Nombre de la playlist
-  - Ruta de la imagen asociada
+### Return  
+- A list of integers (List<Integer>) containing favorite song IDs.  
 
-### Funcionalidad
-- Consulta la tabla playlist_existente para obtener los datos de la playlist.
-- Maneja errores y retorna null si ocurre algún problema.
+### Functionality  
+- Queries the favoritosusuario table for a user's favorite songs.  
+- Handles SQL exceptions and returns an empty list if any issues occur.  
 
 ---
 
-## obtenerPlaylistUsuario(int idUsuario)
-### Propósito
-Obtiene todas las playlists asociadas a un usuario.
+## obtenerDetallesCancionesFavoritas(List<Integer> idsCanciones)  
+### Purpose  
+Gets complete details of a set of favorite songs.  
 
-### Parámetros
-- idUsuario: Identificador único del usuario.
+### Parameters  
+- idsCanciones: List of song IDs.  
 
-### Retorno
-- Una lista de arreglos de cadenas (List<String[]>), donde cada arreglo contiene:
-  1. ID de la playlist
-  2. Nombre de la playlist
-  3. Ruta de la imagen
+### Return  
+- A list of song objects with song details.  
 
-### Funcionalidad
-- Realiza una consulta SQL para obtener las playlists relacionadas con el usuario.
-- Retorna una lista vacía en caso de error.
+### Functionality  
+- Builds a dynamic query using IN (?, ?, ...) to search multiple songs.  
+- Processes results and converts them into song objects.  
 
 ---
 
-## obtenerCancionesFavoritas(int id_usuario)
-### Propósito
-Obtiene las canciones marcadas como favoritas por un usuario.
+## existeFav(int id_usuario, int id_cancion)  
+### Purpose  
+Checks if a song is marked as favorite by a user.  
 
-### Parámetros
-- id_usuario: Identificador único del usuario.
+### Parameters  
+- id_usuario: User identifier.  
+- id_cancion: Song identifier.  
 
-### Retorno
-- Una lista de enteros (List<Integer>) que contiene los IDs de las canciones favoritas.
+### Return  
+- true if the song is marked as favorite, false otherwise.  
 
-### Funcionalidad
-- Consulta la tabla favoritosusuario para obtener las canciones favoritas de un usuario.
-- Maneja excepciones SQL y retorna una lista vacía si ocurre algún problema.
-
----
-
-## obtenerDetallesCancionesFavoritas(List<Integer> idsCanciones)
-### Propósito
-Obtiene los detalles completos de un conjunto de canciones favoritas.
-
-### Parámetros
-- idsCanciones: Una lista de IDs de canciones.
-
-### Retorno
-- Una lista de objetos cancion con los detalles de las canciones.
-
-### Funcionalidad
-- Construye una consulta dinámica utilizando IN (?, ?, ...) para buscar múltiples canciones.
-- Procesa los resultados y los convierte en objetos cancion.
+### Functionality  
+- Executes an SQL query that returns true if a matching record exists.  
 
 ---
-
-## existeFav(int id_usuario, int id_cancion)
-### Propósito
-Verifica si una canción está marcada como favorita por un usuario.
-
-### Parámetros
-- id_usuario: Identificador del usuario.
-- id_cancion: Identificador de la canción.
-
-### Retorno
-- true si la canción está marcada como favorita, false de lo contrario.
-
-### Funcionalidad
-- Realiza una consulta SQL que retorna true si existe un registro que coincide.
-
----
-
 ## insertarFav(int id_usuario, int id_cancion)
-### Propósito
-Inserta una canción en la lista de favoritos de un usuario.
+### Purpose
+Adds a song to a user's favorites list.
 
-### Parámetros
-- id_usuario: Identificador del usuario.
-- id_cancion: Identificador de la canción.
+### Parameters
+- id_usuario: User identifier
+- id_cancion: Song identifier
 
-### Retorno
-- true si la inserción fue exitosa, false en caso de error.
+### Return
+- true if insertion was successful, false on error
 
-### Funcionalidad
-- Ejecuta un comando INSERT para agregar el registro en la tabla favoritosusuario.
+### Functionality
+- Executes an INSERT command to add the record to the favoritosusuario table
 
 ---
 
 ## eliminarFav(int id_usuario, int id_cancion)
-### Propósito
-Elimina una canción de los favoritos de un usuario.
+### Purpose
+Removes a song from a user's favorites
 
-### Parámetros
-- id_usuario: Identificador del usuario.
-- id_cancion: Identificador de la canción.
+### Parameters
+- id_usuario: User identifier
+- id_cancion: Song identifier
 
-### Retorno
-- true si la eliminación fue exitosa, false en caso de error.
+### Return
+- true if deletion was successful, false on error
 
-### Funcionalidad
-- Ejecuta un comando DELETE para eliminar el registro en la tabla favoritosusuario.
+### Functionality
+- Executes a DELETE command to remove the record from favoritosusuario table
 
 ---
 
 ## obtenerPlaylistExistentes()
-### Propósito
-Obtiene todas las playlists disponibles en el sistema.
+### Purpose
+Gets all available playlists in the system
 
-### Retorno
-- Una lista de arreglos de cadenas (List<String[]>), donde cada arreglo contiene:
-  1. ID de la playlist
-  2. Nombre de la playlist
-  3. Ruta de la imagen
-  4. Descripción
+### Return
+- A list of string arrays (List<String[]>), where each array contains:
+  1. Playlist ID
+  2. Playlist name
+  3. Image path
+  4. Description
 
-### Documentación de la interfaz  
-La interfaz de este programa cuenta con un total de 7 paginas aproximadamente contando el main en las que se incluye toda la gestión del 
-programa desde la creación de usuarios desde la vista del administrador\usuario hasta la reproducción de musica
-Inicio de sesion este es capaz de determinar si es administrador o usuario y redirigirlos a su propias ventanas
+### Interface Documentation
+The program interface consists of approximately 7 pages (including main) that cover all program management from user creation (admin/user view) to music playback.
+
+Login screen - can determine if user is admin or regular user and redirect accordingly
 ![alt text](capturas/capture_20241216084620486.bmp)
 
-Crear Uusario desde la vista del usuario el sistema le da la opcion a el usuario a crear un nuevo usuario eso si no puede eleguir si es administrador o usuario
+User creation from user view - system allows user to create new account (cannot choose admin/user role)
 ![alt text](capturas/capture_20241216085223305.bmp)
 
-Menu Administrador
+Admin menu
 ![alt text](capturas/capture_20241216085307128.bmp)
-Este menu cuenta con 5 botones cada uno con su propia funcionalidad
+This menu has 5 buttons, each with specific functionality
 
-Insercion de datos
+Data insertion
 ![alt text](capturas/capture_20241216085347655.bmp) ![alt text](capturas/capture_20241216085409619.bmp)
 
-Edicion de Registros
+Record editing
 ![alt text](ccapturas/apture_20241216085430299.bmp) ![alt text](capture_20241216085535361.bmp)
-
-
